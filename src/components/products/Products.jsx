@@ -50,20 +50,22 @@ const Products = () => {
                     {allProducts.products?.map((product) =>{
                         // console.log(product)
                         const inCart = cartItems?.some(item => item.id === product.id)
-                        const addedToCart = cartProducts.wasProductAddedToCart && cartProducts.products.some((item) => item.id === product.id);
+                        const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
                         return (<div className="col-lg-3 col-md-6 col-sm-6 col-6">
                         <div className="my-2 shadow-0">
-                        <a href="#" className="">
+                        {/* <a href="#" className=""> */}
                             <img src={product.img} className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} />
-                        </a>
+                        {/* </a> */}
                         <div className="p-0 pt-2">
                             <a href="#!" className="btn btn-light border px-2 pt-2 float-end icon-hover"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a>
                             <h5 className="">${product.price}</h5>
                             <p className=" mb-0">{product.name}</p>
                             <p className="text-muted">{product.description}</p>
                         </div>
-                        <button className={`btn btn-block ${inCart ? "btn-dark" : ""}`} style={{border: "1px solid #343a40"}} onClick={()=> handleAddToCart(product)}>
-                            {inCart  ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
+                        <button className={`btn btn-block ${inCart || isRecentlyAdded ? "btn-dark" : ""}`} style={{border: "1px solid #343a40"}} onClick={()=> handleAddToCart(product)}>
+                            {/* {inCart ? "btn-dark" : isRecentlyAdded ? "btn-dark" : ""} */}
+                            {inCart ? "Added to cart" : isRecentlyAdded ? "Added to cart" : "Add to cart"}
+                            {/* {inCart || isRecentlyAdded  ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>} */}
                         </button>
                         </div>
                     </div>)
