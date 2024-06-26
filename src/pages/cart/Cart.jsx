@@ -27,6 +27,7 @@ const Cart = () => {
 
     const handleRemoveFromCart = (product) => {
         addToCart(product); // Use addToCart to remove the product
+        window.scrollTo(0, 0);
     };
 
     return (

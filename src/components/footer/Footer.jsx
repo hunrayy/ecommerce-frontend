@@ -51,7 +51,9 @@ const Footer = () => {
             <Logo />
   
           <p className="mt-3">
-            © 2023 Copyright: MDBootstrap.com.
+            beautybykiara
+
+            22633197430
           </p>
         </div>
      

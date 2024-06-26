@@ -6,9 +6,13 @@ import { useState, useEffect, useContext } from "react"
 import productsStore from "./products.json"
 import "./products.css"
 import { CartContext } from "../../pages/cart/CartContext"
+import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+
 
 
 const Products = () => {
+    const navigate = useNavigate()
     const { cartProducts, addToCart} = useContext(CartContext);
     const [allProducts, setAllProducts] =  useState({
         products: [],
@@ -27,11 +31,17 @@ const Products = () => {
         const getCartItems = JSON.parse(localStorage.getItem("cart_items"))
         setCartItems(getCartItems);
 
+
     }, [])
 
     const handleAddToCart = (product) => {
         addToCart(product);
     };
+    const navigateToProduct = (product_id) => {
+        navigate(`/product/${product_id}`, {
+            replace: true
+        })
+    }
 
 
     return <div>
@@ -51,22 +61,21 @@ const Products = () => {
                         // console.log(product)
                         const inCart = cartItems?.some(item => item.id === product.id)
                         const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
-                        return (<div className="col-lg-3 col-md-6 col-sm-6 col-6">
-                        <div className="my-2 shadow-0">
-                        {/* <a href="#" className=""> */}
+                        return (<div className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.id)}>
+                        <div className="my-2">
+                   
                             <img src={product.img} className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} />
-                        {/* </a> */}
-                        <div className="p-0 pt-2">
+            
+                        <div className="pl-2 pt-2">
                             <a href="#!" className="btn btn-light border px-2 pt-2 float-end icon-hover"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a>
                             <h5 className="">${product.price}</h5>
                             <p className=" mb-0">{product.name}</p>
                             <p className="text-muted">{product.description}</p>
                         </div>
-                        <button className={`btn btn-block ${inCart || isRecentlyAdded ? "btn-dark" : ""}`} style={{border: "1px solid #343a40"}} onClick={()=> handleAddToCart(product)}>
-                            {/* {inCart ? "btn-dark" : isRecentlyAdded ? "btn-dark" : ""} */}
-                            {inCart ? "Added to cart" : isRecentlyAdded ? "Added to cart" : "Add to cart"}
-                            {/* {inCart || isRecentlyAdded  ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>} */}
-                        </button>
+                        {/* <button className={`btn btn-block ${inCart || isRecentlyAdded ? "btn-dark" : ""}`} style={{border: "1px solid #343a40"}} onClick={()=> handleAddToCart(product)}>
+                        
+                            {inCart ? "Added to cart" : isRecentlyAdded ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
+                        </button> */}
                         </div>
                     </div>)
                     })}
