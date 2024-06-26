@@ -47,12 +47,6 @@ const Navbar = () => {
               <div>
                 <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
               </div>
-              <div>
-                <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
-              </div>
-              <div>
-                <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
-              </div>
               {/* <a href="#">Tracking</a> */}
 
               <div className="navbar-social-icons-wrapper">
