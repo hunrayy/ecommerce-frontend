@@ -30,7 +30,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div className={shownav ? "links-container-show" : "links-container"} onClick={()=> setShownav(false)}>
-            <div className={shownav ? "links-wrapper-show" : "links-wrapper"} onClick={(e)=>e.stopPropagation}>
+            <div className={shownav ? "links-wrapper-show" : "links-wrapper"} onClick={(e)=>e.stopPropagation()}>
             <div style={{fontSize: "30px"}} className="cancelmenubar"><i class="fa-solid fa-xmark" onClick={()=> setShownav(false)}></i></div>
               <div>
                 <Link to="/" style={{fontWeight: "bold"}}>Home</Link>
