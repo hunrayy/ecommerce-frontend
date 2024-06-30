@@ -8,7 +8,7 @@ import { useState, useEffect, useContext } from "react"
 import { CartContext } from "./CartContext"
 
 const Cart = () => {
-    const { cartProducts, addToCart } = useContext(CartContext);
+    const { cartProducts, addToCart, calculateTotalPrice } = useContext(CartContext);
     const [allCartItems, setAllCartItems] = useState({
         products: [],
         totalPrice: 0
@@ -20,7 +20,7 @@ const Cart = () => {
             setAllCartItems((prevState) => ({
                 ...prevState,
                 products: storedItems,
-                totalPrice: 0
+                totalPrice: cartProducts.totalPrice
             }));
         }
     }, [cartProducts.products]); // Add cartProducts.products as a dependency to re-render when it changes
@@ -55,7 +55,7 @@ const Cart = () => {
                             <div className="card border shadow-0">
                                 <div className="m-4">
                                     <h4 className="card-title mb-4">Your shopping cart</h4>
-                                    {allCartItems.products?.map((each_item) => (
+                                    {allCartItems.products.slice().reverse()?.map((each_item) => (
                                         <div key={each_item.id}>
                                             <div className="row gy-3 mb-4">
                                                 <div className="col-lg-5">

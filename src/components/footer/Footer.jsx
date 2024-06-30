@@ -53,7 +53,7 @@ const Footer = () => {
           <p className="mt-3">
             beautybykiara
 
-            22633197430
+            {/* 22633197430 */}
           </p>
         </div>
      

@@ -23,7 +23,7 @@ const Navbar = () => {
       <div className="wrapper">
       
        <div style={{display: "flex", alignItems: "center", gap: "30px"}}>
-          <div style={{fontSize: "30px"}} className="hamburgermenubar"><i class="fa-solid fa-bars" onClick={()=> setShownav(true)}></i></div>
+          <div style={{fontSize: "30px"}} className="hamburgermenubar"><i style={{cursor: "pointer"}} class="fa-solid fa-bars" onClick={()=> setShownav(true)}></i></div>
         <div className="">
             <Link to="/"className="" style={{textDecoration: "none"}}>
               <Logo />
@@ -31,7 +31,7 @@ const Navbar = () => {
           </div>
           <div className={shownav ? "links-container-show" : "links-container"} onClick={()=> setShownav(false)}>
             <div className={shownav ? "links-wrapper-show" : "links-wrapper"} onClick={(e)=>e.stopPropagation()}>
-            <div style={{fontSize: "30px"}} className="cancelmenubar"><i class="fa-solid fa-xmark" onClick={()=> setShownav(false)}></i></div>
+            <div style={{fontSize: "30px"}} className="cancelmenubar"><i style={{cursor: "pointer"}} class="fa-solid fa-xmark" onClick={()=> setShownav(false)}></i></div>
               <div>
                 <Link to="/" style={{fontWeight: "bold"}}>Home</Link>
               </div>
@@ -48,19 +48,19 @@ const Navbar = () => {
                 <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
               </div>
               <div>
-                <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
+                <Link style={{fontWeight: "bold"}}>Tracking</Link>
               </div>
-              <div>
+              {/* <div>
                 <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
-              </div>
+              </div> */}
               {/* <a href="#">Tracking</a> */}
 
               <div className="navbar-social-icons-wrapper">
-                <a style={{color: "white"}} href="">
+                <a style={{color: "white"}} href="https://www.instagram.com/beauty_bykiaraa/" target="_blank" >
                   <i class="fa-brands fa-instagram"></i>
                 </a>
 
-                <a style={{color: "white"}} href="">
+                <a style={{color: "white"}} href="https://www.tiktok.com/@beauty_bykiara" target="_blank" >
                   <i class="fa-brands fa-x-twitter"></i>
                 </a>
               </div>

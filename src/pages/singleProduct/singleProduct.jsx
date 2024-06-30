@@ -1,296 +1,449 @@
 
+import productStore from "../../components/products/products.json";
+import { useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
+import PageNotFound from "../pageNotFound/PageNotFound";
+import "./singleProduct.css";
+import { CartContext } from "../cart/CartContext";
 
-import productStore from "../../components/products/products.json"
-import { useParams } from "react-router-dom"
-import { useState, useEffect } from "react"
-import Navbar from "../../components/navbar/Navbar"
-import Footer from "../../components/footer/Footer"
-import PageNotFound from "../pageNotFound/PageNotFound"
-const singleProduct = () => {
-  let { product_id } = useParams()
-  product_id = Number(product_id)
+const SingleProduct = () => {
+  const { cartProducts, addToCart } = useContext(CartContext);
+  let { product_id } = useParams();
+  product_id = Number(product_id);
 
   const [product, setProduct] = useState({
+    id: "",
     img: "",
     name: "",
     description: "",
     price: 0,
     pageNotFound: false
-  })
+  });
 
+  const [lengthState, setLengthState] = useState({
+    length: null,
+    lengthPicked: ""
+  });
 
-  useEffect(()=>{
+  useEffect(() => {
     const feedback = productStore.find(item => item.id === product_id);
 
-    if(feedback){
-      // product exists
-      setProduct((prevState) => ({
-        ...prevState,
+    if (feedback) {
+      const lengthsOfHair = [
+        `12", 12", 12"`,
+        `14", 14", 14"`,
+        `16", 16", 16"`,
+        `18", 18", 18"`,
+        `20", 20", 20"`,
+        `22", 22", 22"`,
+        `24", 24", 24"`,
+        `26", 26", 26"`,
+        `28", 28", 28"`,
+      ];
+
+      setProduct({
+        id: feedback.id,
         img: feedback.img,
         name: feedback.name,
         description: feedback.description,
-        price: feedback.price
-      }))
-    }else{
-      // product does not exist, show "error 404 page"
+        price: feedback.price,
+      });
+
+      // Check if product is already in cart
+      const cartItem = cartProducts.products.find(item => item.id === product_id);
+      if (cartItem && cartItem.lengthPicked) {
+        setLengthState({
+          length: lengthsOfHair,
+          lengthPicked: cartItem.lengthPicked
+        });
+      } else {
+        setLengthState({
+          length: lengthsOfHair,
+          lengthPicked: lengthsOfHair[0]
+        });
+      }
+    } else {
       setProduct((prevState) => ({
         ...prevState,
         pageNotFound: true
-      }))
+      }));
     }
-    console.log(product)
+  }, [product_id, cartProducts.products]);
 
-  }, [])
-    return <div>
-      {product.pageNotFound ? <PageNotFound /> : <div>
+  const handleAddToCart = () => {
+    addToCart(product, lengthState.lengthPicked);
+  };
+
+  const cartItems = JSON.parse(localStorage.getItem("cart_items")) || [];
+  const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
+  const inCart = cartItems.some(item => item.id === product.id);
+
+  return (
+    <div>
+      {product.pageNotFound ? (
+        <PageNotFound />
+      ) : (
+        <div>
           <Navbar />
-          <div class="bg-primary" style={{marginTop: "var(--marginAboveTop)"}}>
-        <div class="container py-4">
-          {/* <!-- Breadcrumb --> */}
-          <nav class="d-flex">
-            <h6 class="mb-0">
-              <a href="" class="text-white-50">Home</a>
-              <span class="text-white-50 mx-2"> | </span>
-              <a href="" class="text-white-50">Products</a>
-              <span class="text-white-50 mx-2"> | </span>
-              <a href="" class="text-white"><u>Product</u></a>
-            </h6>
-          </nav>
-          {/* <!-- Breadcrumb --> */}
-        </div>
-      </div>
-          <section class="py-5">
-      <div class="container">
-        <div class="row gx-5">
-          <aside class="col-lg-6">
-            <div class="rounded-4 mb-3 d-flex justify-content-center">
-
-                <img style={{maxWidth: "100%", maxHeight: "100vh", margin: "auto"}} class="rounded-4 fit" src={product.img} />
-
-            </div>
-            {/* <!-- thumbs-wrap.// --> */}
-            {/* <!-- gallery-wrap .end// --> */}
-          </aside>
-          <main class="col-lg-6 ">
-            <div class="ps-lg-3">
-              <h4 class="title text-dark">{product.name}</h4>
-              <div class="d-flex flex-row my-3">
-                <div class="text-warning mb-1 me-2">
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                </div>
-                <span class="text-success ms-2 ml-3">In stock</span>
+          <section className="py-5" style={{ backgroundColor: "var(--bodyColor)", marginTop: "var(--marginAboveTop)" }}>
+            {cartProducts.productAddedToCartAnimation && (
+              <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "1" }}>
+                {cartProducts.addToCartAnimationMessage}
               </div>
-
-              <div class="mb-3">
-                <span class="h5">${product.price}</span>
-                <span class="text-muted">/per item</span>
-              </div>
-
-              <p>{product.description}</p>
-
-              <div class="row">
-                {/* put the lengths of hair here */}
-
-
-
-
-              </div>
-
-              <hr />
-
-              <div class="row mb-4">
-                <div class="col-md-4 col-6">
-                  <label class="mb-2">Size</label>
-                  <select class="form-select border border-secondary" style={{height: "35px"}}>
-                    <option>Small</option>
-                    <option>Medium</option>
-                    <option>Large</option>
-                  </select>
-                </div>
-                {/* <!-- col.// --> */}
-                <div class="col-md-4 col-6 mb-3">
-                  <label class="mb-2 d-block">Quantity</label>
-                  <div class="input-group mb-3" style={{width: "170px"}}>
-                    <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <input type="text" class="form-control text-center border border-secondary" placeholder="14" aria-label="Example text with button addon" aria-describedby="button-addon1" />
-                    <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon2" data-mdb-ripple-color="dark">
-                      <i class="fas fa-plus"></i>
+            )}
+            <div className="container">
+              <div className="row gx-5">
+                <aside className="col-lg-6">
+                  <div className="rounded-4 mb-3 d-flex justify-content-center">
+                    <img style={{ maxWidth: "100%", maxHeight: "100vh", margin: "auto" }} className="rounded-4 fit" src={product.img} alt={product.name} />
+                  </div>
+                </aside>
+                <main className="col-lg-6">
+                  <div className="ps-lg-3">
+                    <h4 className="title" style={{ fontSize: "30px", color: "black" }}>{product.name}</h4>
+                    <div className="d-flex flex-row my-3">
+                      <div className="text-warning mb-1 me-2">
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                      </div>
+                      <span className="text-success ms-2 ml-3">In stock</span>
+                    </div>
+                    <div className="mb-3">
+                      <span className="h5">${product.price}</span>
+                      <span className="text-muted">/per item</span>
+                    </div>
+                    <p>{product.description}</p>
+                    <div className="text-muted">LENGTH {lengthState.lengthPicked}</div>
+                    <div className="row mt-2">
+                      <div className="lengths-container">
+                        {lengthState.length?.map((length, index) => (
+                          <div key={index}>
+                            <button
+                              className="length-button"
+                              style={lengthState.lengthPicked === length ? { backgroundColor: "black", color: "white" } : null}
+                              onClick={() => {
+                                setLengthState(prevState => ({ ...prevState, lengthPicked: length }));
+                                addToCart(product, length); // Update cart with new length
+                              }}
+                            >
+                              {length}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <hr />
+                    <button
+                      className="btn btn-block"
+                      style={inCart || isRecentlyAdded ? { backgroundColor: "black", color: "white" } : { border: "1px solid black", color: "black" }}
+                      onClick={handleAddToCart}
+                    >
+                      {inCart || isRecentlyAdded ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
                     </button>
                   </div>
-                </div>
+                </main>
               </div>
-              <btn class="btn btn-block" style={{backgroundColor: "black", color: "white", height: "50px", display: "flex", justifyContent: "center", alignItems: "center", gap: "10px"}}> Add to cart 
-              <i className="fas fa-shopping-cart m-1 me-md-2"></i>
-              </btn>
-              {/* <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a> */}
             </div>
-          </main>
+          </section>
+          <Footer />
         </div>
-      </div>
-    </section>
-    {/* <!-- content --> */}
-
-    <section class="bg-light border-top py-4">
-      <div class="container">
-        <div class="row gx-4">
-          <div class="col-lg-8 mb-4">
-            <div class="border rounded-2 px-3 py-2 bg-white">
-              {/* <!-- Pills navs --> */}
-              <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-                <li class="nav-item d-flex" role="presentation">
-                  <a class="nav-link d-flex align-items-center justify-content-center w-100 active" id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1" role="tab" aria-controls="ex1-pills-1" aria-selected="true">Specification</a>
-                </li>
-                <li class="nav-item d-flex" role="presentation">
-                  <a class="nav-link d-flex align-items-center justify-content-center w-100" id="ex1-tab-2" data-mdb-toggle="pill" href="#ex1-pills-2" role="tab" aria-controls="ex1-pills-2" aria-selected="false">Warranty info</a>
-                </li>
-                <li class="nav-item d-flex" role="presentation">
-                  <a class="nav-link d-flex align-items-center justify-content-center w-100" id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab" aria-controls="ex1-pills-3" aria-selected="false">Shipping info</a>
-                </li>
-                <li class="nav-item d-flex" role="presentation">
-                  <a class="nav-link d-flex align-items-center justify-content-center w-100" id="ex1-tab-4" data-mdb-toggle="pill" href="#ex1-pills-4" role="tab" aria-controls="ex1-pills-4" aria-selected="false">Seller profile</a>
-                </li>
-              </ul>
-              {/* <!-- Pills navs --> */}
-
-              {/* <!-- Pills content --> */}
-              <div class="tab-content" id="ex1-content">
-                <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel" aria-labelledby="ex1-tab-1">
-                  <p>
-                    With supporting text below as a natural lead-in to additional content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur.
-                  </p>
-                  <div class="row mb-2">
-                    <div class="col-12 col-md-6">
-                      <ul class="list-unstyled mb-0">
-                        <li><i class="fas fa-check text-success me-2"></i>Some great feature name here</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Lorem ipsum dolor sit amet, consectetur</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Duis aute irure dolor in reprehenderit</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Optical heart sensor</li>
-                      </ul>
-                    </div>
-                    <div class="col-12 col-md-6 mb-0">
-                      <ul class="list-unstyled">
-                        <li><i class="fas fa-check text-success me-2"></i>Easy fast and ver good</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Some great feature name here</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Modern style and design</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <table class="table border mt-3 mb-2">
-                    <tr>
-                      <th class="py-2">Display:</th>
-                      <td class="py-2">13.3-inch LED-backlit display with IPS</td>
-                    </tr>
-                    <tr>
-                      <th class="py-2">Processor capacity:</th>
-                      <td class="py-2">2.3GHz dual-core Intel Core i5</td>
-                    </tr>
-                    <tr>
-                      <th class="py-2">Camera quality:</th>
-                      <td class="py-2">720p FaceTime HD camera</td>
-                    </tr>
-                    <tr>
-                      <th class="py-2">Memory</th>
-                      <td class="py-2">8 GB RAM or 16 GB RAM</td>
-                    </tr>
-                    <tr>
-                      <th class="py-2">Graphics</th>
-                      <td class="py-2">Intel Iris Plus Graphics 640</td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="tab-pane fade mb-2" id="ex1-pills-2" role="tabpanel" aria-labelledby="ex1-tab-2">
-                  Tab content or sample information now <br />
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                  officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                  nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                </div>
-                <div class="tab-pane fade mb-2" id="ex1-pills-3" role="tabpanel" aria-labelledby="ex1-tab-3">
-                  Another tab content or sample information now <br />
-                  Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
-                </div>
-                <div class="tab-pane fade mb-2" id="ex1-pills-4" role="tabpanel" aria-labelledby="ex1-tab-4">
-                  Some other tab content or sample information now <br />
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                  officia deserunt mollit anim id est laborum.
-                </div>
-              </div>
-              {/* <!-- Pills content --> */}
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="px-0 border rounded-2 shadow-0">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Similar items</h5>
-                  <div class="d-flex mb-3">
-                    <a href="#" class="me-3">
-                      <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/8.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
-                    </a>
-                    <div class="info">
-                      <a href="#" class="nav-link mb-1">
-                        Rucksack Backpack Large <br />
-                        Line Mounts
-                      </a>
-                      <strong class="text-dark"> $38.90</strong>
-                    </div>
-                  </div>
-
-                  <div class="d-flex mb-3">
-                    <a href="#" class="me-3">
-                      <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/9.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
-                    </a>
-                    <div class="info">
-                      <a href="#" class="nav-link mb-1">
-                        Summer New Men's Denim <br />
-                        Jeans Shorts
-                      </a>
-                      <strong class="text-dark"> $29.50</strong>
-                    </div>
-                  </div>
-
-                  <div class="d-flex mb-3">
-                    <a href="#" class="me-3">
-                      <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/10.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
-                    </a>
-                    <div class="info">
-                      <a href="#" class="nav-link mb-1"> T-shirts with multiple colors, for men and lady </a>
-                      <strong class="text-dark"> $120.00</strong>
-                    </div>
-                  </div>
-
-                  <div class="d-flex">
-                    <a href="#" class="me-3">
-                      <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/11.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
-                    </a>
-                    <div class="info">
-                      <a href="#" class="nav-link mb-1"> Blazer Suit Dress Jacket for Men, Blue color </a>
-                      <strong class="text-dark"> $339.90</strong>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <Footer />
+      )}
     </div>
-}
+  );
+};
+
+export default SingleProduct;
 
 
-    </div>
-}
-export default singleProduct
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import productStore from "../../components/products/products.json"
+// import { useParams } from "react-router-dom"
+// import { useState, useEffect } from "react"
+// import Navbar from "../../components/navbar/Navbar"
+// import Footer from "../../components/footer/Footer"
+// import PageNotFound from "../pageNotFound/PageNotFound"
+// import "./singleProduct.css"
+// import { Link } from "react-router-dom"
+// import { CartContext } from "../cart/CartContext"
+// import { useContext } from "react"
+// const singleProduct = () => {
+//   const { cartProducts, addToCart} = useContext(CartContext);
+//   let { product_id } = useParams()
+//   product_id = Number(product_id)
+
+//   const [product, setProduct] = useState({
+//     img: "",
+//     name: "",
+//     description: "",
+//     price: 0,
+//     pageNotFound: false,
+//     productLengths: []
+//   })
+//   const productLengths = [
+//     `12", 12", 12"`, `14", 14", 14"`, `16", 16", 16"`, `18", 18", 18"`, `20", 20", 20"`,
+//     `22", 22", 22"`, `24", 24", 24"`, `26", 26", 26"`, `28", 28", 28"`
+//   ]
+//   const [lengthState, setLengthState] = useState({
+//     length: null
+//   })
+
+//   const handleAddToCart = (product) => {
+//     addToCart(product);
+//   };
+
+
+//   useEffect(()=>{
+//     const feedback = productStore.find(item => item.id === product_id);
+
+//     if(feedback){
+//       // product exists
+//       setProduct((prevState) => ({
+//         ...prevState,
+//         img: feedback.img,
+//         name: feedback.name,
+//         description: feedback.description,
+//         price: feedback.price,
+//         productLengths: productLengths
+//       }))
+//       setLengthState((prevState) => ({
+//         ...prevState,
+//         length: productLengths[0]
+//       }))
+//     }else{
+//       // product does not exist, show "error 404 page"
+//       setProduct((prevState) => ({
+//         ...prevState,
+//         pageNotFound: true
+//       }))
+//     }
+//     console.log(product)
+//     console.log(cartItems)
+
+//   }, [])
+//   const cartItems = JSON.parse(localStorage.getItem("cart_items")) || [];
+//   const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
+//   const inCart = cartItems.some(item => item.id === product.id);
+//     return <div>
+//       {product.pageNotFound ? <PageNotFound /> : <div>
+//           <Navbar />
+//           <section class="py-5" style={{backgroundColor: "var(--bodyColor)", marginTop: "var(--marginAboveTop)"}}>
+//         {cartProducts.productAddedToCartAnimation ? 
+//           <div style={{width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "1"}}>{cartProducts.addToCartAnimationMessage}</div>
+//           : null}
+//       <div class="container">
+//         <div class="row gx-5">
+//           <aside class="col-lg-6">
+//             <div class="rounded-4 mb-3 d-flex justify-content-center">
+
+//                 <img style={{maxWidth: "100%", maxHeight: "100vh", margin: "auto"}} class="rounded-4 fit" src={product.img} />
+
+//             </div>
+//             {/* <!-- thumbs-wrap.// --> */}
+//             {/* <!-- gallery-wrap .end// --> */}
+//           </aside>
+//           <main class="col-lg-6 ">
+//             <div class="ps-lg-3">
+//               <h4 class="title" style={{fontSize: "30px",color: "black"}}>{product.name}</h4>
+//               <div class="d-flex flex-row my-3">
+//                 <div class="text-warning mb-1 me-2">
+//                   <i class="fa fa-star"></i>
+//                   <i class="fa fa-star"></i>
+//                   <i class="fa fa-star"></i>
+//                   <i class="fa fa-star"></i>
+//                   <i class="fa fa-star"></i>
+//                 </div>
+//                 <span class="text-success ms-2 ml-3">In stock</span>
+//               </div>
+
+//               <div class="mb-3">
+//                 <span class="h5">${product.price}</span>
+//                 <span class="text-muted">/per item</span>
+//               </div>
+
+//               <p>{product.description}</p>
+
+//                 <div className="text-muted">LENGTH {lengthState.length}</div>
+//               <div class="ro mt-2">
+//                 {/* put the lengths of hair here */}
+//                 <div className="lengths-container">
+//                   {product.productLengths?.map((length) => {
+//                     return<div>
+//                         <button className="length-button" style={lengthState.length === length ? {backgroundColor: "black", color: "white"} : null}  onClick={()=> setLengthState({length: length})}>
+//                         {length}
+//                         </button>
+//                       </div>
+//                   })}
+//                 </div>
+
+
+
+
+//               </div>
+
+//               <hr />
+
+//               <button className="btn btn-block"
+//                       style={inCart || isRecentlyAdded ? { backgroundColor: "black", color: "white" } : { border: "1px solid black", color: "black" }}
+//                       onClick={() => handleAddToCart(product)}
+//               >
+//                 {inCart ? "Added to cart" : isRecentlyAdded ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
+//               </button>
+             
+//               {/* <btn class="btn btn-block" style={{backgroundColor: "black", color: "white", height: "50px", display: "flex", justifyContent: "center", alignItems: "center", gap: "10px"}}> Add to cart 
+//               <i className="fas fa-shopping-cart m-1 me-md-2"></i>
+//               </btn> */}
+//               {/* <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a> */}
+//             </div>
+//           </main>
+//         </div>
+//       </div>
+//     </section>
+//     {/* <!-- content --> */}
+
+//     <section class="border-top py-4" style={{backgroundColor: "var(--bodyColor)"}}>
+//       <div class="container">
+//         <div class="row gx-3 contain">
+//           <div class="col-lg-12 mb-4">
+//             <div class="border rounded-2 px-3 py-2 bg-white p-4" style={{color: "black"}}>
+//               <p>FREQUENTLY ASKED QUESTIONS</p>
+//               <h1>FAQ</h1>
+//               <p>
+//                 <b><i class="fa-solid fa-truck-fast mr-2"></i>Shipping & processing information</b>
+//               </p>
+//               <div className="text-muted">
+//                 <p>It takes us an average of 2-3 working days to process orders allow a few more for custom orders.</p>
+//                 <p>Please allow another 1-2 working days for shipping on all orders within the uk.</p>
+//                 <p>Shipping times varies from 3-5 working days for international orders.</p>
+//               </div>
+//               <p>
+//                 <b>Returns, cancellations and refunds</b>
+//               </p>
+//               <div className="text-muted">
+//                 <p>Due to the nature of our products we do not offer casual refunds though you would be entitled to a refund/return in cases where you receive the wrong item or a defective product etc </p>
+//                 <p>You can cancel your order if you change your mind without any reasons necessary until it starts getting processed (on hold) this is usually under 24 hours.</p>
+//                 <Link to="/policies/refund-policy">View our full refund policy</Link>
+//               </div>
+//             </div>
+//           </div>
+//           {/* <div class="col-lg-4">
+//             <div class="px-0 border rounded-2 shadow-0">
+//               <div class="card">
+//                 <div class="card-body">
+//                   <h5 class="card-title">Similar items</h5>
+//                   <div class="d-flex mb-3">
+//                     <a href="#" class="me-3">
+//                       <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/8.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
+//                     </a>
+//                     <div class="info">
+//                       <a href="#" class="nav-link mb-1">
+//                         Rucksack Backpack Large <br />
+//                         Line Mounts
+//                       </a>
+//                       <strong class="text-dark"> $38.90</strong>
+//                     </div>
+//                   </div>
+
+//                   <div class="d-flex mb-3">
+//                     <a href="#" class="me-3">
+//                       <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/9.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
+//                     </a>
+//                     <div class="info">
+//                       <a href="#" class="nav-link mb-1">
+//                         Summer New Men's Denim <br />
+//                         Jeans Shorts
+//                       </a>
+//                       <strong class="text-dark"> $29.50</strong>
+//                     </div>
+//                   </div>
+
+//                   <div class="d-flex mb-3">
+//                     <a href="#" class="me-3">
+//                       <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/10.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
+//                     </a>
+//                     <div class="info">
+//                       <a href="#" class="nav-link mb-1"> T-shirts with multiple colors, for men and lady </a>
+//                       <strong class="text-dark"> $120.00</strong>
+//                     </div>
+//                   </div>
+
+//                   <div class="d-flex">
+//                     <a href="#" class="me-3">
+//                       <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/11.webp" style={{minWidth: "96px", height: "96px"}} class="img-md img-thumbnail" />
+//                     </a>
+//                     <div class="info">
+//                       <a href="#" class="nav-link mb-1"> Blazer Suit Dress Jacket for Men, Blue color </a>
+//                       <strong class="text-dark"> $339.90</strong>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div> */}
+//         </div>
+//       </div>
+//     </section>
+//     <Footer />
+//     </div>
+// }
+
+
+//     </div>
+// }
+// export default singleProduct
