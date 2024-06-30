@@ -1,3 +1,4 @@
+// SingleProduct.js
 
 import productStore from "../../components/products/products.json";
 import { useParams } from "react-router-dom";
@@ -9,7 +10,7 @@ import "./singleProduct.css";
 import { CartContext } from "../cart/CartContext";
 
 const SingleProduct = () => {
-  const { cartProducts, addToCart } = useContext(CartContext);
+  const { cartProducts, addToCart, updateCartItemLength } = useContext(CartContext);
   let { product_id } = useParams();
   product_id = Number(product_id);
 
@@ -76,6 +77,11 @@ const SingleProduct = () => {
     addToCart(product, lengthState.lengthPicked);
   };
 
+  const handleLengthChange = (length) => {
+    setLengthState(prevState => ({ ...prevState, lengthPicked: length }));
+    updateCartItemLength(product.id, length); // Update length in cart
+  };
+
   const cartItems = JSON.parse(localStorage.getItem("cart_items")) || [];
   const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
   const inCart = cartItems.some(item => item.id === product.id);
@@ -90,7 +96,12 @@ const SingleProduct = () => {
           <section className="py-5" style={{ backgroundColor: "var(--bodyColor)", marginTop: "var(--marginAboveTop)" }}>
             {cartProducts.productAddedToCartAnimation && (
               <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "1" }}>
-                {cartProducts.addToCartAnimationMessage}
+                {cartProducts.addToCartAnimationMessage} 
+              </div>
+            )}
+            {cartProducts.lengthUpdateMessage && (
+              <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "1" }}>
+                {cartProducts.lengthUpdateMessage}
               </div>
             )}
             <div className="container">
@@ -126,10 +137,7 @@ const SingleProduct = () => {
                             <button
                               className="length-button"
                               style={lengthState.lengthPicked === length ? { backgroundColor: "black", color: "white" } : null}
-                              onClick={() => {
-                                setLengthState(prevState => ({ ...prevState, lengthPicked: length }));
-                                addToCart(product, length); // Update cart with new length
-                              }}
+                              onClick={() => handleLengthChange(length)}
                             >
                               {length}
                             </button>
@@ -158,6 +166,7 @@ const SingleProduct = () => {
 };
 
 export default SingleProduct;
+
 
 
 

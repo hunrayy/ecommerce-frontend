@@ -1,5 +1,3 @@
-// CartContext.js
-
 import React, { createContext, useState, useEffect } from 'react';
 
 export const CartContext = createContext();
@@ -10,75 +8,113 @@ const CartProvider = ({ children }) => {
     recentlyAddedProducts: [],
     productAddedToCartAnimation: false,
     addToCartAnimationMessage: '',
-    totalPrice: "0.00"
+    totalPrice: "0.00",  // Initialize as a string
+    lengthUpdateMessage: ""
   });
 
   useEffect(() => {
+    // Update the total price whenever the cart products change
     const totalPrice = calculateTotalPrice(cartProducts.products);
-    setCartProducts(prev => ({
+    setCartProducts((prev) => ({
       ...prev,
       totalPrice
     }));
   }, [cartProducts.products]);
 
-  const addToCart = (product, lengthPicked) => {
-    let getItems = JSON.parse(localStorage.getItem('cart_items')) || [];
-    const productIndex = getItems.findIndex(item => item.id === product.id);
+    const addToCart = (product, lengthPicked) => {
+        let getItems = JSON.parse(localStorage.getItem('cart_items')) || [];
+        const productExists = getItems.some(item => item.id === product.id);
 
-    if (productIndex !== -1) {
-      // Update lengthPicked of existing product
-      getItems[productIndex].lengthPicked = lengthPicked;
+        if (productExists) {
+            getItems = getItems.filter(item => item.id !== product.id);
+            setCartProducts((prevState) => ({
+                ...prevState,
+                recentlyAddedProducts: prevState.recentlyAddedProducts.filter(id => id !== product.id),
+                productAddedToCartAnimation: true,
+                addToCartAnimationMessage: "Product successfully removed"
+            }));
+        } else {
+            getItems.push({
+                ...product,
+                lengthPicked: lengthPicked
+            });
+            setCartProducts((prevState) => ({
+                ...prevState,
+                recentlyAddedProducts: [product.id, ...prevState.recentlyAddedProducts],
+                productAddedToCartAnimation: true,
+                addToCartAnimationMessage: <span>Product added successfully <i className="fa-sharp fa-solid fa-circle-check px-2"></i></span>
+            }));
+        }
 
-      setCartProducts(prevState => ({
-        ...prevState,
-        recentlyAddedProducts: [],
-        productAddedToCartAnimation: true,
-        addToCartAnimationMessage: "Length of product updated in cart"
-      }));
-    } else {
-      // Add new product to cart
-      product.lengthPicked = lengthPicked;
-      getItems.push(product);
+        setTimeout(() => {
+        setCartProducts((prevState) => ({
+            ...prevState,
+            productAddedToCartAnimation: false,
+        }));
+        }, 3000);
 
-      setCartProducts(prevState => ({
-        ...prevState,
-        recentlyAddedProducts: [product.id, ...prevState.recentlyAddedProducts],
-        productAddedToCartAnimation: true,
-        addToCartAnimationMessage: "Product added successfully"
-      }));
-    }
-
-    localStorage.setItem('cart_items', JSON.stringify(getItems));
-    setCartProducts(prev => ({
-      ...prev,
-      products: getItems,
-      totalPrice: calculateTotalPrice(getItems)
-    }));
-
-    setTimeout(() => {
-      setCartProducts(prevState => ({
-        ...prevState,
-        productAddedToCartAnimation: false,
-      }));
-    }, 3000);
-  };
-
-    const calculateTotalLength = (products) => {
-    return cartProducts.products.length || 0;
-};
+        localStorage.setItem('cart_items', JSON.stringify(getItems));
+        setCartProducts((prev) => ({
+        ...prev,
+        products: getItems,
+        totalPrice: calculateTotalPrice(getItems) // Update totalPrice here
+        }));
+    };
+    const updateCartItemLength = (productId, newLength) => {
+        // Retrieve cart items from local storage
+        const storedItems = JSON.parse(localStorage.getItem("cart_items")) || [];
+        
+        // Find the item in local storage
+        const storedItem = storedItems.find(item => item.id === productId);
+      
+        if (!storedItem) {
+          // If item doesn't exist in local storage, do nothing
+          return;
+        }
+      
+        // Update length in stored item
+        storedItem.lengthPicked = newLength;
+      
+        // Update products state with updated items
+        const updatedItems = cartProducts.products.map((item) =>
+          item.id === productId ? { ...item, lengthPicked: newLength } : item
+        );
+      
+        setCartProducts((prevProducts) => ({
+          ...prevProducts,
+          products: updatedItems,
+          lengthUpdateMessage: "Length of product updated in cart", // Notification message
+        }));
+      
+        // Clear notification message after 3 seconds
+        setTimeout(() => {
+          setCartProducts((prevProducts) => ({
+            ...prevProducts,
+            lengthUpdateMessage: "",
+          }));
+        }, 3000);
+      
+        // Save updated items to local storage
+        localStorage.setItem("cart_items", JSON.stringify(updatedItems));
+      };
+      
 
   const calculateTotalPrice = (products) => {
     return products.reduce((acc, item) => acc + parseFloat(item.price), 0).toFixed(2);
   };
+    const calculateTotalLength = (products) => {
+    return cartProducts.products.length || 0;
+};
 
   return (
-    <CartContext.Provider value={{ cartProducts, addToCart, calculateTotalLength, calculateTotalPrice }}>
+    <CartContext.Provider value={{ cartProducts, addToCart, calculateTotalPrice, calculateTotalLength, updateCartItemLength }}>
       {children}
     </CartContext.Provider>
   );
 };
 
 export default CartProvider;
+
 
 
 
