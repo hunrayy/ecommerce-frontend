@@ -24,6 +24,9 @@
     position: absolute;
     left: -900px;
 }
+.hamburgermenubar, .cancelmenubar{
+    color: rgba(255, 255, 255, 0.466);
+}
 .links-container-show{
     position: absolute;
     top: 0;
@@ -75,9 +78,3 @@
 
 }
 
-@media (max-width: 768px) {
-    .hamburgermenubar{
-        display: block;
-    }
-
-}

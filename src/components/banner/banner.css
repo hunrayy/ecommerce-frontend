@@ -1,3 +1,31 @@
 .banner-component-container{
     margin-top: var(--marginAboveTop);
 }
+
+.first-banner-container{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding: 70px; */
+    /* color: rgba(255, 216, 255, 0.712);
+    color: rgba(255, 255, 255, 0.678); */
+}
+
+
+
+
+
+
+
+@media (max-width: 767px) {
+    .first-banner-container{
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 10px;
+        padding: 50px 20px;
+    }
+}
