@@ -48,12 +48,28 @@ const Banner = () => {
               </Carousel>
             </main>
             <aside className="col-lg-3">
-                    <div className="card-banner h-100 rounded-5" style={{borderRadius: "10px", backgroundColor: "#f87217"}}>
-                        <div className="card-body text-center pb-5">
-                            <h5 className="pt-5 text-white">Amazing Gifts</h5>
-                            <p className="text-white">No matter how far along you are in your sophistication</p>
-                            <a href="#" className="btn btn-outline-light"> View more </a>
-                        </div>
+                    <div className="card-banner h-100 rounded-5 aside-banner-container" style={{borderRadius: "10px", color: "black"}}>
+                      <div className='aside-banner-item'>
+                        <i class="fa-sharp fa-solid fa-earth-americas" style={{fontSize: "100px"}}></i>
+                        <p className='mt-3' style={{fontWeight: "bold"}}>World Wide Shipping</p>
+                        <p className="">
+                          Distance should never be a barrier between you & our luxurious hair hence why offer affordable worldwide shipping!
+                        </p>
+                      </div>
+                      <div className='aside-banner-item'>
+                        <i class="fa-sharp fa-solid fa-truck" style={{fontSize: "100px"}}></i>
+                        <p className='mt-3' style={{fontWeight: "bold"}}>Fast and reliable shipping</p>
+                        <p className="">
+                        Express & reliable shipping services. FEDEX is our primary courier
+                        </p>
+                      </div>
+                      <div className='aside-banner-item'>
+                      <i class="fa-sharp fa-solid fa-headset" style={{fontSize: "100px"}}></i>
+                      <p className='mt-3' style={{fontWeight: "bold"}}>24/7 Customer Support</p>
+                      <p className="">
+                        Our dedicated team is available around the clock to assist you with any queries or concerns you may have. Your satisfaction is our priority!
+                      </p>
+                    </div>
                     </div>
             </aside>
           </div>

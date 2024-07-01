@@ -7,14 +7,56 @@
     color: white;
     border-radius: 10px;
     height: 350px;
+}
+.aside-banner-container {
     display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    text-align: center;
+  }
+  
+  .aside-banner-item {
+    flex: 0 0 auto;
+    width: 100%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* padding: 70px; */
-    /* color: rgba(255, 216, 255, 0.712);
-    color: rgba(255, 255, 255, 0.678); */
-}
+    padding: 20px;
+    box-sizing: border-box;
+  }
 
+  
+/* Custom scrollbar styles */
+.aside-banner-container::-webkit-scrollbar {
+    height: 10px;
+  }
+  
+  .aside-banner-container::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scroll thumb */
+    border-radius: 10px;
+  }
+  
+  .aside-banner-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scroll thumb on hover */
+  }
+  
+  .aside-banner-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the scroll track */
+    border-radius: 10px;
+  }
+  
+  /* For Firefox */
+  .aside-banner-container {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+  }
+  
+  .aside-banner-container:hover {
+    scrollbar-color: #555 #f1f1f1;
+  }
 
 
 
@@ -25,7 +67,8 @@
     .first-banner-container{
         display: flex;
         flex-direction: column-reverse;
-        gap: 10px;
-        padding: 50px 20px;
+        /* gap: 10px; */
+        justify-content: center;
+        padding: 50px 0px;
     }
 }
