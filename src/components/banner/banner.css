@@ -29,33 +29,23 @@
   }
 
   
-/* Custom scrollbar styles */
-.aside-banner-container::-webkit-scrollbar {
-    height: 10px;
+  .aside-banner-container::-webkit-scrollbar {
+    width: 0px;
+    height: 7px;
+  }
+  
+  .aside-banner-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
   }
   
   .aside-banner-container::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the scroll thumb */
+    background: #888;
     border-radius: 10px;
   }
   
   .aside-banner-container::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Color of the scroll thumb on hover */
-  }
-  
-  .aside-banner-container::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Color of the scroll track */
-    border-radius: 10px;
-  }
-  
-  /* For Firefox */
-  .aside-banner-container {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
-  }
-  
-  .aside-banner-container:hover {
-    scrollbar-color: #555 #f1f1f1;
+    background: #555;
   }
 
 
@@ -68,7 +58,8 @@
         display: flex;
         flex-direction: column-reverse;
         /* gap: 10px; */
-        justify-content: center;
-        padding: 50px 0px;
+        /* justify-content: center; */
+        /* padding: 50px 0px; */
+        
     }
 }

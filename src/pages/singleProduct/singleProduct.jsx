@@ -95,12 +95,12 @@ const SingleProduct = () => {
           <Navbar />
           <section className="py-5" style={{ backgroundColor: "var(--bodyColor)", marginTop: "var(--marginAboveTop)" }}>
             {cartProducts.productAddedToCartAnimation && (
-              <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "1" }}>
+              <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "2" }}>
                 {cartProducts.addToCartAnimationMessage} 
               </div>
             )}
             {cartProducts.lengthUpdateMessage && (
-              <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "1" }}>
+              <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "2" }}>
                 {cartProducts.lengthUpdateMessage}
               </div>
             )}
@@ -131,11 +131,11 @@ const SingleProduct = () => {
                     <p>{product.description}</p>
                     <div className="text-muted">LENGTH {lengthState.lengthPicked}</div>
                     <div className="row mt-2">
-                      <div className="lengths-container">
+                      <div className="lengths-container mx-3">
                         {lengthState.length?.map((length, index) => (
                           <div key={index}>
                             <button
-                              className="length-button"
+                              className="length-button "
                               style={lengthState.lengthPicked === length ? { backgroundColor: "black", color: "white" } : null}
                               onClick={() => handleLengthChange(length)}
                             >

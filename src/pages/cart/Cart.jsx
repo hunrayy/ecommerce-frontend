@@ -139,7 +139,7 @@ const Cart = () => {
 
                                     <div className="mt-3">
                                         <div className="btn w-100 shadow-0 mb-2" style={{backgroundColor: "purple", color: "white"}}> Proced to checkout </div>
-                                        <Link to="/" className="btn btn-light w-100 border mt-2"> Back to shop </Link>
+                                        <Link to="/" className="btn btn-light w-100 border mt-2"> Back to home </Link>
                                     </div>
                                 </div>
                             </div>
