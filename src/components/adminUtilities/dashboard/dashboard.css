@@ -7,17 +7,17 @@
     background-color: purple;
     color: white;
     border-radius: 5px;
+    
 }
 
 .content-after-bread-crumb{
     padding: 20px;
     display: flex;
     gap: 50px;
-    /* justify-content: space-between; */
 }
 
 .welcome-back{
-    /* width: 400px; */
+    width: 400px;
     width: 40vw;
     height: 150px;
     padding: 20px;
@@ -31,4 +31,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 991px) {
+    .bread-crumb{
+        border-radius: 0;
+    }
+    .content-after-bread-crumb{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* background-color: red; */
+    }
+    .welcome-back{
+        width: 85vw;
+    }
 }

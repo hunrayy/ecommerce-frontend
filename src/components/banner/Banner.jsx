@@ -78,7 +78,7 @@ const Banner = () => {
                 <i class="fa-brands fa-instagram" style={{ fontSize: "100px" }}></i>
                   <p className='mt-3' style={{ fontWeight: "bold" }}>social media presence</p>
                   <p className="">
-                    Follow us instagram <a style={{color: "darkblue", textDecoration: "none"}} href="https://www.instagram.com/beauty_bykiaraa/" target="_blank" >@beauty_bykiara</a> and on tiktok <a style={{color: "darkblue", textDecoration: "none"}} href="https://www.tiktok.com/@beauty_bykiara"  target="_blank" >@beauty_bykiara</a>
+                    Follow us on instagram <a style={{color: "darkblue", textDecoration: "none"}} href="https://www.instagram.com/beauty_bykiaraa/" target="_blank" >@beauty_bykiara</a> and on tiktok <a style={{color: "darkblue", textDecoration: "none"}} href="https://www.tiktok.com/@beauty_bykiara"  target="_blank" >@beauty_bykiara</a>
                   </p>
                 </div>
                 {/* <div className="text-center mt-3">

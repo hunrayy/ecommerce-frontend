@@ -18,6 +18,10 @@
     left: 20px;
     background-color: white;
     top: 100px;
+    gap: 20px;
+}
+.admin-cancel-menubar{
+    display: none;
 }
 .admin-sidebar-icon-wrapper{
     padding: 10px;
@@ -30,19 +34,57 @@
     background-color: rgba(192, 189, 189, 0.11);
     cursor: pointer;
 }
+
 .admin-dashboard-content{
     margin-left: 280px;
-    /* margin-top: 20px; */
     padding-top: 20px;
 }
 
 
+
 @media (max-width: 991px) {
+
+    .admin-page-container{
+        height: 100%;
+        padding: 0;
+    }
+    .admin-sidebar-black{
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.671);
+        position: fixed;
+        top: 0;
+        z-index: 1;
+    }
+    
     .admin-page-sidebar-container{
        position: absolute;
        height: 100vh;
        top: 0;
-       /* left: -100px; */
        z-index: 2;
+       left: -600px;
+    }
+    .admin-cancel-menubar{
+        display: block;
+    }
+    .show{
+        position: fixed;
+        height: 100vh;
+        left: 0;
+        animation-name: show;
+        animation-duration: .5s;
+        gap: 20px;
+    }
+    @keyframes show {
+        from{
+            left: -600px;
+        }to{
+            left: 0;
+        }
+    }
+
+    .admin-dashboard-content{
+        margin-left: 0;
+        padding-top: 0;
     }
 }
