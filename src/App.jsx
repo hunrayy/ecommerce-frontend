@@ -11,6 +11,7 @@ import CartProvider from "./pages/cart/CartContext"
 import ShippingPolicy from "./pages/shippingPolicy/ShippingPolicy"
 import RefundPolicy from "./pages/refundPolicy/RefundPolicy"
 import PageNotFound from "./pages/pageNotFound/PageNotFound"
+import AdminDashboard from "./pages/adminDashboard/AdminDashboard"
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/policies/shipping-policy" element={<ShippingPolicy />} />
       <Route path="/policies/refund-policy" element={<RefundPolicy />} />
+      <Route path="/admindashboard" element={<AdminDashboard />} />
       <Route path="*" element={<PageNotFound />} />
 
     </Routes>
