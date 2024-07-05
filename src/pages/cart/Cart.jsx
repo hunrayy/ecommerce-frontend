@@ -30,6 +30,11 @@ const Cart = () => {
         window.scrollTo(0, 0);
     };
 
+    const [itemCount, setItemCount] = useState(0)
+    const increaseButton = () => {
+        setItemCount(itemCount + 1)
+    }
+
     return (
         <div className="cart-page-container">
             <Navbar />
@@ -70,15 +75,15 @@ const Cart = () => {
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-    <div className="d-flex align-items-center" style={{ gap: "10px" }}>
-        <button className="cart-increase-decrease-btn"><i className="fa-solid fa-minus"></i></button>
-        <span>3</span>
-        <button className="cart-increase-decrease-btn"><i className="fa-solid fa-plus"></i></button>
-    </div>
-    <div className="d-flex align-items-center col-lg-6">
-        <span className="h6 px-4">{each_item.price}</span>
-    </div>
-</div>
+                                                    <div className="d-flex align-items-center" style={{ gap: "10px" }}>
+                                                        <button className="cart-increase-decrease-btn" onClick={increaseButton}><i className="fa-solid fa-minus"></i></button>
+                                                        <span>{itemCount}</span>
+                                                        <button className="cart-increase-decrease-btn"><i className="fa-solid fa-plus"></i></button>
+                                                    </div>
+                                                    <div className="d-flex align-items-center col-lg-6">
+                                                        <span className="h6 px-4">{each_item.price}</span>
+                                                    </div>
+                                                </div>
 
 
                                                 <div className="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2 align-items-center">
