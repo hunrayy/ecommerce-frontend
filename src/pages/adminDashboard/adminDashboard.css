@@ -1,8 +1,5 @@
 .admin-page-container{
     margin-top: 80px;
-    background-color: #f4f5fa;
-    height: calc(100vh - 80px);
-    /* position: relative; */
     padding: 0 10px;
 }
 

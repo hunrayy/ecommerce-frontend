@@ -48,6 +48,9 @@ const Navbar = () => {
                 <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
               </div>
               <div>
+                <Link to="/policies/delivery-policy"style={{fontWeight: "bold"}}>Delivery policy</Link>
+              </div>
+              <div>
                 <Link style={{fontWeight: "bold"}}>Tracking</Link>
               </div>
               {/* <div>

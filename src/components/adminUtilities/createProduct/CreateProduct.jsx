@@ -7,6 +7,10 @@ import "./createProduct.css"
 const CreateProduct = () => {
     return <div>
         <div className="admin-createPage-container">
+        <div className="bread-crumb">
+                <div style={{fontSize: "20px", fontWeight: "semi bold"}}>Admin Dashboard </div>
+                <div>Home / create product</div>
+            </div>
         <div className="container mt-5">
             <h2>Create Product</h2>
             <form>

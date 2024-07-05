@@ -1,8 +1,21 @@
 
 import Logo from "../../Logo/Logo";
 import "./adminHeader.css";
+import { useState, useEffect } from "react";
 
 const AdminHeader = ({ shownav, setShownav }) => {
+    const [date, setDate] = useState(null)
+    const dateFunction = () => {
+        const today = new Date();
+        const dd = today.getDay()
+        const mm = today.toLocaleString('en-US', { month: 'short' });
+        const yyyy = today.getFullYear();
+        const date = mm + ' ' + dd + ' ' + yyyy;
+        return setDate(date)
+    }
+    useEffect(()=> {
+        dateFunction()
+    }, [])
     return (
         <div>
             <div className="admin-header-container">
@@ -12,8 +25,8 @@ const AdminHeader = ({ shownav, setShownav }) => {
                 </div>
                 
                 <div className="admin-logo-container">
-                    <div className="admin-icon-container d-none d-md-block" style={{ fontFamily: "Courier New, Courier, monospace" }}>
-                        Today: mar 23 <i class="fa-regular fa-calendar"></i>
+                    <div className="admin-icon-container d-none d-md-block" style={{ fontFamily: "Courier New, Courier, monospace" }}> 
+                        Today: {date} <i class="fa-regular fa-calendar"></i>
                     </div>
                     <div className="admin-icon-container">
                         <span className="d-none d-md-block">Settings</span> <i class="fa-solid fa-gear"></i>

@@ -70,21 +70,20 @@ const Cart = () => {
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-                                                    <div className="">
-                                                        <select style={{width: "100px"}} className="form-select me-4">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="">
-                                                        <span className="h6 px-3">{each_item.price}</span> <br />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+    <div className="d-flex align-items-center" style={{ gap: "10px" }}>
+        <button className="cart-increase-decrease-btn"><i className="fa-solid fa-minus"></i></button>
+        <span>3</span>
+        <button className="cart-increase-decrease-btn"><i className="fa-solid fa-plus"></i></button>
+    </div>
+    <div className="d-flex align-items-center col-lg-6">
+        <span className="h6 px-4">{each_item.price}</span>
+    </div>
+</div>
+
+
+                                                <div className="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2 align-items-center">
                                                     <div className="float-md-end">
-                                                        <a href="#!" className="btn btn-light border px-2 icon-hover-primary"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a>
+                                                        {/* <a href="#!" className="btn btn-light border px-2 icon-hover-primary"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a> */}
                                                         <a href="#" className="btn btn-light border text-danger icon-hover-danger" onClick={() => handleRemoveFromCart(each_item)}> Remove</a>
                                                     </div>
                                                 </div>
@@ -94,9 +93,9 @@ const Cart = () => {
                                 </div>
 
                                 <div className="border-top pt-4 mx-4 mb-4">
-                                    <p><i className="fas fa-truck text-muted fa-lg"></i> Free Delivery within 1-2 weeks</p>
+                                    <p><i className="fas fa-truck text-muted fa-lg"></i> Delivery charges apply based on your location</p>
                                     <p className="text-muted">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                                    Delivery charges will apply based on your location and the weight of your order. Please refer to our <Link to="/policies/delivery-policy">delivery policy</Link> for detailed information on shipping rates and estimated delivery times. We appreciate your understanding and thank you for shopping with us!
                                     </p>
                                 </div>
                             </div>

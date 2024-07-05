@@ -3,6 +3,9 @@ import "./adminDashboard.css";
 import AdminHeader from "../../components/adminUtilities/adminHeader/AdminHeader";
 import Dashboard from "../../components/adminUtilities/dashboard/Dashboard";
 import CreateProduct from "../../components/adminUtilities/createProduct/createProduct";
+import AllProducts from "../../components/adminUtilities/allProducts/AllProducts";
+import SearchComponent from "../../components/adminUtilities/searchComponent/SearchComponent";
+import AdminNotification from "../../components/adminUtilities/adminNotification/adminNotification";
 
 const AdminDashboard = () => {
     const [shownav, setShownav] = useState(false);
@@ -59,6 +62,9 @@ const AdminDashboard = () => {
                 <div className="admin-dashboard-content">
                     {pages.dashboard_page && <Dashboard />}
                     {pages.createProduct_page && <CreateProduct />}
+                    {pages.viewProducts_page && <AllProducts />}
+                    {pages.search_page && <SearchComponent />}
+                    {pages.notifications_page && <AdminNotification />}
                     {/* Add other components as needed */}
                 </div>
             </div>
