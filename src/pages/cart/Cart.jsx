@@ -30,9 +30,15 @@ const Cart = () => {
         window.scrollTo(0, 0);
     };
 
-    const [itemCount, setItemCount] = useState(0)
+    const [itemCount, setItemCount] = useState(1)
     const increaseButton = () => {
         setItemCount(itemCount + 1)
+    }
+    const decreaseButton = () => {
+        setItemCount(itemCount - 1)
+        if (itemCount <= 1) {
+            setItemCount(1)
+        }
     }
 
     return (
@@ -76,9 +82,9 @@ const Cart = () => {
                                                 </div>
                                                 <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
                                                     <div className="d-flex align-items-center" style={{ gap: "10px" }}>
-                                                        <button className="cart-increase-decrease-btn" onClick={increaseButton}><i className="fa-solid fa-minus"></i></button>
+                                                        <button className="cart-increase-decrease-btn" onClick={decreaseButton}><i className="fa-solid fa-minus"></i></button>
                                                         <span>{itemCount}</span>
-                                                        <button className="cart-increase-decrease-btn"><i className="fa-solid fa-plus"></i></button>
+                                                        <button className="cart-increase-decrease-btn" onClick={increaseButton}><i className="fa-solid fa-plus"></i></button>
                                                     </div>
                                                     <div className="d-flex align-items-center col-lg-6">
                                                         <span className="h6 px-4">{each_item.price}</span>

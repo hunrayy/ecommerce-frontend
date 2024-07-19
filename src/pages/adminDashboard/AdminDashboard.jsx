@@ -2,10 +2,10 @@ import { useState } from "react";
 import "./adminDashboard.css";
 import AdminHeader from "../../components/adminUtilities/adminHeader/AdminHeader";
 import Dashboard from "../../components/adminUtilities/dashboard/Dashboard";
-import CreateProduct from "../../components/adminUtilities/createProduct/createProduct";
+import CreateProduct from "../../components/adminUtilities/createProduct/CreateProduct";
 import AllProducts from "../../components/adminUtilities/allProducts/AllProducts";
 import SearchComponent from "../../components/adminUtilities/searchComponent/SearchComponent";
-import AdminNotification from "../../components/adminUtilities/adminNotification/adminNotification";
+import AdminNotification from "../../components/adminUtilities/adminNotification/AdminNotification";
 
 const AdminDashboard = () => {
     const [shownav, setShownav] = useState(false);

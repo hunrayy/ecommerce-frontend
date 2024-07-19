@@ -12,6 +12,11 @@ const Dashboard = () => {
             </div>
             <div className="content-after-bread-crumb">
                 <div style={{display: "flex", flexDirection: "column", gap: "20px"}}>
+                    <h1 className="animation">
+                        <div>Hi, i am Henry</div><br />
+                        <div> A Full Stack Developer</div>
+                    </h1>
+
                     <h3>Site statistics</h3>
                     <div className="welcome-back">
                         <div>

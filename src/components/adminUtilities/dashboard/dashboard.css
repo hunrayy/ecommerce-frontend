@@ -47,3 +47,51 @@
         width: 85vw;
     }
 }
+
+
+
+
+.animation {
+    font-size: 24px; /* Adjust as needed */
+    font-weight: normal; /* Adjust as needed */
+    color: #333; /* Text color */
+    text-decoration: none; /* Remove default underline */
+    cursor: pointer; /* Change cursor to indicate it's interactive */
+}
+
+.animation div {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px; /* Add some space between lines if needed */
+}
+
+.animation div::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; /* Position the underline just below the text */
+    left: 0;
+    width: 0;
+    height: 2px; /* Height of the underline */
+    background-color: #333; /* Color of the underline */
+    transition: width 0.5s;
+}
+
+.animation:hover div:nth-child(1)::before {
+    animation: underline1 0.5s forwards;
+}
+
+.animation:hover div:nth-child(2)::before {
+    animation: underline2 0.5s forwards 0.5s; /* Start after the first underline finishes */
+}
+
+@keyframes underline1 {
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes underline2 {
+    to {
+        width: 100%;
+    }
+}
