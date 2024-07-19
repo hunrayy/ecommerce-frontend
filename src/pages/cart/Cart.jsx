@@ -8,38 +8,47 @@ import { useState, useEffect, useContext } from "react"
 import { CartContext } from "./CartContext"
 
 const Cart = () => {
-    const { cartProducts, addToCart, calculateTotalPrice } = useContext(CartContext);
+    const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
     const [allCartItems, setAllCartItems] = useState({
         products: [],
-        totalPrice: 0
     });
 
     useEffect(() => {
         const storedItems = JSON.parse(localStorage.getItem("cart_items"));
+        console.log(cartProducts)
         if (storedItems) {
             setAllCartItems((prevState) => ({
                 ...prevState,
-                products: storedItems,
-                totalPrice: cartProducts.totalPrice
+                products: storedItems
             }));
         }
     }, [cartProducts.products]); // Add cartProducts.products as a dependency to re-render when it changes
-
     const handleRemoveFromCart = (product) => {
         addToCart(product); // Use addToCart to remove the product
         window.scrollTo(0, 0);
     };
+    
+    
 
-    const [itemCount, setItemCount] = useState(1)
-    const increaseButton = () => {
-        setItemCount(itemCount + 1)
-    }
-    const decreaseButton = () => {
-        setItemCount(itemCount - 1)
-        if (itemCount <= 1) {
-            setItemCount(1)
+    const updateItemQuantity = (each_item, quantity) => {
+        const updatedProducts = allCartItems.products.map((item) => {
+            if (item.id === each_item.id) {
+                return { ...item, quantity: item.quantity + quantity };
+            }
+            return item;
+        });
+        const updatedCartItems = { ...allCartItems, products: updatedProducts };
+        setAllCartItems(updatedCartItems);
+        localStorage.setItem("cart_items", JSON.stringify(updatedCartItems.products));
+    };
+    const increaseButton = (each_item) => {
+        updateCartItemQuantity(each_item.id, each_item.quantity + 1);
+    };
+    const decreaseButton = (each_item) => {
+        if (each_item.quantity > 1) {
+            updateCartItemQuantity(each_item.id, each_item.quantity - 1);
         }
-    }
+    };
 
     return (
         <div className="cart-page-container">
@@ -82,9 +91,9 @@ const Cart = () => {
                                                 </div>
                                                 <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
                                                     <div className="d-flex align-items-center" style={{ gap: "10px" }}>
-                                                        <button className="cart-increase-decrease-btn" onClick={decreaseButton}><i className="fa-solid fa-minus"></i></button>
-                                                        <span>{itemCount}</span>
-                                                        <button className="cart-increase-decrease-btn" onClick={increaseButton}><i className="fa-solid fa-plus"></i></button>
+                                                        <button className="cart-increase-decrease-btn" onClick={()=> decreaseButton(each_item)}><i className="fa-solid fa-minus"></i></button>
+                                                        <span>{each_item.quantity}</span>
+                                                        <button className="cart-increase-decrease-btn" onClick={()=> increaseButton(each_item)}><i className="fa-solid fa-plus"></i></button>
                                                     </div>
                                                     <div className="d-flex align-items-center col-lg-6">
                                                         <span className="h6 px-4">{each_item.price}</span>
@@ -131,7 +140,7 @@ const Cart = () => {
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between">
                                         <p className="mb-2">Total price:</p>
-                                        <p className="mb-2">${allCartItems.totalPrice}</p>
+                                        <p className="mb-2">${cartProducts.totalPrice}</p>
                                     </div>
                                     <div className="d-flex justify-content-between">
                                         <p className="mb-2">Discount:</p>
@@ -144,7 +153,7 @@ const Cart = () => {
                                     <hr />
                                     <div className="d-flex justify-content-between">
                                         <p className="mb-2">Total price:</p>
-                                        <p className="mb-2 fw-bold">${allCartItems.totalPrice}</p>
+                                        <p className="mb-2 fw-bold">${cartProducts.totalPrice}</p>
                                     </div>
 
                                     <div className="mt-3">

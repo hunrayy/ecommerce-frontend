@@ -36,7 +36,8 @@ const CartProvider = ({ children }) => {
         } else {
             getItems.push({
                 ...product,
-                lengthPicked: lengthPicked
+                lengthPicked: lengthPicked,
+                quantity: 1
             });
             setCartProducts((prevState) => ({
                 ...prevState,
@@ -97,17 +98,44 @@ const CartProvider = ({ children }) => {
         // Save updated items to local storage
         localStorage.setItem("cart_items", JSON.stringify(updatedItems));
       };
+
+
+
+
+      const updateCartItemQuantity = (productId, newQuantity) => {
+        const storedItems = JSON.parse(localStorage.getItem("cart_items")) || [];
+        
+        const storedItem = storedItems.find(item => item.id === productId);
+      
+        if (!storedItem) {
+          return;
+        }
+        
+        storedItem.quantity = newQuantity;
+        
+        const updatedItems = cartProducts.products.map((item) =>
+          item.id === productId ? { ...item, quantity: newQuantity } : item
+        );
+      
+        setCartProducts((prevProducts) => ({
+          ...prevProducts,
+          products: updatedItems,
+          totalPrice: calculateTotalPrice(updatedItems) // Update totalPrice here
+        }));
+      
+        localStorage.setItem("cart_items", JSON.stringify(updatedItems));
+      };
       
 
   const calculateTotalPrice = (products) => {
-    return products.reduce((acc, item) => acc + parseFloat(item.price), 0).toFixed(2);
+    return products.reduce((acc, item) => acc + (parseFloat(item.price) * item.quantity), 0).toFixed(2);
   };
     const calculateTotalLength = (products) => {
     return cartProducts.products.length || 0;
 };
 
   return (
-    <CartContext.Provider value={{ cartProducts, addToCart, calculateTotalPrice, calculateTotalLength, updateCartItemLength }}>
+    <CartContext.Provider value={{ cartProducts, addToCart, calculateTotalPrice, calculateTotalLength, updateCartItemLength, updateCartItemQuantity }}>
       {children}
     </CartContext.Provider>
   );
