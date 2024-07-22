@@ -5,14 +5,21 @@
 import "./navbar.css"
 import Logo from "../Logo/Logo"
 import { Link } from "react-router-dom"
-import { useContext } from "react"
 import { CartContext } from "../../pages/cart/CartContext"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { CurrencyContext } from "../all_context/CurrencyContext"
+import Cookies from "js-cookie"
 const Navbar = () => {
   const [shownav, setShownav] = useState(false)
 
   const { calculateTotalLength } = useContext(CartContext);
   const totalItems = calculateTotalLength();
+
+
+    const { selectedCurrency, convertCurrency, handleCurrencyChange } = useContext(CurrencyContext);
+    const handleCurrencySelect = (event) => {
+      handleCurrencyChange(event.target.value); // Update the currency based on user selection
+    };
 
 
     return <div>
@@ -37,6 +44,13 @@ const Navbar = () => {
               </div>
               <div>
                 <a href="#" style={{fontWeight: "bold"}}>Shop all</a>
+              </div>
+              <div>
+                <label htmlFor="currency">Currency: </label>
+                <select value={selectedCurrency} onChange={handleCurrencySelect}>
+                  <option value="USD">USD</option>
+                  <option value="NGN">NGN</option>
+                </select>
               </div>
               <div>
                 <a href="#" style={{fontWeight: "bold"}}>contact</a>
@@ -86,34 +100,7 @@ const Navbar = () => {
   </div>
 
         </header>
-        {/* <header className="navbar-component-container">
- 
-  <div className="py-3 text-center border-bottom">
-    <div className="container">
-      <div className="d-flex align-items-center row gy-3">
-      
-        <div className="col-lg-2 col-sm-4 col-4">
-          <Link to="/"className="float-start" style={{textDecoration: "none"}}>
-            <Logo />
-          </Link>
-        </div>
-        
 
-        
-        <div className="order-lg-last col-lg-5 col-sm-8 col-8">
-          <div className="d-flex float-end">
-            <Link to="/login" className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-user-alt m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Sign in</p> </Link>
-            <a href="#" className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-heart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Wishlist</p> </a>
-            <Link to="/cart" className="border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-shopping-cart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">My cart</p>&nbsp;{totalItems} </Link>
-          </div>
-        </div>
-    
-       
-      </div>
-    </div>
-  </div>
-
-        </header> */}
 
 
 
@@ -121,3 +108,43 @@ const Navbar = () => {
     </div>
 }
 export default Navbar
+
+
+
+
+
+
+
+
+
+
+
+
+{/* <header className="navbar-component-container">
+ 
+<div className="py-3 text-center border-bottom">
+  <div className="container">
+    <div className="d-flex align-items-center row gy-3">
+    
+      <div className="col-lg-2 col-sm-4 col-4">
+        <Link to="/"className="float-start" style={{textDecoration: "none"}}>
+          <Logo />
+        </Link>
+      </div>
+      
+
+      
+      <div className="order-lg-last col-lg-5 col-sm-8 col-8">
+        <div className="d-flex float-end">
+          <Link to="/login" className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-user-alt m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Sign in</p> </Link>
+          <a href="#" className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-heart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Wishlist</p> </a>
+          <Link to="/cart" className="border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-shopping-cart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">My cart</p>&nbsp;{totalItems} </Link>
+        </div>
+      </div>
+  
+     
+    </div>
+  </div>
+</div>
+
+      </header> */}

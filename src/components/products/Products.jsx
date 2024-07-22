@@ -1,11 +1,9 @@
 
-
-
-
 import { useState, useEffect, useContext } from "react"
 import productsStore from "./products.json"
 import "./products.css"
 import { CartContext } from "../../pages/cart/CartContext"
+import { CurrencyContext } from "../all_context/CurrencyContext"
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 
@@ -13,6 +11,7 @@ import { Link } from "react-router-dom"
 
 const Products = () => {
     const navigate = useNavigate()
+    const { selectedCurrency, convertCurrency } = useContext(CurrencyContext);
     const { cartProducts, addToCart} = useContext(CartContext);
     const [allProducts, setAllProducts] =  useState({
         products: [],
@@ -68,7 +67,7 @@ const Products = () => {
             
                         <div className="pl-2 pt-2">
                             <a href="#!" className="btn btn-light border px-2 pt-2 float-end icon-hover"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                            <h5 className="">${product.price}</h5>
+                            <h5 className="">{selectedCurrency}{convertCurrency(product.price)}</h5>
                             <p className=" mb-0">{product.name}</p>
                             <p className="text-muted">{product.description}</p>
                         </div>
@@ -87,6 +86,34 @@ const Products = () => {
     </div>
 }
 export default Products
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -7,10 +7,10 @@ const AdminHeader = ({ shownav, setShownav }) => {
     const [date, setDate] = useState(null)
     const dateFunction = () => {
         const today = new Date();
-        const dd = today.getDay()
+        const dd = today.getDate()
         const mm = today.toLocaleString('en-US', { month: 'short' });
         const yyyy = today.getFullYear();
-        const date = mm + ' ' + dd + ' ' + yyyy;
+        const date = dd + ' ' + mm + ' ' + yyyy;
         return setDate(date)
     }
     useEffect(()=> {
