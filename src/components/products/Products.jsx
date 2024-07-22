@@ -11,7 +11,7 @@ import { Link } from "react-router-dom"
 
 const Products = () => {
     const navigate = useNavigate()
-    const { selectedCurrency, convertCurrency } = useContext(CurrencyContext);
+    const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
     const { cartProducts, addToCart} = useContext(CartContext);
     const [allProducts, setAllProducts] =  useState({
         products: [],
@@ -60,6 +60,8 @@ const Products = () => {
                         // console.log(product)
                         const inCart = cartItems?.some(item => item.id === product.id)
                         const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
+                        const convertedPrice = convertCurrency(product.price, 'NGN', selectedCurrency);
+                        const currencySymbol = currencySymbols[selectedCurrency];
                         return (<div className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.id)}>
                         <div className="my-2">
                    
@@ -67,7 +69,10 @@ const Products = () => {
             
                         <div className="pl-2 pt-2">
                             <a href="#!" className="btn btn-light border px-2 pt-2 float-end icon-hover"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                            <h5 className="">{selectedCurrency}{convertCurrency(product.price)}</h5>
+                            <h5 style={{display: "flex", gap: "5px"}}>
+                                <span>{currencySymbol}</span>
+                                <span>{convertedPrice}</span>
+                            </h5>
                             <p className=" mb-0">{product.name}</p>
                             <p className="text-muted">{product.description}</p>
                         </div>

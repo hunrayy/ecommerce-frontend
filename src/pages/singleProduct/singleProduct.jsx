@@ -7,10 +7,13 @@ import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import PageNotFound from "../pageNotFound/PageNotFound";
 import "./singleProduct.css";
+import { CurrencyContext } from "../../components/all_context/CurrencyContext";
 import { CartContext } from "../cart/CartContext";
+
 
 const SingleProduct = () => {
   const { cartProducts, addToCart, updateCartItemLength } = useContext(CartContext);
+  const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
   let { product_id } = useParams();
   product_id = Number(product_id);
 
@@ -86,6 +89,12 @@ const SingleProduct = () => {
   const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
   const inCart = cartItems.some(item => item.id === product.id);
 
+
+    // Convert price based on selected currency
+    const convertedPrice = convertCurrency(product.price, selectedCurrency);
+    const currencySymbol = currencySymbols[selectedCurrency] || '';
+  
+
   return (
     <div>
       {product.pageNotFound ? (
@@ -124,8 +133,11 @@ const SingleProduct = () => {
                       </div>
                       <span className="text-success ms-2 ml-3">In stock</span>
                     </div>
-                    <div className="mb-3">
-                      <span className="h5">${product.price}</span>
+                    <div className="mb-3 d-flex">
+                      <div className="h5" style={{display: "flex", gap: "5px"}}>
+                        <span>{currencySymbol}</span>
+                        <span>{convertCurrency(product.price, 'NGN', selectedCurrency)}</span>
+                      </div>
                       <span className="text-muted">/per item</span>
                     </div>
                     <p>{product.description}</p>

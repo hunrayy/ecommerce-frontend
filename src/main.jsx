@@ -14,10 +14,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-  <BrowserRouter>
-    <CurrencyProvider>
-    <App />
-    </CurrencyProvider>
-  </BrowserRouter>
+  <CurrencyProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </CurrencyProvider>
   </React.StrictMode>
 )

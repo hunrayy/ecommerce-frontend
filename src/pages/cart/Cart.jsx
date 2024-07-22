@@ -6,8 +6,12 @@ import Footer from "../../components/footer/Footer"
 import { Link } from "react-router-dom"
 import { useState, useEffect, useContext } from "react"
 import { CartContext } from "./CartContext"
+import { CurrencyContext } from "../../components/all_context/CurrencyContext";
+import CartTotal from "./CartTotal"
+
 
 const Cart = () => {
+  const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
     const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
     const [allCartItems, setAllCartItems] = useState({
         products: [],
@@ -50,6 +54,10 @@ const Cart = () => {
         }
     };
 
+
+
+    const currencySymbol = currencySymbols[selectedCurrency];
+
     return (
         <div className="cart-page-container">
             <Navbar />
@@ -75,8 +83,10 @@ const Cart = () => {
                             <div className="card border shadow-0">
                                 <div className="m-4">
                                     <h4 className="card-title mb-4">Your shopping cart</h4>
-                                    {allCartItems.products.slice().reverse()?.map((each_item) => (
-                                        <div key={each_item.id}>
+                                    {allCartItems.products.slice().reverse()?.map((each_item) => {
+                                        let convertedPrice = convertCurrency(each_item.price, 'NGN', selectedCurrency);
+                                        convertedPrice = Number(convertedPrice)
+                                        return <div key={each_item.id}>
                                             <div className="row gy-3 mb-4">
                                                 <div className="col-lg-5">
                                                     <div className="me-lg-5">
@@ -96,7 +106,8 @@ const Cart = () => {
                                                         <button className="cart-increase-decrease-btn" onClick={()=> increaseButton(each_item)}><i className="fa-solid fa-plus"></i></button>
                                                     </div>
                                                     <div className="d-flex align-items-center col-lg-6">
-                                                        <span className="h6 px-4">{each_item.price}</span>
+                                                        <span className="h6 pl-4 pr-2">{currencySymbol}</span>
+                                                        <span className="h6">{convertedPrice.toLocaleString()}</span>
                                                     </div>
                                                 </div>
 
@@ -109,7 +120,7 @@ const Cart = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    ))}
+                                    })}
                                 </div>
 
                                 <div className="border-top pt-4 mx-4 mb-4">
@@ -140,7 +151,8 @@ const Cart = () => {
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between">
                                         <p className="mb-2">Total price:</p>
-                                        <p className="mb-2">${cartProducts.totalPrice}</p>
+                                        <p className="mb-2">{<CartTotal />}</p>
+                                        {/* <p className="mb-2">{currencySymbol}{cartProducts.totalPrice}</p> */}
                                     </div>
                                     <div className="d-flex justify-content-between">
                                         <p className="mb-2">Discount:</p>
@@ -153,7 +165,7 @@ const Cart = () => {
                                     <hr />
                                     <div className="d-flex justify-content-between">
                                         <p className="mb-2">Total price:</p>
-                                        <p className="mb-2 fw-bold">${cartProducts.totalPrice}</p>
+                                        <p className="mb-2 fw-bold">{<CartTotal />}</p>
                                     </div>
 
                                     <div className="mt-3">

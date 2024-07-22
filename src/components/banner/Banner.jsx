@@ -33,6 +33,7 @@ const Banner = () => {
                 // nextIcon={<span aria-hidden="true" className="carousel-control-next-icon" />}
                 prevLabel={null}
                 nextLabel={null}
+                style={{zIndex: "1"}}
               >
                 {detailsObject.map((item, index) => (
                   <Carousel.Item key={index}>

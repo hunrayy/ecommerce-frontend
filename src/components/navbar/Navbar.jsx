@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 import { CartContext } from "../../pages/cart/CartContext"
 import { useState, useContext } from "react"
 import { CurrencyContext } from "../all_context/CurrencyContext"
-import Cookies from "js-cookie"
+import Select from "react-select"
 const Navbar = () => {
   const [shownav, setShownav] = useState(false)
 
@@ -16,11 +16,16 @@ const Navbar = () => {
   const totalItems = calculateTotalLength();
 
 
-    const { selectedCurrency, convertCurrency, handleCurrencyChange } = useContext(CurrencyContext);
-    const handleCurrencySelect = (event) => {
-      handleCurrencyChange(event.target.value); // Update the currency based on user selection
+    const { selectedCurrency, convertCurrency, handleCurrencyChange, currencySymbols, currencyNames } = useContext(CurrencyContext);
+    const handleCurrencySelect = (selectedOption) => {
+      if (selectedOption) {
+        handleCurrencyChange(selectedOption.value); // Update the currency based on user selection
+      }
     };
-
+    const sortedCurrencyOptions = Object.keys(currencySymbols).sort().map(currency => ({
+      value: currency,
+      label: `${currencySymbols[currency]} ${currencyNames[currency]} (${currency})`
+    }));
 
     return <div>
         <header className="navbar-component-container">
@@ -46,11 +51,12 @@ const Navbar = () => {
                 <a href="#" style={{fontWeight: "bold"}}>Shop all</a>
               </div>
               <div>
-                <label htmlFor="currency">Currency: </label>
-                <select value={selectedCurrency} onChange={handleCurrencySelect}>
-                  <option value="USD">USD</option>
-                  <option value="NGN">NGN</option>
-                </select>
+                <label htmlFor="currency" className="text-muted" style={{fontWeight: "bold"}}>Currency: </label>
+                <Select
+                  options={sortedCurrencyOptions}
+                  onChange={handleCurrencySelect}
+                  value={sortedCurrencyOptions.find(option => option.value === selectedCurrency)}
+                />
               </div>
               <div>
                 <a href="#" style={{fontWeight: "bold"}}>contact</a>
@@ -67,16 +73,10 @@ const Navbar = () => {
               <div>
                 <Link style={{fontWeight: "bold"}}>Tracking</Link>
               </div>
-              {/* <div>
-                <Link to="/policies/shipping-policy"style={{fontWeight: "bold"}}>Shipping policy</Link>
-              </div> */}
-              {/* <a href="#">Tracking</a> */}
-
-              <div className="navbar-social-icons-wrapper">
+              <div>
                 <a style={{color: "white"}} href="https://www.instagram.com/beauty_bykiaraa/" target="_blank" >
                   <i class="fa-brands fa-instagram"></i>
                 </a>
-
                 <a style={{color: "white"}} href="https://www.tiktok.com/@beauty_bykiara" target="_blank" >
                   <i class="fa-brands fa-x-twitter"></i>
                 </a>
