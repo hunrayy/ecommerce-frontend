@@ -87,7 +87,7 @@ const Cart = () => {
                                         let convertedPrice = convertCurrency(each_item.price, 'NGN', selectedCurrency);
                                         convertedPrice = Number(convertedPrice)
                                         return <div key={each_item.id}>
-                                            <div className="row gy-3 mb-4">
+                                            <div className="row gy-3 mb-4" style={{display: "flex", justifyContent: "space-between"}}>
                                                 <div className="col-lg-5">
                                                     <div className="me-lg-5">
                                                         <div className="d-flex">
@@ -99,7 +99,7 @@ const Cart = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                                                <div className="col-lg-4 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
                                                     <div className="d-flex align-items-center" style={{ gap: "10px" }}>
                                                         <button className="cart-increase-decrease-btn" onClick={()=> decreaseButton(each_item)}><i className="fa-solid fa-minus"></i></button>
                                                         <span>{each_item.quantity}</span>
@@ -112,10 +112,10 @@ const Cart = () => {
                                                 </div>
 
 
-                                                <div className="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2 align-items-center">
+                                                <div className="pr-2 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2 align-items-center">
                                                     <div className="float-md-end">
                                                         {/* <a href="#!" className="btn btn-light border px-2 icon-hover-primary"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a> */}
-                                                        <a href="#" className="btn btn-light border text-danger icon-hover-danger" onClick={() => handleRemoveFromCart(each_item)}> Remove</a>
+                                                        <button className="btn btn-light border text-danger icon-hover-danger" onClick={() => handleRemoveFromCart(each_item)}> Remove <i class="fa-solid fa-trash"></i></button>
                                                     </div>
                                                 </div>
                                             </div>

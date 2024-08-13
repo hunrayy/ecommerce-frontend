@@ -59,6 +59,7 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                 </div>
+                
                 <div className="admin-dashboard-content">
                     {pages.dashboard_page && <Dashboard />}
                     {pages.createProduct_page && <CreateProduct />}

@@ -12,6 +12,7 @@ export const CurrencyProvider = ({ children }) => {
   const [rates, setRates] = useState(exchangeRates);
   const [currencySymbols, setCurrencySymbols] = useState({});
   const [currencyNames, setCurrencyNames] = useState({});
+  const [currencyCodes, setCurrencyCodes] = useState({});
   const [isRatesFetched, setIsRatesFetched] = useState(false); // New state to track rates fetching
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export const CurrencyProvider = ({ children }) => {
   const fetchExchangeRates = async () => {
     try {
       const response = await axios.get('https://api.exchangerate-api.com/v4/latest/NGN');
+
       setRates(response.data.rates);
       setIsRatesFetched(true); // Set rates as fetched
     } catch (error) {
@@ -45,6 +47,7 @@ export const CurrencyProvider = ({ children }) => {
           }
         }
       });
+    
 
       const symbols = {};
       const names = {};

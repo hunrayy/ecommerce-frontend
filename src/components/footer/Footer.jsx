@@ -27,16 +27,27 @@ const Footer = () => {
        
         <div className="col-md-6 col-sm-12 float-center">
           <div className="float-md-end">
-            <a className="btn btn-icon btn-light text-secondary px-3 border" title="Facebook" target="_blank" href="#"><i className="fab fa-facebook-f fa-lg"></i></a>
-            <a className="btn btn-icon btn-light text-secondary px-3 border" title="Instagram" target="_blank" href="#"><i className="fab fa-instagram fa-lg"></i></a>
-            <a className="btn btn-icon btn-light text-secondary px-3 border" title="Youtube" target="_blank" href="#"><i className="fab fa-youtube fa-lg"></i></a>
-            <a className="btn btn-icon btn-light text-secondary px-3 border" title="Twitter" target="_blank" href="#"><i className="fab fa-twitter fa-lg"></i></a>
+            <div className="btn btn-icon btn-light text-secondary border">
+            <i className="fab fa-lg fa-cc-paypal"></i>
+            </div>
+            <div className="btn btn-icon btn-light text-secondary border">
+            <i className="fab fa-lg fa-cc-mastercard"></i>
+            </div>
+            <div className="btn btn-icon btn-light text-secondary border">
+            <i className="fab fa-lg fa-cc-amex"></i>
+            </div>
+            <div className="btn btn-icon btn-light text-secondary border">
+              <i className="fab fa-lg fa-cc-visa"></i>
+            </div>
+            
           </div>
         </div>
         
       </div>
     </div>
   </section>
+          
+          
  
 
 
