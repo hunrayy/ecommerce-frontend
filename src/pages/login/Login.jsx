@@ -1,15 +1,15 @@
 
 
 
-
-
+import { useNavigate } from "react-router-dom"
 import "./test.css"
 import Logo from "../../components/Logo/Logo"
 const Login = () => {
+  const navigate = useNavigate()
   return <div>
-      <div style={{padding: "20px", fontSize: "20px"}} className="d-md-none">
-      <i class="fa-solid fa-arrow-left"></i>
-      </div>
+       <div style={{padding: "20px", fontSize: "20px"}} className="d-md-none">
+       <i class="fa-solid fa-arrow-left" onClick={()=> navigate(-1)}></i>
+       </div>
     <div className="login-page-container">
       <div className="login-page-wrapper">
         <Logo />
@@ -80,7 +80,7 @@ export default Login
 // import Logo from "../../components/Logo/Logo"
 // import { Link } from "react-router-dom"
 // const Login = () => {
-//     return <div style={{backgroundColor: "red"}}>
+//</div>     return <div style={{backgroundColor: "red"}}>
 // <section class="vh-100 gradient-custom-3">
 //   <div class="container py-5 h-100">
 //     <div class="d-flex justify-content-center align-items-center h-100">
