@@ -8,7 +8,7 @@
 import "./adminNotification.css"
 const AdminNotification = () => {
     return <div>
-        <div class="">
+        <div class="admin-notifiction-page-container">
     <div class="">
         <div class="">
             <div class="box shadow-sm rounded bg-white mb-3">
