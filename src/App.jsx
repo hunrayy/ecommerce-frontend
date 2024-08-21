@@ -13,6 +13,7 @@ import RefundPolicy from "./pages/refundPolicy/RefundPolicy"
 import PageNotFound from "./pages/pageNotFound/PageNotFound"
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard"
 import DeliveryPolicy from "./pages/deliveryPolicy/DeliveryPolicy"
+import AdminLogin from "./pages/adminLogin/AdminLogin"
 
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
       <Route path="/policies/shipping-policy" element={<ShippingPolicy />} />
       <Route path="/policies/refund-policy" element={<RefundPolicy />} />
       <Route path="/policies/delivery-policy" element={<DeliveryPolicy />} />
-      <Route path="/admindashboard" element={<AdminDashboard />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="*" element={<PageNotFound />} />
       
 

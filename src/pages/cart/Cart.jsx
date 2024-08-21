@@ -137,12 +137,17 @@ const Cart = () => {
                             <div className="card mb-3 border shadow-0">
                                 <div className="card-body">
                                     <form>
-                                        <div className="form-group">
-                                            <label className="form-label">Have coupon?</label>
+                                        <div className="form-group" >
+                                            {/* <label className="form-label">Have coupon?</label>
                                             <div className="input-group">
                                                 <input type="text" className="form-control border" name="" placeholder="Coupon code" />
                                                 <button className="btn btn-light border">Apply</button>
-                                            </div>
+                                            </div> */}
+                                            <label>Have coupon?</label>
+                                            <form style={{display: "flex", gap: "5px", marginTop: "10px"}}>
+                                                <input type="text" placeholder="Coupon code" style={{width: "160px"}} className="form-control" />
+                                                <button className="btn" style={{backgroundColor: "#f8f9fa", width:"70px"}} type="button">Apply</button>
+                                            </form>
                                         </div>
                                     </form>
                                 </div>
