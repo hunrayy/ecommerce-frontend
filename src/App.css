@@ -1,0 +1,7 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    --bodyColor: rgba(128, 0, 128, 0.144);
+    --marginAboveTop: 100px;
+}
