@@ -1,5 +1,38 @@
 
+// import React from 'react';
+// import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+// import './Login.css';
 
+// const Login = () => {
+//   const handleSuccess = (credentialResponse) => {
+//     console.log('Login Success:', credentialResponse);
+//     // Here, you can handle the successful login, e.g., send the token to your backend
+//   };
+
+//   const handleError = () => {
+//     console.log('Login Failed');
+//   };
+
+//   return (
+//     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+//       <div className="login-container">
+//         <h2>Login to Your Account</h2>
+//         <GoogleLogin
+//           onSuccess={handleSuccess}
+//           onError={handleError}
+//           useOneTap
+//           type="standard"
+//           shape="rectangular"
+//           theme="outline"
+//           text="signin_with"
+//           size="large"
+//         />
+//       </div>
+//     </GoogleOAuthProvider>
+//   );
+// };
+
+// export default Login;
 
 
 
@@ -133,7 +166,65 @@ export default Login;
 
 
 
+// import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+// import { useNavigate } from "react-router-dom"
+// import "./test.css"
+// import Logo from "../../components/Logo/Logo"
+// const Login = () => {
+//   const navigate = useNavigate()
 
+
+
+//     const handleSuccess = (credentialResponse) => {
+//     console.log('Login Success:', credentialResponse);
+//     // Here, you can handle the successful login, e.g., send the token to your backend
+//   };
+
+//   const handleError = () => {
+//     console.log('Login Failed');
+//   };
+//   return <div>
+//          <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+//        <div style={{padding: "20px", fontSize: "20px"}} className="d-md-none">
+//        <i class="fa-solid fa-arrow-left" onClick={()=> navigate(-1)}></i>
+//        </div>
+//     <div className="login-page-container">
+//       <div className="login-page-wrapper">
+//         <Logo />
+//         <h5>Welcome to beautybykiara</h5>
+//         <div>Click to log in or create an account on beautybykiara.</div>
+//         <form className="mb-1">
+//           <div style={{padding: "30px"}}>
+//             {/* <div className="form-floating">
+//               <input type="email" placeholder="Email" class="form-control form-control-lg mt-4 mb-5" />
+//               <label>Email</label>
+//             </div>
+             
+//             <div class="d-grid">
+//               <button class="btn btn-lg btn-primary" type="button">
+//                 <b>Continue</b>
+//               </button>
+//             </div> */}
+//             <GoogleLogin
+//               onSuccess={handleSuccess}
+//               onError={handleError}
+//               useOneTap
+//               type="standard"
+//               shape=""
+//               theme=""
+//               text=""
+//               size="extra-large"
+//             />
+//           </div>
+//         </form>
+//           <small>By continuing you agree to beautybykiara’s <br />Terms and Conditions</small>
+//       </div>
+//     </div>
+
+//     </GoogleOAuthProvider>
+//   </div>
+// }
+// export default Login
 
 
 

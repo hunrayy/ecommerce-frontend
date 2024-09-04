@@ -11,7 +11,10 @@ import { CurrencyContext } from "../all_context/CurrencyContext"
 import Select from "react-select"
 const Navbar = () => {
   const [shownav, setShownav] = useState(false)
+<<<<<<< HEAD
   const [dropdown, setDropdown] = useState(false)
+=======
+>>>>>>> fc802d7d907e6c152c794abbe7b460d9ef73975a
 
   const { calculateTotalLength } = useContext(CartContext);
   const totalItems = calculateTotalLength();
@@ -90,6 +93,7 @@ const Navbar = () => {
         
         <div className="">
           <div className="d-flex float-end text-light">
+<<<<<<< HEAD
 
             {/* <Link to="/login"style={{fontWeight: "bold"}} className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-user-alt m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Sign in</p> </Link> */}
 <div class="dropdow">
@@ -113,6 +117,9 @@ const Navbar = () => {
     </div>
 }
 </div>
+=======
+            <Link to="/login"style={{fontWeight: "bold"}} className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-user-alt m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Sign in</p> </Link>
+>>>>>>> fc802d7d907e6c152c794abbe7b460d9ef73975a
             <Link to="/cart"style={{fontWeight: "bold"}} className="border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-shopping-cart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">My cart</p>&nbsp;{totalItems} </Link>
           </div>
         </div>
