@@ -16,7 +16,7 @@ import AdminDashboard from "./pages/adminDashboard/AdminDashboard"
 import DeliveryPolicy from "./pages/deliveryPolicy/DeliveryPolicy"
 import AdminLogin from "./pages/adminLogin/AdminLogin"
 import VerifyEmailCode from "./pages/verifyEmailCode/VerifyEmailCode"
-import Register from "./pages/register/Register"
+import { AuthProvider } from "./components/AuthContext/AuthContext"
 
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
 
   return (
     <>
+    <AuthProvider>
     <CartProvider>
     <Routes>
       <Route path="/" element={<Home />} />
@@ -33,12 +34,10 @@ function App() {
       <Route path="/email-verification/:token" element={<VerifyEmailCode />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register/:token" element={<Register />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/policies/shipping-policy" element={<ShippingPolicy />} />
       <Route path="/policies/refund-policy" element={<RefundPolicy />} />
       <Route path="/policies/delivery-policy" element={<DeliveryPolicy />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/dashboard/:token" element={<AdminDashboard />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/page-not-found" element={<PageNotFound />} />
       <Route path="*" element={<PageNotFound />} />
@@ -47,6 +46,7 @@ function App() {
     </Routes>
 
     </CartProvider>
+    </AuthProvider>
   
     </>
   )

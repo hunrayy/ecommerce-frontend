@@ -49,7 +49,7 @@ const VerifyEmailCode = () => {
       }
     }).then((isTokenActive) => {
       console.log(isTokenActive)
-      if(isTokenActive.data.code == "error"){
+      if(isTokenActive.data.code == "invalid-jwt"){
         navigate('/page-not-found', {replace: true})
       }else{
         return null
@@ -111,12 +111,11 @@ const VerifyEmailCode = () => {
           success: true,
           registerToken: feedback.data.createAccountToken
         }))
-      }
-      if(feedback.data.code == "error"){
+      }else if(feedback.data.code == "error"){
         setServerErrorFeedback(feedback.data.message)
-      }else if(feedback.data.message == "invalid-jsonwebtoken"){
+      }else if(feedback.data.code == "invalid-jwt"){
         //an error occured while sending verification code
-        navigate(`/email-verification/${feedback.data.email}/${feedback.data.genratedToken}`)
+        navigate(`/page-not-found`, {replace: true})
       }
     }
   };
@@ -140,7 +139,7 @@ const VerifyEmailCode = () => {
             <form id="verificationForm" onSubmit={handleSubmit}>
               <div style={{ padding: "10px" }}>
                 {serverErrorFeedback && <div className="alert alert-danger">{serverErrorFeedback}</div>}
-                {serverSuccessFeedback.success && <div className="">Email verification successful. you can now <span  onClick={()=> navigate(`/register/${serverSuccessFeedback.registerToken}`, { state: { defaultEmail: email } })} style={{color: "purple", fontWeight: "500"}}>register</span></div>}
+                {serverSuccessFeedback.success && <div className="mb-3">Email verification successful. you can now <span  onClick={()=> navigate(`/register/${serverSuccessFeedback.registerToken}`, { state: { defaultEmail: email } })} style={{color: "purple", fontWeight: "500", cursor: "pointer"}}>register</span></div>}
 
                   
                 <div className="code-input-wrapper">

@@ -1,3 +1,19 @@
-/* .gradient-custom-3 {
-    background: #e0b3ff;
-} */
+.login-page-container{
+    display: flex;
+    justify-content: center;
+}
+
+.login-page-wrapper{
+    /* background-color: red; */
+    text-align: center;
+    width: 550px;
+    padding: 20px;
+    margin-top: 100px;
+}
+
+@media (max-width: 767px) {
+    .login-page-wrapper{
+        padding: 0;
+    }
+}
+

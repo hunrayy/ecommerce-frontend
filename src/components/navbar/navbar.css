@@ -71,7 +71,6 @@
 
 } */
 
-<<<<<<< HEAD
  
 .account-details-dropdown-list{
     background-color: white;
@@ -83,6 +82,10 @@
     border-radius: 5px;
     animation-name: account-details-dropdown-list;
     animation-duration: 0.3s;
+    /* padding: 0 25px; */
+    min-width: 160px;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
 }
 @keyframes account-details-dropdown-list {
     from{
@@ -94,7 +97,7 @@
     }
 }
 .account-details-dropdown-list li{
-    padding: 5px 10px 5px 10px;
+    padding: 5px 10px;
 }
 .account-details-dropdown-list li:hover{
     background-color: rgba(128, 128, 128, 0.055);
@@ -104,5 +107,3 @@
 
 
 
-=======
->>>>>>> fc802d7d907e6c152c794abbe7b460d9ef73975a

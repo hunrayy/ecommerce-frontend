@@ -7,8 +7,12 @@ import { CartContext } from "./CartContext";
 import { CurrencyContext } from "../../components/all_context/CurrencyContext";
 import CartTotal from "./CartTotal";
 import EmptyCart from '../../components/emptyCart/EmptyCart';
-
+import { useAuth } from "../../components/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
+  const use_auth = useAuth()
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true)
   const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
   const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
   const [allCartItems, setAllCartItems] = useState({ products: [] });
@@ -18,7 +22,14 @@ const Cart = () => {
     const storedItems = JSON.parse(localStorage.getItem("cart_items")) || [];
     setAllCartItems({ products: storedItems });
   }, [cartProducts.products]);
-
+  useEffect(() => {
+    if (use_auth.user.is_user_logged && use_auth.user.user.is_an_admin && use_auth.user.user.user === "admin") {
+        navigate(`/admin/dashboard/${use_auth.user.user.token}`);
+        setIsLoading(false)
+    } else {
+        setIsLoading(false); // Allow page to render for non-admin users
+    }
+  }, [use_auth.user, navigate]);
   const handleRemoveFromCart = (product) => {
     addToCart(product);
     window.scrollTo(0, 0);
@@ -38,9 +49,9 @@ const Cart = () => {
   };
 
   const currencySymbol = currencySymbols[selectedCurrency];
-
-  return (
-    <div className="cart-page-container">
+  if (isLoading) {
+    return null; // Optionally, you can return a loader here
+  }else{ return <div className="cart-page-container">
       <Navbar />
       <div className="breadcrumb-container">
         <div className="container py-4">
@@ -148,7 +159,7 @@ const Cart = () => {
 
       <Footer />
     </div>
-  );
+  }
 }
 
 export default Cart;

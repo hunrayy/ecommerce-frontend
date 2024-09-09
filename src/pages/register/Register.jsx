@@ -27,6 +27,7 @@ const Register = () => {
     status: false,
     message: ""
   })
+  const [isTokenValid, setIsTokenValid] = useState(null)
   const location = useLocation();
   const defaultEmail = location.state?.defaultEmail;
   const [formData, setFormData] = useState({
@@ -114,25 +115,33 @@ const Register = () => {
     }
   };
 
-  useEffect(()=> {
-    //on page load, make an api call to check if token is still valid
-    console.log(defaultEmail)
-    console.log(token)
-
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/is-token-active`, {data: null}, {
-        headers: {
+   // Validate token on component mount
+   useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/is-token-active`, { data: null }, {
+          headers: {
             Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (response.data.code === "invalid-jwt") {
+          navigate("/page-not-found", { replace: true });
+        } else {
+          setIsTokenValid(true);
         }
-    }).then((feedback) => {
-        console.log(feedback)
-        if(feedback.data.code === "invalid-jwt"){
-            //token is invalid or expire...navigate to page not found
-            // navigate("/page-not-found", {replace: true})
-        }
-    }).catch((error) => {
-        console.log(error)
-    })
-  }, [])
+      } catch (error) {
+        navigate("/page-not-found", { replace: true });
+      }
+    };
+
+    checkToken();
+  }, [navigate, token]);
+
+  // If token validation is in progress, render nothing
+  if (isTokenValid === null) {
+    return null;
+  }
 
   return (
     <div>

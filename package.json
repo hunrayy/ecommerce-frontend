@@ -14,16 +14,17 @@
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "formik": "^2.4.6",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
+    "localforage": "^1.10.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
-    "yup": "^1.4.0",
-    "react-select": "^5.8.0"
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

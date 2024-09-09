@@ -1,10 +1,11 @@
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../components/Logo/Logo";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAuth } from "../../components/AuthContext/AuthContext";
 
 const Identification = () => {
   const navigate = useNavigate();
@@ -14,6 +15,12 @@ const Identification = () => {
     is_loading: false,
     serverFeedback: ""
   });
+  const use_auth = useAuth()
+  useEffect(()=> {
+    //navigate to home page if current user is logged in
+    use_auth.user.is_user_logged && navigate('/', {replace: true})
+
+  })
 
   const validateForm = () => {
     const errors = {};
@@ -72,6 +79,9 @@ const Identification = () => {
       setFormData({ ...formData, errors });
     }
   };
+  if(use_auth.user.is_user_logged){
+    return null;
+  }
 
   return (
     <div>
