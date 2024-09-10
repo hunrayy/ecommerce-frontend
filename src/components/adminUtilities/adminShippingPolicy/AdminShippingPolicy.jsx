@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios for API calls
 import Cookies from "js-cookie";
+import BasicLoader from "../../loader/BasicLoader";
 
 const AdminShippingPolicy = () => {
     // State for modal visibility and content to edit
@@ -8,7 +9,7 @@ const AdminShippingPolicy = () => {
     const [selectedText, setSelectedText] = useState("");
     const [sectionIndex, setSectionIndex] = useState(null); // To track which section is being edited
     const [isEditingTitle, setIsEditingTitle] = useState(false); // Track if editing the title <p>
-
+    const [isLoading, setIsLoading] = useState(false)
     // Initial policy data
     const [policySections, setPolicySections] = useState([
         null,
@@ -69,6 +70,11 @@ const AdminShippingPolicy = () => {
     };
     
     useEffect(()=> {
+        let loaderTimeout;
+        // Set the loader to be shown if data takes more than 200ms
+        loaderTimeout = setTimeout(() => {
+            setIsLoading(true)
+        }, 200);
         axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-page`, {
             params: {
                 page: "shippingPolicy" 
@@ -78,6 +84,7 @@ const AdminShippingPolicy = () => {
             }}
     ).then((feedback) => {
             console.log(feedback)
+            setIsLoading(false)
             if(feedback.data.code === "success"){
                 setPolicyTitle(feedback.data.data.title)
                 setPolicySections([
@@ -88,6 +95,9 @@ const AdminShippingPolicy = () => {
                 ])
             }
            
+        }).finally(()=> {
+            clearTimeout(loaderTimeout)
+            setIsLoading(false)
         })
     }, [])
 
@@ -96,8 +106,9 @@ const AdminShippingPolicy = () => {
             <div className="alert" style={{ background: "purple", color: "white", fontWeight: "500" }}>
                 Click on any section you wish to edit
             </div>
-            <div className="shipping-policy-container" style={{ marginTop: "-15px", minHeight: "100vh" }}>
+            <div className="shipping-policy-container" style={{ marginTop: "-15px", background: "white" }}>
                 <div className="shipping-policy-wrapper">
+                    {isLoading &&<BasicLoader />}
                     {/* Title of the policy */}
                     <p
                         onClick={handleTitleClick}
