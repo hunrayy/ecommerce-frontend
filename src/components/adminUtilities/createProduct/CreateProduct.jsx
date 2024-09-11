@@ -222,7 +222,7 @@ const CreateProduct = () => {
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handlePostProduct}>
+                    <Button style={{background: "purple"}} onClick={handlePostProduct}>
                         Upload Product
                     </Button>
                 </Modal.Footer>

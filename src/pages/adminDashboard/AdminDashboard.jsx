@@ -48,7 +48,7 @@ const AdminDashboard = () => {
             }
         }).then((feedback) => {
             console.log(feedback)
-            if(feedback.data.code === "error"){
+            if(feedback.data.code === "invalid-jwt"){
                 return navigate("/", {replace: true})
             }
         })
@@ -74,17 +74,18 @@ const AdminDashboard = () => {
                             <i className="fa-solid fa-eye"></i> <span>View products</span>
                         </div>   
                         <div className="dmin-sidebar-dropdown-container">
-                            <div className="admin-sidebar-icon-wrapper"onClick={() => pagesDropdown ? setPagesDropdown(false) : setPagesDropdown(true)}><i class="fa-solid fa-book"></i> <span>Pages</span><i class="fa-solid fa-caret-down"></i></div>
-                            {pagesDropdown && 
-                                <div className="admin-sidebar-dropdown-wrapper">
-                                    <div onClick={() => showPage('shipping_policy')}>Shipping policy</div>
-                                    <div>cart</div>
-                                    <div>page</div>
-                                    <div>hgdhagh</div>
-                                    <div>Home</div>
-                                </div>
-                            }
-                        </div>
+    <div className="admin-sidebar-icon-wrapper" onClick={() => setPagesDropdown(!pagesDropdown)}>
+        <i className="fa-solid fa-book"></i> <span>Pages</span> {pagesDropdown ? <i class="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
+    </div>
+    <div className={`admin-sidebar-dropdown-wrapper ${pagesDropdown ? 'open' : ''}`}>
+        <div onClick={() => showPage('shipping_policy')}>Shipping policy</div>
+        <div>Cart</div>
+        <div>Page</div>
+        <div>Hgdhagh</div>
+        <div>Home</div>
+    </div>
+</div>
+
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('search')}>
                             <i className="fa-solid fa-magnifying-glass"></i> <span>Search</span>
                         </div>
