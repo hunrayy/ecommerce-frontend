@@ -17,6 +17,7 @@ import DeliveryPolicy from "./pages/deliveryPolicy/DeliveryPolicy"
 import AdminLogin from "./pages/adminLogin/AdminLogin"
 import VerifyEmailCode from "./pages/verifyEmailCode/VerifyEmailCode"
 import { AuthProvider } from "./components/AuthContext/AuthContext"
+import CheckOut from "./pages/checkOut/CheckOut"
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/product/:product_id" element={<SingleProduct />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout/:token" element={<CheckOut />} />
       <Route path="/identification/" element={<Identification />} />
       <Route path="/email-verification/:token" element={<VerifyEmailCode />} />
       <Route path="/login" element={<Login />} />

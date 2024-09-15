@@ -12,3 +12,44 @@
     border: none;
     border-radius: 5px;
 }
+.cart-products-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.cart-text-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50%;
+    /* background-color: red; */
+}
+
+
+@media (max-width: 991px) {
+    .cart-products-wrapper{
+        display: flex;
+        flex-direction: column;
+        /* justify-content: start; */
+        gap: 10px;
+        align-items: start;
+    }
+    .cart-text-wrapper{
+        gap: 100%;
+        /* background-color: red; */
+    }
+}
+
+@media (max-width: 767px) {
+    .cart-products-wrapper{
+        display: flex;
+        flex-direction: column;
+        /* justify-content: start; */
+        gap: 10px;
+        align-items: start;
+    }
+    .cart-text-wrapper{
+        gap: 40%;
+    }
+}

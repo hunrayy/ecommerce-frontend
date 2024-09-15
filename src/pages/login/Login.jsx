@@ -325,6 +325,9 @@ const Login = () => {
               </div>
             </div>
           </form>
+          <div>
+            <small>Don't have an account yet? <Link to = "/identification" style={{textDecoration: "none", color: "purple"}}>Register</Link> </small>
+          </div>
           <small style={{padding: "0 10px 0 10px"}}>By continuing you agree to beautybykiara’s Terms and Conditions</small>
         </div>
       </div>

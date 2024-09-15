@@ -6,7 +6,7 @@ import Logo from "../../components/Logo/Logo";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useAuth } from "../../components/AuthContext/AuthContext";
-
+import { Link } from "react-router-dom";
 const Identification = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -132,6 +132,9 @@ const Identification = () => {
               </div>
             </div>
           </form>
+          <div>
+            <small>Already have an account? <Link to = "/login" style={{textDecoration: "none", color: "purple"}}>Login</Link></small>
+          </div>
           <small style={{padding: "0 10px 0 10px"}}>By continuing you agree to beautybykiara’s Terms and Conditions</small>
         </div>
       </div>
