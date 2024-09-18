@@ -63,13 +63,13 @@ const Navbar = () => {
                       <i style={{ cursor: "pointer" }} className="fa-solid fa-xmark" onClick={() => setShownav(false)}></i>
                     </div>
                     <div>
-                      <Link to="/" style={{ fontWeight: "bold" }}>Home</Link>
+                      <Link to="/" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Home</Link>
                     </div>
                     <div>
-                      <a href="#" style={{ fontWeight: "bold" }}>Shop all</a>
+                      <a href="#" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Shop all</a>
                     </div>
                     <div>
-                      <label htmlFor="currency" className="text-muted" style={{ fontWeight: "bold" }}>Currency: </label>
+                      <label htmlFor="currency" style={{ fontWeight: "bold", color: "white"}}>Currency: </label>
                       <Select
                         options={sortedCurrencyOptions}
                         onChange={handleCurrencySelect}
@@ -77,21 +77,21 @@ const Navbar = () => {
                       />
                     </div>
                     <div>
-                      <a href="#" style={{ fontWeight: "bold" }}>contact</a>
+                      <a href="#" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>contact</a>
                     </div>
                     <div>
-                      <Link to="/policies/refund-policy" style={{ fontWeight: "bold" }}>Refund policy</Link>
+                      <Link to="/policies/refund-policy" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Refund policy</Link>
                     </div>
                     <div>
-                      <Link to="/policies/shipping-policy" style={{ fontWeight: "bold" }}>Shipping policy</Link>
+                      <Link to="/policies/shipping-policy" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Shipping policy</Link>
                     </div>
                     <div>
-                      <Link to="/policies/delivery-policy" style={{ fontWeight: "bold" }}>Delivery policy</Link>
+                      <Link to="/policies/delivery-policy" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Delivery policy</Link>
                     </div>
                     <div>
-                      <Link style={{ fontWeight: "bold" }}>Tracking</Link>
+                      <Link style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Tracking</Link>
                     </div>
-                    <div>
+                    <div style={{display: "flex", gap: "15px"}}>
                       <a style={{ color: "white" }} href="https://www.instagram.com/beauty_bykiaraa/" target="_blank">
                         <i className="fa-brands fa-instagram"></i>
                       </a>
@@ -133,7 +133,7 @@ const Navbar = () => {
                             <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-heart" style={{fontSize: "20px"}}></i>Wishlist</Link>
                           </li>
                           <li>
-                            <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-message"style={{fontSize: "20px"}}></i> LiveChat</Link>
+                            <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-message"style={{fontSize: "20px"}}></i> Live chat</Link>
                           </li>
                           {use_auth.user.is_user_logged && <span>
                             <hr />

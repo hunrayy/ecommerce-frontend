@@ -74,6 +74,7 @@ const Cart = () => {
                 <div className="m-4">
                   <h4 className="card-title mb-4">Your shopping cart</h4>
                   {allCartItems.products.slice().reverse().map((each_item) => {
+                    console.log(each_item)
                     let convertedPrice = convertCurrency(each_item.price, 'NGN', selectedCurrency);
                     convertedPrice = Number(convertedPrice);
                     return (
@@ -85,6 +86,12 @@ const Cart = () => {
                             <div>
                               <a href="#" className="nav-link">{each_item.name}</a>
                               <p className="text-muted ">{each_item.description}</p>
+                              {/* <p> */}
+                                <small><b>Length:</b> &nbsp;
+                                {each_item.lengthPicked}
+                                </small>
+
+                              {/* </p> */}
                             </div>
                           </div>
                         </div>

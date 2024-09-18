@@ -239,6 +239,7 @@ const Login = () => {
       // Proceed with form submission or API call
       // console.log(email, password);
       setErrors({})
+      setServerErrorFeedback({status: false, message: ""})
       setLoading(true)
       const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, {
         email: email,

@@ -5,15 +5,16 @@
 
 
 
-
+import CheckoutHeader from "../../components/checkoutHeader/CheckoutHeader"
 import "./checkout.css"
 const CheckOut = () => {
     return <div>
-        <section class="bg-light py-5">
+          <CheckoutHeader />
+        <section class=" checkout-container">
   <div class="container">
     <div class="row">
       <div class="col-xl-8 col-lg-8 mb-4">
-        <div class="card mb-4 border shadow-0">
+        {/* <div class="card mb-4 border shadow-0">
           <div class="p-4 d-flex justify-content-between">
             <div class="">
               <h5>Have an account?</h5>
@@ -24,39 +25,38 @@ const CheckOut = () => {
               <a href="#" class="btn btn-primary shadow-0 text-nowrap w-100">Sign in</a>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* <!-- Checkout --> */}
         <div class="card shadow-0 border">
           <div class="p-4">
-            <h5 class="card-title mb-3">Guest checkout</h5>
             <div class="row">
-              <div class="col-6 mb-3">
-                <p class="mb-0">First name</p>
-                <div class="form-outline">
+              <h5 class="card-title mb-3">Contact</h5>
+              <div class="mb-3 form-floating">
+                  <input type="email" placeholder="Email" class="form-control form-control-lg" />
+                <label class="mx-4">Email</label>
+              </div>
+              <div class="mb-5 form-floating">
+                  <input type="email" placeholder="Phone number" class="form-control form-control-lg" />
+                <label class="mx-4">Phone number</label>
+              </div>
+              <h5 class="card-title mb-3">Delivery</h5>
+
+              <div class="mb-3 form-floating">
+                  <input type="email" placeholder="Email" class="form-control form-control-lg" />
+                <label class="mx-4">Email</label>
+              </div>
+
+              <div class="col-6 mb-3 form-floating">
+                  <input type="text" id="typeText" placeholder="Firstname" class="form-control" />
+                <label class="mx-3">First name</label>
+              </div>
+
+              <div class="col-6 form-floating">
+                {/* <div class="form-outline"> */}
                   <input type="text" id="typeText" placeholder="Type here" class="form-control" />
-                </div>
-              </div>
-
-              <div class="col-6">
-                <p class="mb-0">Last name</p>
-                <div class="form-outline">
-                  <input type="text" id="typeText" placeholder="Type here" class="form-control" />
-                </div>
-              </div>
-
-              <div class="col-6 mb-3">
-                <p class="mb-0">Phone</p>
-                <div class="form-outline">
-                  <input type="tel" id="typePhone" value="+48 " class="form-control" />
-                </div>
-              </div>
-
-              <div class="col-6 mb-3">
-                <p class="mb-0">Email</p>
-                <div class="form-outline">
-                  <input type="email" id="typeEmail" placeholder="example@gmail.com" class="form-control" />
-                </div>
+                {/* </div> */}
+                <label class="mx-3">Last name</label>
               </div>
             </div>
 

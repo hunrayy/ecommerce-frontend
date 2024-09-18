@@ -1,0 +1,7 @@
+.checkout-container{
+    /* background-color: red; */
+    /* bg-light py-5 */
+    background-color: #f8f9fa;
+    margin-top: var(--marginAboveTop);
+    padding: 48px;
+}
