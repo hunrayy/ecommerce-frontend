@@ -32,7 +32,6 @@ const Cart = () => {
   }, [use_auth.user, navigate]);
   const handleRemoveFromCart = (product) => {
     addToCart(product);
-    window.scrollTo(0, 0);
   };
 
   const updateItemQuantity = (each_item, quantity) => {
@@ -79,7 +78,7 @@ const Cart = () => {
                     convertedPrice = Number(convertedPrice);
                     return (
                       <div key={each_item.id}>
-                      <div className="cart-products-wrapper">
+                      <div className="cart-products-wrapper mb-3">
                         <div className="col-lg-5">
                           <div className="d-flex">
                             <img src={each_item.img} className="border rounded me-3" style={{ width: "100px", height: "130px" }} />
@@ -159,7 +158,7 @@ const Cart = () => {
                     <p className="mb-2 fw-bold">{<CartTotal />}</p>
                   </div>
                   <div className="mt-3">
-                    <button onClick={()=> {use_auth.user.is_user_logged == false ? navigate("/login", {replace: true}) : navigate("/checkout/token", {replace: true})}} className="btn w-100 shadow-0 mb-2" style={{ backgroundColor: "purple", color: "white" }}>{use_auth.user.is_user_logged == false ? "Login to check out" : "Proceed to check out"}</button>
+                    <button onClick={()=> {use_auth.user.is_user_logged == false ? navigate("/login", {replace: true}) : navigate("/checkout/token", {replace: true})}} className="btn w-100 shadow-0 mb-2" style={{ backgroundColor: "purple", color: "white" }}>{use_auth.user.is_user_logged == false ? "Login to check out" : "Proceed to checkout"}</button>
                     <Link to="/" className="btn btn-light w-100 border mt-2">Back to home</Link>
                   </div>
                 </div>

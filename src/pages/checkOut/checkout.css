@@ -1,7 +1,27 @@
 .checkout-container{
     /* background-color: red; */
     /* bg-light py-5 */
+    /* background-color: #f8f9fa; */
     background-color: #f8f9fa;
-    margin-top: var(--marginAboveTop);
+    margin-top: 70px;
     padding: 48px;
+}
+.checkout-item-summary{
+    position: fixed;
+    right: 8%;
+    overflow-y: auto;
+    max-height: 400px;
+    padding-bottom: 20px;
+}
+@media (max-width: 991px) {
+    .checkout-item-summary{
+        position: static;
+        padding-left: 23px;
+    }
+}
+
+@media (max-width: 767px) {
+    .checkout-container{
+        padding: 20px 0;
+    }
 }
