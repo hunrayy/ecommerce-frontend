@@ -17,7 +17,7 @@ const CheckOut = () => {
   const use_auth = useAuth()
   const navigate = useNavigate()
   const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
-  const { selectedCurrency, convertCurrency, currencySymbols, currencyCodes } = useContext(CurrencyContext);
+  const { selectedCurrency, convertCurrency, currencySymbols, currentCurrencyCode } = useContext(CurrencyContext);
 
 
   const [countries, setCountries] = useState([])
@@ -36,7 +36,7 @@ const CheckOut = () => {
     country: "", //initially empty, no default country
     state: "",
     totalPrice: "",
-    currency: ""
+    currency: currentCurrencyCode
   })
 
   // Form errors state
@@ -108,7 +108,6 @@ const CheckOut = () => {
 
 
   useEffect(() => {
-    // console.log(currencyCodes)
     if(!use_auth.user.is_user_logged){
       navigate("/", {replace: true})
     }

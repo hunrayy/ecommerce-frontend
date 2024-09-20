@@ -172,6 +172,9 @@ export const CurrencyProvider = ({ children }) => {
   const [currencySymbols, setCurrencySymbols] = useState({});
   const [currencyNames, setCurrencyNames] = useState({});
   const [currencyCodes, setCurrencyCodes] = useState({});
+  const [currentCurrencyCode, setCurrentCurrencyCode] = useState(
+    Cookies.get('selectedCurrency') || defaultCurrency
+  );; // Initialize with the code for the default currency
   const [isRatesFetched, setIsRatesFetched] = useState(false); // New state to track rates fetching
 
   useEffect(() => {
@@ -240,15 +243,13 @@ export const CurrencyProvider = ({ children }) => {
   const handleCurrencyChange = (newCurrency) => {
     setSelectedCurrency(newCurrency);
     Cookies.set('selectedCurrency', newCurrency, { expires: 7 });
-  // Get the currency code from currencyCodes object
-  const currentCurrencyCode = Object.keys(currencyCodes).find(code => currencyCodes[code].name === newCurrency) || newCurrency;
-
-  // Log the current currency code
-  console.log('Current Currency Code:', currentCurrencyCode);
+    // Get the currency code from currencyCodes object
+    // const currentCurrencyCode = Object.keys(currencyCodes).find(code => currencyCodes[code].name === newCurrency) || newCurrency;
+    setCurrentCurrencyCode(newCurrency); // Store the currency code directlyCurrent Currency Code:', currentCurrencyCode);
   };
 
   return (
-    <CurrencyContext.Provider value={{ selectedCurrency, convertCurrency, handleCurrencyChange, currencySymbols, currencyCodes, currencyNames }}>
+    <CurrencyContext.Provider value={{ selectedCurrency, convertCurrency, handleCurrencyChange, currencySymbols, currencyCodes, currentCurrencyCode, currencyNames }}>
       {children}
     </CurrencyContext.Provider>
   );
