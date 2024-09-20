@@ -194,19 +194,23 @@ export const CurrencyProvider = ({ children }) => {
     try {
       const response = await axios.get('https://restcountries.com/v3.1/all');
       const currencyData = {};
+      // const codes = {}; // New object to hold currency codes
 
       response.data.forEach(country => {
         const currencies = country.currencies;
+        const countryCode = country.cca2;
         for (let code in currencies) {
           if (!currencyData[code]) {
             currencyData[code] = {
               symbol: currencies[code].symbol,
               name: currencies[code].name,
             };
+            // codes[code] = countryCode; // Map currency code to country code
           }
         }
       });
     
+      setCurrencyCodes(currencyData);
 
       const symbols = {};
       const names = {};
@@ -217,6 +221,7 @@ export const CurrencyProvider = ({ children }) => {
 
       setCurrencySymbols(symbols);
       setCurrencyNames(names);
+      // setCurrencyCodes(codes); // Set the currency codes in state
     } catch (error) {
       console.error('Error fetching currency data:', error);
     }
@@ -235,10 +240,15 @@ export const CurrencyProvider = ({ children }) => {
   const handleCurrencyChange = (newCurrency) => {
     setSelectedCurrency(newCurrency);
     Cookies.set('selectedCurrency', newCurrency, { expires: 7 });
+  // Get the currency code from currencyCodes object
+  const currentCurrencyCode = Object.keys(currencyCodes).find(code => currencyCodes[code].name === newCurrency) || newCurrency;
+
+  // Log the current currency code
+  console.log('Current Currency Code:', currentCurrencyCode);
   };
 
   return (
-    <CurrencyContext.Provider value={{ selectedCurrency, convertCurrency, handleCurrencyChange, currencySymbols, currencyNames }}>
+    <CurrencyContext.Provider value={{ selectedCurrency, convertCurrency, handleCurrencyChange, currencySymbols, currencyCodes, currencyNames }}>
       {children}
     </CurrencyContext.Provider>
   );
