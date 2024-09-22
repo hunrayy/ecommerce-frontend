@@ -11,6 +11,7 @@ import RefundPolicy from "./pages/refundPolicy/RefundPolicy"
 import PageNotFound from "./pages/pageNotFound/PageNotFound"
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard"
 import DeliveryPolicy from "./pages/deliveryPolicy/DeliveryPolicy"
+import PaymentSuccess from "./pages/paymentSuccess/PaymentSuccess"
 import AdminLogin from "./pages/adminLogin/AdminLogin"
 import VerifyEmailCode from "./pages/verifyEmailCode/VerifyEmailCode"
 import { AuthProvider } from "./components/AuthContext/AuthContext"
@@ -30,6 +31,7 @@ function App() {
             <Route path="/product/:product_id" element={<SingleProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products/checkout" element={<CheckOut />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/identification/" element={<Identification />} />
             <Route path="/email-verification/:token" element={<VerifyEmailCode />} />
             <Route path="/login" element={<Login />} />

@@ -96,7 +96,20 @@ const CheckOut = () => {
             }
           }
         ).then((feedback) => {
-          console.log(feedback)
+          // console.log(feedback)
+          const links = feedback.data.links;
+
+          // Find the link with rel: "approve"
+          const approveLink = links.find(link => link.rel === "approve");
+
+          if (approveLink) {
+            // Redirect the user to PayPal approval page
+            window.location.href = approveLink.href;
+          } else {
+            // Handle the error if the approval link is missing
+            toast.error("There was an issue connecting to the payment provider. Please try again.");
+          }
+
 
         }).finally(()=> {
           setLoading(false)
