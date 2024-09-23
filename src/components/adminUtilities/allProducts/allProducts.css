@@ -1,3 +1,4 @@
+
 /* search box input */
 .search-container {
     display: flex;
@@ -84,6 +85,9 @@
     }
     .search-container {
         margin-top: 20px;
+    }
+    .search-container-fixed {
+        margin-top: 90px;
     }
 }
 

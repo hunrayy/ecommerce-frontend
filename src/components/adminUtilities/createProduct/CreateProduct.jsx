@@ -14,7 +14,6 @@ const CreateProduct = () => {
         subImage2: null,
         subImage3: null,
         productName: "",
-        productDescription: "",
         productPrice: "",
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +46,7 @@ const CreateProduct = () => {
     };
 
     // Check if all required fields are filled
-    const isFormValid = formData.productImage && formData.productName && formData.productDescription && formData.productPrice;
+    const isFormValid = formData.productImage && formData.productName && formData.productPrice;
 
     // Show modal for preview on form submission
     const handleSubmit = (e) => {
@@ -86,7 +85,6 @@ const CreateProduct = () => {
         uploadData.append('subImage3', formData.subImage3 || null);
         // Append other form fields
         uploadData.append('productName', formData.productName);
-        uploadData.append('productDescription', formData.productDescription);
         uploadData.append('productPrice', formData.productPrice); // Raw price without commas
     
         // Perform the upload
@@ -110,7 +108,6 @@ const CreateProduct = () => {
                     subImage2: null,
                     subImage3: null,
                     productName: "",
-                    productDescription: "",
                     productPrice: ""
                 });
                 setIsLoading(false);
@@ -172,10 +169,6 @@ const CreateProduct = () => {
                             <input type="text" className="form-control" id="productName" placeholder="Enter product name" value={formData.productName} onChange={handleInputChange} />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="productDescription" className="form-label">Product Description</label>
-                            <textarea className="form-control" id="productDescription" rows="3" placeholder="Little description about product...anything at all" value={formData.productDescription} onChange={handleInputChange}></textarea>
-                        </div>
-                        <div className="mb-3">
                             <label htmlFor="productPrice" className="form-label">Product Price</label>
                             <input
                                 type="text"
@@ -213,9 +206,6 @@ const CreateProduct = () => {
                         </div>
                         <Card.Body>
                             <Card.Title>{formData.productName}</Card.Title>
-                            <Card.Text>
-                                {formData.productDescription}
-                            </Card.Text>
                             <Card.Text>
                                 <strong>Price:</strong> {formatNumberWithCommas(formData.productPrice)}
                             </Card.Text>

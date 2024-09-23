@@ -6,6 +6,7 @@ import { CartContext } from "../../pages/cart/CartContext"
 import { CurrencyContext } from "../all_context/CurrencyContext"
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
+import axios from "axios"
 
 
 
@@ -22,9 +23,13 @@ const Products = () => {
 
 
     useEffect(()=> {
-        setAllProducts({
-            products: productsStore,
-            products_loading: false
+        
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`).then((feedback) => {
+            // console.log(feedback)
+            setAllProducts({
+                products: feedback.data.data,
+                products_loading: false
+            })
         })
         // get cart items
         const getCartItems = JSON.parse(localStorage.getItem("cart_items"))
@@ -56,30 +61,25 @@ const Products = () => {
                 </header>
 
                 <div className="row">
-                    {allProducts.products?.map((product) =>{
-                        // console.log(product)
+                    {allProducts.products?.slice().reverse().map((product) =>{
+                        console.log(product)
                         const inCart = cartItems?.some(item => item.id === product.id)
                         const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
-                        const convertedPrice = convertCurrency(product.price, 'NGN', selectedCurrency);
+                        const convertedPrice = convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency);
                         const currencySymbol = currencySymbols[selectedCurrency];
-                        return (<div className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.id)}>
+                        return (<div className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.productName)}>
                         <div className="my-2">
                    
-                            <img src={product.img} className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} />
+                            <img src={product.productImage} className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} />
             
                         <div className="pl-2 pt-2">
-                            <a href="#!" className="btn btn-light border px-2 pt-2 float-end icon-hover"><i className="fas fa-heart fa-lg px-1 text-secondary"></i></a>
                             <h5 style={{display: "flex", gap: "5px"}}>
-                                <span>{currencySymbol}</span>
-                                <span>{convertedPrice}</span>
+                                <span><b>{currencySymbol}</b></span>
+                                <span><b>{convertedPrice}</b></span>
                             </h5>
-                            <p className=" mb-0">{product.name}</p>
-                            <p className="text-muted">{product.description}</p>
+                            <p className=" mb-0">{product.productName}</p>
+                            {/* <p className="text-muted">{product.description}</p> */}
                         </div>
-                        {/* <button className={`btn btn-block ${inCart || isRecentlyAdded ? "btn-dark" : ""}`} style={{border: "1px solid #343a40"}} onClick={()=> handleAddToCart(product)}>
-                        
-                            {inCart ? "Added to cart" : isRecentlyAdded ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
-                        </button> */}
                         </div>
                     </div>)
                     })}

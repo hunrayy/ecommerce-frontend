@@ -9,22 +9,31 @@ import PageNotFound from "../pageNotFound/PageNotFound";
 import "./singleProduct.css";
 import { CurrencyContext } from "../../components/all_context/CurrencyContext";
 import { CartContext } from "../cart/CartContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 const SingleProduct = () => {
+  const navigate = useNavigate()
   const { cartProducts, addToCart, updateCartItemLength } = useContext(CartContext);
   const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
-  let { product_id } = useParams();
-  product_id = Number(product_id);
+  let { product_name } = useParams();
+  console.log(product_name);
 
   const [product, setProduct] = useState({
     id: "",
     img: "",
+    subImage1: "",
+    subImage2: "",
+    subImage3: "",
     name: "",
     description: "",
     price: 0,
     pageNotFound: false
   });
+
+  const [selectedImage, setSelectedImage] = useState(""); // State for the enlarged image
 
   const [lengthState, setLengthState] = useState({
     length: null,
@@ -32,49 +41,57 @@ const SingleProduct = () => {
   });
 
   useEffect(() => {
-    const feedback = productStore.find(item => item.id === product_id);
-
-    if (feedback) {
-      const lengthsOfHair = [
-        `12", 12", 12"`,
-        `14", 14", 14"`,
-        `16", 16", 16"`,
-        `18", 18", 18"`,
-        `20", 20", 20"`,
-        `22", 22", 22"`,
-        `24", 24", 24"`,
-        `26", 26", 26"`,
-        `28", 28", 28"`,
-      ];
-
-      setProduct({
-        id: feedback.id,
-        img: feedback.img,
-        name: feedback.name,
-        description: feedback.description,
-        price: feedback.price,
-      });
-
-      // Check if product is already in cart
-      const cartItem = cartProducts.products.find(item => item.id === product_id);
-      if (cartItem && cartItem.lengthPicked) {
-        setLengthState({
-          length: lengthsOfHair,
-          lengthPicked: cartItem.lengthPicked
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-single-product?productName=${product_name}`).then((feedback) => {
+      console.log(feedback)
+      if(feedback.data.code == "success"){
+        const lengthsOfHair = [
+          `12", 12", 12"`,
+          `14", 14", 14"`,
+          `16", 16", 16"`,
+          `18", 18", 18"`,
+          `20", 20", 20"`,
+          `22", 22", 22"`,
+          `24", 24", 24"`,
+          `26", 26", 26"`,
+          `28", 28", 28"`,
+        ];
+        setProduct({
+          id: feedback.id,
+          img: feedback.data.data.productImage,
+          subImage1: feedback.data.data.subImage1 !== "null" && feedback.data.data.subImage1,
+          subImage2: feedback.data.data.subImage2 !== "null" && feedback.data.data.subImage2,
+          subImage3: feedback.data.data.subImage3 !== "null" && feedback.data.data.subImage3,
+          name: feedback.data.data.productName,
+          price: feedback.data.data.productPriceInNaira,
         });
-      } else {
-        setLengthState({
-          length: lengthsOfHair,
-          lengthPicked: lengthsOfHair[0]
-        });
+  
+        setSelectedImage(feedback.data.data.productImage); // Set the initially selected image
+  
+  
+        // Check if product is already in cart
+        const cartItem = cartProducts.products.find(item => item.id === product.id);
+        if (cartItem && cartItem.lengthPicked) {
+          setLengthState({
+            length: lengthsOfHair,
+            lengthPicked: cartItem.lengthPicked
+          });
+        } else {
+          setLengthState({
+            length: lengthsOfHair,
+            lengthPicked: lengthsOfHair[0]
+          });
+        }
+        // setProduct((prevState) => ({
+        //   ...prevState,
+        //   pageNotFound: true
+        // }));
+
+      }else{
+        navigate("/page-not-found", {replace: "true"})
       }
-    } else {
-      setProduct((prevState) => ({
-        ...prevState,
-        pageNotFound: true
-      }));
-    }
-  }, [product_id, cartProducts.products]);
+
+    })
+  }, [product_name, cartProducts.products]);
 
   const handleAddToCart = () => {
     addToCart(product, lengthState.lengthPicked);
@@ -85,6 +102,10 @@ const SingleProduct = () => {
     updateCartItemLength(product.id, length); // Update length in cart
   };
 
+  const handleImageClick = (img) => {
+    setSelectedImage(img); // Update the enlarged image on click
+  };
+
   const cartItems = JSON.parse(localStorage.getItem("cart_items")) || [];
   const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
   const inCart = cartItems.some(item => item.id === product.id);
@@ -93,6 +114,13 @@ const SingleProduct = () => {
     // Convert price based on selected currency
     const convertedPrice = convertCurrency(product.price, selectedCurrency);
     const currencySymbol = currencySymbols[selectedCurrency] || '';
+    const productImages = [
+      product.img,
+      ...(product.subImage1 ? [product.subImage1] : []),
+      ...(product.subImage2 ? [product.subImage2] : []),
+      ...(product.subImage3 ? [product.subImage3] : [])
+    ];
+    
   
 
   return (
@@ -103,7 +131,7 @@ const SingleProduct = () => {
         <div>
           <Navbar />
           <section className="py-5" style={{ backgroundColor: "var(--bodyColor)", marginTop: "var(--marginAboveTop)" }}>
-            {cartProducts.productAddedToCartAnimation && (
+            {/* {cartProducts.productAddedToCartAnimation && (
               <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "2" }}>
                 {cartProducts.addToCartAnimationMessage} 
               </div>
@@ -112,13 +140,44 @@ const SingleProduct = () => {
               <div style={{ width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "2" }}>
                 {cartProducts.lengthUpdateMessage}
               </div>
-            )}
+            )} */}
             <div className="container">
-              <div className="row gx-5">
+              <div className="row gx-">
                 <aside className="col-lg-6">
-                  <div className="rounded-4 mb-3 d-flex justify-content-center">
-                    <img style={{ maxWidth: "100%", maxHeight: "100vh", margin: "auto" }} className="rounded-4 fit" src={product.img} alt={product.name} />
-                  </div>
+                <div className="single-product-image-scroll-container">
+                            {productImages.map((image, index) => (
+                                <img
+                                    key={index}
+                                    src={image}
+                                    alt={`Product Image ${index + 1}`}
+                                    className="single-product-scrollable-image"
+                                />
+                            ))}
+                        </div>
+                  {/* <div className="rounded-4 mb-3 d-flex justify-content-center">
+                    <img style={{width: "100%", height: "auto", maxHeight: "500px", objectFit: "contain", borderRadius: "10px"}}  className="rounded-4 fit" src={selectedImage} alt={product.name} />
+                  </div> */}
+                  {/* <div className="small-images-container">
+                    
+                    {productImages.map((img, index) => (
+                     <img
+                       key={index}
+                       src={img}
+                       alt={`Thumbnail ${index}`}
+                       style={{
+                         width: "100%",
+                         height: "auto",
+                         maxWidth: "50px",
+                         objectFit: "contain",
+                         cursor: "pointer",
+                         marginBottom: "10px",
+                         borderRadius: "5px",
+                         border: selectedImage === img ? "2px solid black" : "none"
+                       }}
+                       onClick={() => handleImageClick(img)} // Set the selected image on click
+                     />
+                   ))}
+                 </div> */}
                 </aside>
                 <main className="col-lg-6">
                   <div className="ps-lg-3">
@@ -143,7 +202,7 @@ const SingleProduct = () => {
                     <p>{product.description}</p>
                     <div className="text-muted">LENGTH {lengthState.lengthPicked}</div>
                     <div className="row mt-2">
-                      <div className="lengths-container mx-3">
+                      <div className="lengths-container">
                         {lengthState.length?.map((length, index) => (
                           <div key={index}>
                             <button
@@ -158,13 +217,15 @@ const SingleProduct = () => {
                       </div>
                     </div>
                     <hr />
-                    <button
-                      className="btn btn-block"
-                      style={inCart || isRecentlyAdded ? { backgroundColor: "black", color: "white" } : { border: "1px solid black", color: "black" }}
-                      onClick={handleAddToCart}
-                    >
-                      {inCart || isRecentlyAdded ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
-                    </button>
+                    <div className="d-grid">
+                      <button
+                        className="btn"
+                        style={inCart || isRecentlyAdded ? { backgroundColor: "black", color: "white" } : { border: "1px solid black", color: "black" }}
+                        onClick={handleAddToCart}
+                      >
+                        {inCart || isRecentlyAdded ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
+                      </button>
+                    </div>
                   </div>
                 </main>
               </div>

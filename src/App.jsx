@@ -28,7 +28,7 @@ function App() {
         <CartProvider>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/product/:product_id" element={<SingleProduct />} />
+            <Route path="/product/:product_name" element={<SingleProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products/checkout" element={<CheckOut />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { CurrencyContext } from '../../components/all_context/CurrencyContext';
-
+import {toast} from "react-toastify"
 
 export const CartContext = createContext();
 
@@ -64,7 +64,9 @@ const CartProvider = ({ children }) => {
         recentlyAddedProducts: prevState.recentlyAddedProducts.filter(id => id !== product.id),
         productAddedToCartAnimation: true,
         addToCartAnimationMessage: "Product successfully removed"
+        
       }));
+      toast.success("Product successfully removed")
     } else {
       getItems.push({
         ...product,
@@ -77,6 +79,8 @@ const CartProvider = ({ children }) => {
         productAddedToCartAnimation: true,
         addToCartAnimationMessage: <span>Product added successfully <i className="fa-sharp fa-solid fa-circle-check px-2"></i></span>
       }));
+      toast.success("Product added successfully")
+
     }
 
     setTimeout(() => {

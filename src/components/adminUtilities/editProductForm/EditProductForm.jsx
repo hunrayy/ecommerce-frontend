@@ -14,7 +14,6 @@ const EditProductForm = ({ product, onClose}) => {
         subImage2: null,
         subImage3: null,
         productName: "",
-        productDescription: "",
         productPrice: "",
     });
     const [imagePreviews, setImagePreviews] = useState({
@@ -35,20 +34,19 @@ const EditProductForm = ({ product, onClose}) => {
         if (product) {
             setFormData({
                 productId: product._id,
-                productImage: product.images[0] || null,
-                subImage1: product.images[1] || null,
-                subImage2: product.images[2] || null,
-                subImage3: product.images[3] || null,
+                productImage: product.productImage || null,
+                subImage1: product.subImage1 || null,
+                subImage2: product.subImage2 || null,
+                subImage3: product.subImage3 || null,
                 productName: product.productName,
-                productDescription: product.productDescription,
                 productPrice: product.productPriceInNaira,
             });
             // Set image previews
             setImagePreviews({
-                productImage: product.images[0] ? URL.createObjectURL(new Blob([product.images[0]])) : null,
-                subImage1: product.images[1] ? URL.createObjectURL(new Blob([product.images[1]])) : null,
-                subImage2: product.images[2] ? URL.createObjectURL(new Blob([product.images[2]])) : null,
-                subImage3: product.images[3] ? URL.createObjectURL(new Blob([product.images[3]])) : null,
+                productImage: product.productImage ? URL.createObjectURL(new Blob([product.productImage])) : null,
+                subImage1: product.subImage1 ? URL.createObjectURL(new Blob([product.subImage1])) : null,
+                subImage2: product.subImage2 ? URL.createObjectURL(new Blob([product.subImage2])) : null,
+                subImage3: product.subImage3 ? URL.createObjectURL(new Blob([product.subImage3])) : null,
             });
         }
     }, [product]);
@@ -88,7 +86,7 @@ const EditProductForm = ({ product, onClose}) => {
         return value.replace(/,/g, "");
     };
 
-    const isFormValid = formData.productName && formData.productDescription && formData.productPrice;
+    const isFormValid = formData.productName && formData.productPrice;
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -108,7 +106,6 @@ const EditProductForm = ({ product, onClose}) => {
         if (formData.subImage2) uploadData.append("subImage2", formData.subImage2);
         if (formData.subImage3) uploadData.append("subImage3", formData.subImage3);
         uploadData.append("productName", formData.productName);
-        uploadData.append("productDescription", formData.productDescription);
         uploadData.append("productPrice", formData.productPrice);
         try {
             const token = Cookies.get("authToken");
@@ -133,7 +130,6 @@ const EditProductForm = ({ product, onClose}) => {
                 //     subImage2: null,
                 //     subImage3: null,
                 //     productName: "",
-                //     productDescription: "",
                 //     productPrice: "",
                 // });
                 // setImagePreviews({
@@ -187,7 +183,7 @@ const EditProductForm = ({ product, onClose}) => {
                                  <input type="file" className="form-control" id="productImage" onChange={handleInputChange} />
                                  {formData && (
                                     <div>
-                                        <img src={product.images[0]} alt="Product" style={{ width: '30px', height: 'auto' }} />
+                                        <img src={product.productImage} alt="Product" style={{ width: '30px', height: 'auto' }} />
                                     </div>
                                 )}
                             </div>
@@ -196,9 +192,9 @@ const EditProductForm = ({ product, onClose}) => {
                             <label htmlFor="subImage1" className="form-label">Sub Image 1 (optional)</label>
                             <div style={{display: "flex"}}>
                                 <input type="file" className="form-control" id="subImage1" onChange={handleInputChange} />
-                                {product.images[1] && (
+                                {(product.subImage1 && product.subImage1 !== "null") && (
                                     <div>
-                                        <img src={product.images[1]} alt="Sub Image 1" style={{ width: '30px', height: 'auto' }} />
+                                        <img src={product.subImage1} alt="Sub Image 1" style={{ width: '30px', height: 'auto' }} />
                                     </div>
                                 )}
                             </div>
@@ -207,31 +203,27 @@ const EditProductForm = ({ product, onClose}) => {
                             <label htmlFor="subImage2" className="form-label">Sub Image 2 (optional)</label>
                             <div style={{display: "flex"}}>
                                 <input type="file" className="form-control" id="subImage2" onChange={handleInputChange} />
-                                {product.images[2] && (
+                                {(product.subImage2 && product.subImage2 !== "null") && (
                                     <div>
-                                        <img src={product.images[2]} alt="Sub Image 2" style={{ width: '30px', height: 'auto' }} />
+                                        <img src={product.subImage2} alt="Sub Image 2" style={{ width: '30px', height: 'auto' }} />
                                     </div>
                                 )}
                             </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="subImage3" className="form-label">Sub Image 3 (optional)</label>
-                           <div style={{display: "flex"}}>
+                            <div style={{display: "flex"}}>
                                 <input type="file" className="form-control" id="subImage3" onChange={handleInputChange} />
-                                {product.images[3] && (
+                                {(product.subImage3 && product.subImage3 !== "null") && (
                                     <div>
-                                        <img src={product.images[3]} alt="Sub Image 3" style={{ width: '30px', height: 'auto' }} />
+                                        <img src={product.subImage3} alt="Sub Image 3" style={{ width: '30px', height: 'auto' }} />
                                     </div>
                                 )}
-                           </div>
+                            </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="productName" className="form-label">Product Name</label>
                             <input type="text" className="form-control" id="productName" value={formData.productName} onChange={(e) => setFormData({ ...formData, productName: e.target.value })} />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="productDescription" className="form-label">Product Description</label>
-                            <textarea className="form-control" id="productDescription" rows="3" value={formData.productDescription} onChange={(e) => setFormData({ ...formData, productDescription: e.target.value })}></textarea>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="productPrice" className="form-label">Product Price</label>

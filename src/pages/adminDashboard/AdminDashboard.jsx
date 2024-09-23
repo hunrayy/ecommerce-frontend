@@ -11,6 +11,8 @@ import { useAuth } from "../../components/AuthContext/AuthContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import AdminRefundPolicy from "../../components/adminUtilities/adminRefundPolicy/AdminRefundPolicy";
+
 
 const AdminDashboard = () => {
     const use_auth = useAuth()
@@ -23,7 +25,8 @@ const AdminDashboard = () => {
         search_page: false,
         settings_page: false,
         notifications_page: false,
-        shipping_policy_page: false
+        shipping_policy_page: false,
+        refund_policy_page: false
     });
     const [pagesDropdown, setPagesDropdown] = useState(false)
 
@@ -35,7 +38,8 @@ const AdminDashboard = () => {
             search_page: page === 'search',
             settings_page: page === 'settings',
             notifications_page: page === 'notifications',
-            shipping_policy_page: page === 'shipping_policy'
+            shipping_policy_page: page === 'shipping_policy',
+            refund_policy_page: page === 'refund_policy'
         });
         setShownav(false);  // Close the sidebar when a page is selected
     };
@@ -79,7 +83,7 @@ const AdminDashboard = () => {
     </div>
     <div className={`admin-sidebar-dropdown-wrapper ${pagesDropdown ? 'open' : ''}`}>
         <div onClick={() => showPage('shipping_policy')}>Shipping policy</div>
-        <div>Cart</div>
+        <div onClick={() => showPage('refund_policy')}>Refund policy</div>
         <div>Page</div>
         <div>Hgdhagh</div>
         <div>Home</div>
@@ -95,6 +99,9 @@ const AdminDashboard = () => {
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('notifications')}>
                             <i className="fa-solid fa-bell"></i> <span>Notifications</span>
                         </div>
+                        <div className="admin-sidebar-icon-wrapper text-danger" onClick={() => use_auth.logoutUser()}>
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                        </div>
                     </div>
                     
                 </div>
@@ -106,6 +113,7 @@ const AdminDashboard = () => {
                     {pages.search_page && <SearchComponent />}
                     {pages.notifications_page && <AdminNotification />}
                     {pages.shipping_policy_page && <AdminShippingPolicy />}
+                    {pages.refund_policy_page && <AdminRefundPolicy />}
                     
                     {/* Add other components as needed */}
                 </div>

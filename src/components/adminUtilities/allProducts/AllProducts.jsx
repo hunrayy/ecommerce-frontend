@@ -182,7 +182,7 @@ const AllProducts = () => {
                     <div>Home / all products</div>
                     </div> */}
                     {productDeleting && <Loader />}
-                     <div class="search-container" style={{padding: "10px", display: "flex", alignItems: "center", gap: "20px", cursor: "pointer"}} onClick={() => setSearchState((prev) => ({...prev, isSearching: true}))}>
+                     <div class="search-container search-container-fixed" style={{padding: "10px", display: "flex", alignItems: "center", gap: "20px", cursor: "pointer"}} onClick={() => setSearchState((prev) => ({...prev, isSearching: true}))}>
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <span className="text-muted">Search...</span>
                     </div>
@@ -199,11 +199,12 @@ const AllProducts = () => {
                     <div className="row">
                         {allProducts.products_loading && <BasicLoader />}
                         {allProducts.products?.slice().reverse().map((product) => {
+                            console.log(product)
                             const productPrice = parseFloat(product.productPriceInNaira);
                             const convertedPrice = convertCurrency(productPrice, "NGN", selectedCurrency);
                             const currencySymbol = currencySymbols[selectedCurrency];
-                            const firstImage = product.images[0];
-
+                            const firstImage = product.productImage;
+     
                             return (
                                 <div
                                     className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container"
@@ -217,6 +218,8 @@ const AllProducts = () => {
                                             className="card-img-top rounded-2"
                                             style={{ aspectRatio: "3 / 4", width: "100%", height: "auto" }}
                                         />
+                                     
+                                        
                                         <div className="pl-2 pt-2">
                                             <h5 style={{ display: "flex", gap: "5px" }}>
                                                 <span>{currencySymbol}</span>
@@ -258,7 +261,7 @@ const AllProducts = () => {
                             searchState.searchData.map((product) => {
                                 // console.log(product)
                                 return <div className="admin-search-result-container" onClick={()=> {setSearchState((prev) => ({...prev, isSearching: false, searchLoading: false, wordNotFound: null})), setSelectedProduct(product)}}>
-                                    <img src={product.images[0]} alt="" width="50px"  />
+                                    <img src={product.productImage} alt="" width="50px"  />
                                     <p><b>{product.productName}</b></p>
                                 </div>
                             })
@@ -272,44 +275,50 @@ const AllProducts = () => {
 
             {/* Custom Modal */}
             {selectedProduct && (
-                <div className="custom-modal-overlay" onClick={() => setSelectedProduct(null)}>
-                    <div onClick={(e) => e.stopPropagation()} className="card custom-modal-card" style={{width: "400px", maxHeight: "600px", overflowY: "auto", paddingTop: "20px"}}>
-                        <div className="image-scroll-container">
-                            {selectedProduct.images.map((image, index) => (
-                                <img key={index} src={image} alt={`Product Image ${index + 1}`} className="modal-image" />
-                            ))}
+            <div className="custom-modal-overlay" onClick={() => setSelectedProduct(null)}>
+                <div onClick={(e) => e.stopPropagation()} className="card custom-modal-card" style={{ width: "400px", maxHeight: "600px", overflowY: "auto", paddingTop: "20px" }}>
+                    <div className="image-scroll-container">
+                        {[
+                            selectedProduct.productImage,
+                            selectedProduct.subImage1,
+                            selectedProduct.subImage2,
+                            selectedProduct.subImage3
+                        ].filter(image => image && image !== "null").map((image, index) => (
+                            <img key={index} src={image} alt={`Product Image ${index + 1}`} className="modal-image" />
+                        ))}
+                    </div>
+                    <div className="card-body">
+                        <div className="card-title">
+                            <h5>
+                                Price: {currencySymbols[selectedCurrency]}
+                                {convertCurrency(parseFloat(selectedProduct.productPriceInNaira), "NGN", selectedCurrency)}
+                            </h5>
                         </div>
-                        <div className="card-body">
-                            <div className="card-title">
-                                <h5>
-                                    Price: {currencySymbols[selectedCurrency]}
-                                    {convertCurrency(parseFloat(selectedProduct.productPriceInNaira), "NGN", selectedCurrency)}
-                                </h5>
-                            </div>
-                            <p className="card-text">{selectedProduct.productName}</p>
-                            <p>Color: {selectedProduct.productDescription}</p>
-                            <div style={{ display: "flex", justifyContent: "right", gap: "10px" }}>
-                                <button onClick={() => {setPage("editProductForm")}} className="btn"
-                                    style={{backgroundColor: "purple", color: "white", width: "100%", maxWidth: "100px"}}>
-                                    Edit
-                                </button>
-                                <button
-                                    className="btn"
-                                    style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                        width: "100%",
-                                        maxWidth: "100px",
-                                    }}
-                                    onClick={() => handleDeleteClick(selectedProduct)}
-                                >
-                                    Delete
-                                </button>
-                            </div>
+                        <p className="card-text">{selectedProduct.productName}</p>
+                        <p>Color: {selectedProduct.productDescription}</p>
+                        <div style={{ display: "flex", justifyContent: "right", gap: "10px" }}>
+                            <button onClick={() => { setPage("editProductForm") }} className="btn" style={{ backgroundColor: "purple", color: "white", width: "100%", maxWidth: "100px" }}>
+                                Edit
+                            </button>
+                            <button
+                                className="btn"
+                                style={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                    width: "100%",
+                                    maxWidth: "100px",
+                                }}
+                                onClick={() => handleDeleteClick(selectedProduct)}
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
+        )}
+
+
 
             {/* Delete Confirmation Modal */}
             {showDeleteModal && (
@@ -324,7 +333,7 @@ const AllProducts = () => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div style={{display: "flex", gap: "10px", alignItems: "center"}}>
-                            <img src={productToDelete.images[0]} alt="" width="50px" />
+                            <img src={productToDelete.productImage} alt="" width="50px" />
                             <p>{productToDelete.productName}</p>
                         </div>
                         <h5 className="mt-2">Delete this item?</h5>

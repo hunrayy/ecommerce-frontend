@@ -3,6 +3,8 @@
     flex-wrap: wrap;
     /* background-color: red; */
     gap: 7px;
+    /* background-color: red; */
+    /* width: 300px; */
 }
 .length-button{
     padding: 5px;
@@ -10,4 +12,58 @@
     color: rgba(0, 0, 0, 0.699);
     border: 0.5px solid grey;
     font-size: 15px;
+}
+
+.small-images-container{
+    /* background-color: red; */
+    display: flex;
+    gap: 30px;
+    max-width: 380px;
+    margin-left: 75px;
+}
+
+.single-product-image-scroll-container {
+    display: flex;
+    overflow-x: auto; 
+    /* overflow-y: auto;  */
+    width: 100%;
+    height: auto;
+    scroll-snap-type: x mandatory;
+    max-height: 500px;
+    object-fit: contain;
+    /* background-color: white; */
+    background-color: rgba(128, 128, 128, 0.182);
+    /* gap: 10px; */
+}
+
+/* Custom scrollbar for webkit browsers (e.g., Chrome, Safari) */
+.single-product-image-scroll-container::-webkit-scrollbar {
+    height: 8px;  /* Slimmer scrollbar height */
+}
+
+.single-product-image-scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.298);  /* Darker thumb color */
+    border-radius: 10px;  /* Rounded scrollbar thumb */
+}
+
+.single-product-image-scroll-container::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);  /* Lighter scrollbar track */
+}
+
+.single-product-scrollable-image {
+    flex-shrink: 0;
+    width: 100%; 
+    height: auto;
+    object-fit: contain;
+    /* scroll-snap-align: start; */
+}
+@media (max-width: 577px) {
+    .small-images-container{
+        background-color: red;
+        display: flex;
+        gap: 30px;
+        /* max-width: 380px; */
+        margin-left: 10px;
+        width: 100%;
+    }
 }
