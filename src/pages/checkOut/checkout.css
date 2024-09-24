@@ -16,7 +16,7 @@
 @media (max-width: 991px) {
     .checkout-item-summary{
         position: static;
-        padding-left: 35px;
+        padding-left: 20px;
     }
 }
 

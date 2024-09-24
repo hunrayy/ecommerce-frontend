@@ -98,7 +98,7 @@ const Cart = () => {
                         <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
                         <div style={{display: "flex"}}>
                           <div className="cart-text-wrapper" >
-                            <div className="d-flex align-items-center" style={{ gap: "10px" }}>
+                            <div className="d-flex align-items-center mx-lg-5" style={{ gap: "10px" }}>
                               <button className="cart-increase-decrease-btn" onClick={() => decreaseButton(each_item)}><i className="fa-solid fa-minus"></i></button>
                               <span>{each_item.quantity}</span>
                               <button className="cart-increase-decrease-btn" onClick={() => increaseButton(each_item)}><i className="fa-solid fa-plus"></i></button>

@@ -18,6 +18,7 @@ import { AuthProvider } from "./components/AuthContext/AuthContext"
 import CheckOut from "./pages/checkOut/CheckOut"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
+import UserAccount from "./pages/userAccount/UserAccount"
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/identification/" element={<Identification />} />
             <Route path="/email-verification/:token" element={<VerifyEmailCode />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/user-account" element={<UserAccount />} />
             <Route path="/register/:token" element={<Register />} />
             <Route path="/policies/shipping-policy" element={<ShippingPolicy />} />
             <Route path="/policies/refund-policy" element={<RefundPolicy />} />

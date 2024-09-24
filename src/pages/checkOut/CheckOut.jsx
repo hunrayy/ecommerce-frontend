@@ -96,7 +96,7 @@ const CheckOut = () => {
             }
           }
         ).then((feedback) => {
-          // console.log(feedback)
+          console.log(feedback)
           const links = feedback.data.links;
 
           // Find the link with rel: "approve"
@@ -252,7 +252,9 @@ const CheckOut = () => {
 
 
                 <div className="d-none d-lg-grid">
-                  <button className="btn btn-lg shadow-0 border " onClick={handleSubmit} style={{backgroundColor: "black", color: "white", fontWeight: "900"}}>Pay now</button>
+                  <button disabled={loading} className="btn btn-lg shadow-0 border " onClick={handleSubmit} style={{backgroundColor: "black", color: "white", fontWeight: "900"}}>
+                    {loading ? "Processing..." : "Pay now"}
+                  </button>
                 </div>
               </div>
           <div className=" checkout-item-summary">
@@ -289,9 +291,11 @@ const CheckOut = () => {
                 </div>
 
 
-                {/* <div className="d-grid d-lg-none" style={{background: "red", wdth: "100%"}}> */}
-                    <button className="btn btn-lg shadow-0 border" onClick={handleSubmit} style={{backgroundColor: "black", color: "white", fontWeight: "900", width: "100%"}}>Pay now</button>
-                  {/* </div> */}
+                <div className="d-grid d-lg-none">
+                    <button disabled={loading} className="btn btn-lg shadow-0 border" onClick={handleSubmit} style={{backgroundColor: "black", color: "white", fontWeight: "900", width: "100%"}}>
+                    {loading ? "Processing..." : "Pay now"}
+                    </button>
+                  </div>
               </div>
             </div>
             </div>

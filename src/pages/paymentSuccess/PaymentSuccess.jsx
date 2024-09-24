@@ -1,48 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import BasicLoader from '../../components/loader/BasicLoader'
+import { CartContext } from '../cart/CartContext';
+import Cookies from 'js-cookie';
 
 const PaymentSuccess = () => {
+    const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+    const [paymentPreviouslyMade, setPaymentPreviouslyMade] = useState(false)
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // Extract the query parameters
-        const token = searchParams.get('token');
-        const PayerID = searchParams.get('PayerID');
-
-        // If token or PayerID is missing, redirect to home
-        if (!token || !PayerID) {
-            navigate('/');
-            return;
+    const saveProductsToDb = async () => {
+        const products = cartProducts?.products
+        const detailsToken = searchParams.get('details')
+        const authToken = Cookies.get("authToken")
+        const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/save-products-to-db-after-payment`, {cartProducts: cartProducts.products, detailsToken: detailsToken}, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        })
+        if(feedback.data.code == "success"){
+            localStorage.clear()
+            setPaymentConfirmed(true); // Payment confirmed
+        }else if(feedback.data.code == "error"){
+           return  <div className="container">
+            <div className="alert alert-danger text-center mt-5">
+                {feedback.data.reason}
+            </div>
+        </div>
         }
+    }
 
-        // Validate payment with the backend
-        const validatePayment = async () => {
+    useEffect(() => {
+        const validatePayment = async (retryCount = 0) => {
+            const authToken = Cookies.get("authToken")
             try {
-                const response = await fetch(`/api/paypal/validate-payment?token=${token}&PayerID=${PayerID}`);
-                const data = await response.json();
-
-                if (data.success) {
-                    setPaymentConfirmed(true); // Payment confirmed
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/paypal/validate-payment?token=${token}&PayerID=${PayerID}`, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`
+                    }
+                });
+                const data = response.data;
+                console.log(data)
+    
+                if (data.code == "already-made") {
+                    setPaymentPreviouslyMade(true)
+                } else if (data.success) {
+                    // Save product to database
+                    saveProductsToDb()
                 } else {
-                    setError('Payment could not be verified.');
+                    setError('We encountered an issue verifying your payment. Please try again or contact support.');
                 }
             } catch (err) {
-                setError('Error validating payment.');
+                if (retryCount < 3) {
+                    // Retry the payment validation up to 3 times before showing error
+                    setTimeout(() => {
+                        validatePayment(retryCount + 1);
+                    }, 2000); // Wait 2 seconds before retrying
+                } else {
+                    setError('Error validating payment after multiple attempts.');
+                }
             } finally {
                 setLoading(false);
             }
         };
-
+    
+        // Start the validation process
         validatePayment();
     }, [searchParams, navigate]);
+    
 
     if (loading) {
-        return null // Show loading state while validating
+        return <div style={{width: "100vw", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <BasicLoader />
+        </div> // Show loading state while validating
     }
 
     if (error) {
@@ -69,8 +105,28 @@ const PaymentSuccess = () => {
                             <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
                                 Back to Home
                             </button>
-                            <button className="btn btn-outline-success btn-lg" onClick={() => navigate('/order-details')}>
+                            {/* <button className="btn btn-outline-success btn-lg" >
                                 View Order Details
+                            </button> */}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    if(paymentPreviouslyMade){
+        return (
+            <div className="container d-flex justify-content-center align-items-center vh-100">
+                <div className="card text-center shadow-lg p-4" style={{ borderRadius: '15px', maxWidth: '500px' }}>
+                    <div className="card-body">
+                        <div className="mb-4">
+                            <i className="bi bi-check-circle-fill success-icon" style={{ fontSize: '100px', color: '#28a745' }}></i>
+                        </div>
+                        <h3 className="card-title mb-3">Duplicate Payment Alert!</h3>
+                        <p className="card-text">It looks like you've already completed this payment. If you have any questions or concerns, please reach out to our customer support.</p>
+                        <div className="mt-4">
+                            <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
+                                Back to Home
                             </button>
                         </div>
                     </div>

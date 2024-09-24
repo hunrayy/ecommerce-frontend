@@ -1,0 +1,155 @@
+.user-account-page-container{
+  margin-top: var(--marginAboveTop);
+}
+
+
+
+
+
+
+
+
+h3, h4, h5 {
+  font-weight: bold;
+}
+
+.btn-outline-purple {
+  background-color: white;
+  border: 2px solid #6A0DAD;
+  color: #6A0DAD;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-outline-purple:hover {
+  background-color: #6A0DAD;
+  color: white;
+}
+
+.card {
+  border-radius: 15px;
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.table {
+  background-color: white;
+}
+
+.table thead {
+  background-color: #f3e5f5;
+  color: #6A0DAD;
+}
+
+.table-bordered th, .table-bordered td {
+  border: 1px solid #ddd;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(242, 239, 248, 0.5);
+}
+
+.badge {
+  padding: 0.5em 1em;
+  font-size: 0.85em;
+}
+
+.btn-outline-danger {
+  border-color: #ff4d4d;
+  color: #ff4d4d;
+}
+
+.btn-outline-danger:hover {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.account-page {
+    padding: 20px;
+  }
+  
+  .account-details {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .personal-info, .order-history, .address-book {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+  }
+  
+  h3 {
+    margin-bottom: 15px;
+  }
+  
+  .order-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .order-list li {
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .order-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .order-list li a {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .order-list li a div {
+    padding: 0 10px;
+  }
+  
+  .order-list li a:hover {
+    text-decoration: underline;
+  }
+  

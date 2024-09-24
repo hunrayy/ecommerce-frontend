@@ -56,7 +56,7 @@ const SingleProduct = () => {
           `28", 28", 28"`,
         ];
         setProduct({
-          id: feedback.id,
+          id: feedback.data.data._id,
           img: feedback.data.data.productImage,
           subImage1: feedback.data.data.subImage1 !== "null" && feedback.data.data.subImage1,
           subImage2: feedback.data.data.subImage2 !== "null" && feedback.data.data.subImage2,
