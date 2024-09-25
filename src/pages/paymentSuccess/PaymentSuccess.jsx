@@ -5,6 +5,7 @@ import axios from 'axios';
 import BasicLoader from '../../components/loader/BasicLoader'
 import { CartContext } from '../cart/CartContext';
 import Cookies from 'js-cookie';
+import { Link } from 'react-router-dom';
 
 const PaymentSuccess = () => {
     const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
@@ -14,10 +15,12 @@ const PaymentSuccess = () => {
     const [paymentPreviouslyMade, setPaymentPreviouslyMade] = useState(false)
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const detailsToken = searchParams.get('details')
+    const token = searchParams.get('token')
+    const PayerID = searchParams.get('PayerID')
 
     const saveProductsToDb = async () => {
         const products = cartProducts?.products
-        const detailsToken = searchParams.get('details')
         const authToken = Cookies.get("authToken")
         const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/save-products-to-db-after-payment`, {cartProducts: cartProducts.products, detailsToken: detailsToken}, {
             headers: {
@@ -63,6 +66,7 @@ const PaymentSuccess = () => {
                         validatePayment(retryCount + 1);
                     }, 2000); // Wait 2 seconds before retrying
                 } else {
+                    console.log(err.message)
                     setError('Error validating payment after multiple attempts.');
                 }
             } finally {
@@ -105,9 +109,9 @@ const PaymentSuccess = () => {
                             <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
                                 Back to Home
                             </button>
-                            {/* <button className="btn btn-outline-success btn-lg" >
+                            <Link to = "/user-account" className="btn btn-outline-success btn-lg mt-md-2" >
                                 View Order Details
-                            </button> */}
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -125,9 +129,14 @@ const PaymentSuccess = () => {
                         <h3 className="card-title mb-3">Duplicate Payment Alert!</h3>
                         <p className="card-text">It looks like you've already completed this payment. If you have any questions or concerns, please reach out to our customer support.</p>
                         <div className="mt-4">
-                            <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
-                                Back to Home
-                            </button>
+                            <div className="row">
+                                <button className="btn btn-success btn-lg me-3 col-md-5" onClick={() => navigate('/')}>
+                                    Back to Home
+                                </button>
+                                <Link to = "/user-account" className="btn btn-outline-success btn-lg mt-md-0 mt-2 col-md-6" >
+                                    View Order Details
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

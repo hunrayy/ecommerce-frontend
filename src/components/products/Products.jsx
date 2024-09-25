@@ -65,7 +65,7 @@ const Products = () => {
                         console.log(product)
                         const inCart = cartItems?.some(item => item.id === product.id)
                         const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
-                        const convertedPrice = convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency);
+                        const convertedPrice = Number(convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency)).toLocaleString();
                         const currencySymbol = currencySymbols[selectedCurrency];
                         return (<div className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.productName)}>
                         <div className="my-2">
@@ -75,7 +75,7 @@ const Products = () => {
                         <div className="pl-2 pt-2">
                             <h5 style={{display: "flex", gap: "5px"}}>
                                 <span><b>{currencySymbol}</b></span>
-                                <span><b>{convertedPrice}</b></span>
+                                <span><b>{convertedPrice.toLocaleString()}</b></span>
                             </h5>
                             <p className=" mb-0">{product.productName}</p>
                             {/* <p className="text-muted">{product.description}</p> */}

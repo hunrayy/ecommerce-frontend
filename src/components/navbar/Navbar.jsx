@@ -130,6 +130,9 @@ const Navbar = () => {
                             
                           }
                           <li>
+                            <Link to={use_auth.user.is_user_logged ? "/user-account" : "/login"} className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-user " style={{fontSize: "20px"}}></i>My Account</Link>
+                          </li>
+                          <li>
                             <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-heart" style={{fontSize: "20px"}}></i>Wishlist</Link>
                           </li>
                           <li>

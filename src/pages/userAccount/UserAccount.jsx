@@ -1,199 +1,189 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './userAccount.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from "../../components/navbar/Navbar"
+import Footer from "../../components/footer/Footer"
+import { useAuth } from '../../components/AuthContext/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const UserAccount = () => {
+  const use_auth = useAuth()
+  const navigate = useNavigate()
   const [user, setUser] = useState({
-    name: 'Jane Doe',
-    email: 'jane.doe@example.com',
+    firstname: '',
+    email: '',
     phone: '+123 456 7890',
   });
+  const getUserDetails = async() => {
+    const token = Cookies.get("authToken")
+    const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-user-details`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    console.log(feedback)
+  }
 
-  const [showModal, setShowModal] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const orders = [
-    {
-      id: '1234',
-      date: '2023-09-23',
-      total: '₦15,000',
-      status: 'Completed',
-      products: [
-        {
-          name: 'Curly Lace Front Wig',
-          quantity: 1,
-          price: '₦10,000',
-          image: 'https://via.placeholder.com/150', // Example image
-        },
-        {
-          name: 'Straight Hair Bundle',
-          quantity: 2,
-          price: '₦5,000',
-          image: 'https://via.placeholder.com/150', // Example image
-        },
-      ],
-    },
-    {
-      id: '5678',
-      date: '2023-08-15',
-      total: '₦10,500',
-      status: 'Pending',
-      products: [
-        {
-          name: 'Silky Hair Extensions',
-          quantity: 3,
-          price: '₦3,500',
-          image: 'https://via.placeholder.com/150', // Example image
-        },
-      ],
-    },
-  ];
-
-  const handleViewMore = (order) => {
-    setSelectedOrder(order);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedOrder(null);
-  };
+  useEffect(()=> {
+    !use_auth?.user?.is_user_logged && navigate("/", {replace: true})
+    getUserDetails()
+  }, [])
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        {/* User Profile Section */}
-        <div className="col-md-4">
-          <div className="card shadow-lg border-0" style={{ borderRadius: '15px' }}>
-            <div className="card-body text-center">
-              <img
-                src="https://via.placeholder.com/150"
-                className="rounded-circle mb-3 img-fluid"
-                alt="User Profile"
-                style={{ border: '3px solid #6A0DAD' }}
-              />
-              <h3 className="card-title mb-0" style={{ color: '#6A0DAD' }}>{user.name}</h3>
-              <p className="text-muted mb-4">{user.email}</p>
-              <button className="btn btn-outline-purple btn-block">Edit Profile</button>
+    <div className='user-account-page-container'>
+      <div className="container">
+        <Navbar />
+        <div className="row mt-5">
+          {/* User Profile Section */}
+          <div className="col-md-4 mt-5">
+            <div className="card shadow-lg border-0" style={{ borderRadius: '15px' }}>
+              <div className="card-body text-center">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo0WeqO2Wp-Q5SdztFjtST0SdW9lkAGJafdQ&s"
+                  className="rounded-circle mb-3 img-fluid"
+                  alt="User Profile"
+                  style={{ border: '3px solid #6A0DAD' }}
+                />
+                <h3 className="card-title mb-0" style={{ color: '#6A0DAD' }}>{user.name}</h3>
+                <p className="text-muted mb-4">{user.email}</p>
+                {/* <button className="btn btn-outline-purple btn-block  mb-3">Edit Profile</button> */}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Account Overview */}
-        <div className="col-md-8">
-          <div className="card shadow-lg border-0" style={{ borderRadius: '15px' }}>
-            <div className="card-body">
-              <h4 style={{ color: '#6A0DAD' }}>Account Overview</h4>
-              <hr />
+          {/* Account Overview */}
+          <div className="col-md-8 my-5">
+            <div className="card shadow-lg border-0" style={{ borderRadius: '15px' }}>
+              <div className="card-body">
+                <h4 style={{ color: '#6A0DAD' }}>Account Overview</h4>
+                <hr />
 
-              {/* Personal Information */}
-              <div className="mb-4">
-                <h5 style={{ color: '#6A0DAD' }}>Personal Information</h5>
-                <p><strong>Full Name: </strong>{user.name}</p>
-                <p><strong>Email: </strong>{user.email}</p>
-                <p><strong>Phone: </strong>{user.phone}</p>
-                <button className="btn btn-outline-purple btn-sm">Update Information</button>
+                {/* Personal Information */}
+                <div className="mb-4">
+                  <h5 style={{ color: '#6A0DAD' }}>Personal Information</h5>
+                  <p><strong>Full Name: </strong>{user.name}</p>
+                  <p><strong>Email: </strong>{user.email}</p>
+                  <p><strong>Phone: </strong>{user.phone}</p>
+                  <button className="btn btn-outline-purple btn-sm">Update Information</button>
+                </div>
+
+                {/* Order History Section */}
+                <div className="mb-4">
+                  <h5 style={{ color: '#6A0DAD' }}>Order History</h5>
+                  <div className="card p-3">
+                    <div className="row">
+                      <div className="d-flex align-items-center">
+                        <div style={{width: "100%"}}><b>Order Id: 983637829</b><br />
+                          <p className="text-muted">Date: 16 Dec 2024</p>
+                        </div>
+                          <p className="badge bg-warning">Pending...</p>
+                      </div>
+                      <hr />
+                      <div className="col-md-4">
+                        <p className="text-muted">
+                          Contact <br />
+                          John Doe <br />
+                          Phone +23476453738378 <br />
+                          Email: johndoe@gmail.com
+
+                        </p>
+                      </div>
+                      <div className="col-md-4">
+                        <p className="text-muted">
+                          Shipping address <br />
+                          600 Markley street, Suite 897383939, city, Dc, United States
+                        </p>
+                      </div>
+                      <div className="col-md-4">
+                        <p className="text-muted">
+                          Payment <br />
+                          Shipping fee USD 56 <br />
+                          Total paid: USD 123,433
+                        </p>
+                      </div>
+                      <hr />
+                      <div className="col-lg-3 col-md-6 col-sm-6 col-6 ">
+                        <div className="text-muted">
+                          <img style={{width: "100%", height: "auto", maxWidth: "70px", maxHeight: "100px", objectFit: "contain"}} src="https://www.bundlesbynmeri.com/cdn/shop/files/069EC622-D344-40A0-9DE4-237406C3FCF4.jpg?v=1700781640&width=360" alt="" />
+                        <div>
+                          <small>Silky double drawn burmese hair 2-3 donors</small> <br />
+                        <small>16"16"16</small><br />
+                        <small>USD 7252</small> * 3
+                        </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-3 col-md-6 col-sm-6 col-6 ">
+                        <div className="text-muted">
+                          <img style={{width: "100%", height: "auto", maxWidth: "70px", maxHeight: "100px", objectFit: "contain"}} src="https://www.bundlesbynmeri.com/cdn/shop/files/069EC622-D344-40A0-9DE4-237406C3FCF4.jpg?v=1700781640&width=360" alt="" />
+                        <div>
+                          <small>Silky double drawn burmese hair 2-3 donors</small> <br />
+                        <small>16"16"16</small><br />
+                        <small>USD 7252</small> * 3
+                        </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-3 col-md-6 col-sm-6 col-6 ">
+                        <div className="text-muted">
+                          <img style={{width: "100%", height: "auto", maxWidth: "70px", maxHeight: "100px", objectFit: "contain"}} src="https://www.bundlesbynmeri.com/cdn/shop/files/069EC622-D344-40A0-9DE4-237406C3FCF4.jpg?v=1700781640&width=360" alt="" />
+                        <div>
+                          <small>Silky double drawn burmese hair 2-3 donors</small> <br />
+                        <small>16"16"16</small><br />
+                        <small>USD 7252</small> * 3
+                        </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-3 col-md-6 col-sm-6 col-6 ">
+                        <div className="text-muted">
+                          <img style={{width: "100%", height: "auto", maxWidth: "70px", maxHeight: "100px", objectFit: "contain"}} src="https://www.bundlesbynmeri.com/cdn/shop/files/069EC622-D344-40A0-9DE4-237406C3FCF4.jpg?v=1700781640&width=360" alt="" />
+                        <div>
+                          <small>Silky double drawn burmese hair 2-3 donors</small> <br />
+                        <small>16"16"16</small><br />
+                        <small>USD 7252</small> * 3
+                        </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-3 col-md-6 col-sm-6 col-6 ">
+                        <div className="text-muted">
+                          <img style={{width: "100%", height: "auto", maxWidth: "70px", maxHeight: "100px", objectFit: "contain"}} src="https://www.bundlesbynmeri.com/cdn/shop/files/069EC622-D344-40A0-9DE4-237406C3FCF4.jpg?v=1700781640&width=360" alt="" />
+                        <div>
+                          <small>Silky double drawn burmese hair 2-3 donors</small> <br />
+                        <small>16"16"16</small><br />
+                        <small>USD 7252</small> * 3
+                        </div>
+                        </div>
+                      </div>
+                      
+                      
+
+                    
+
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Account Settings Section */}
+                <div>
+                  <h5 style={{ color: '#6A0DAD' }}>Account Settings</h5>
+                  <button className="btn btn-outline-purple btn-block">Change Password</button>
+                  <button className="btn btn-outline-danger btn-block">Log Out</button>
+                </div>
+
               </div>
-
-              {/* Order History Section */}
-              <div className="mb-4">
-                <h5 style={{ color: '#6A0DAD' }}>Order History</h5>
-                <table className="table table-bordered table-striped">
-                  <thead className="table-light">
-                    <tr>
-                      <th>Order #</th>
-                      <th>Date</th>
-                      <th>Total</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.map(order => (
-                      <tr key={order.id}>
-                        <td>{order.id}</td>
-                        <td>{order.date}</td>
-                        <td>{order.total}</td>
-                        <td>
-                          <span className={`badge bg-${order.status === 'Completed' ? 'success' : 'warning'}`}>
-                            {order.status}
-                          </span>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-outline-purple btn-sm"
-                            onClick={() => handleViewMore(order)}
-                          >
-                            View More
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Account Settings Section */}
-              <div>
-                <h5 style={{ color: '#6A0DAD' }}>Account Settings</h5>
-                <button className="btn btn-outline-purple btn-block">Change Password</button>
-                <button className="btn btn-outline-danger btn-block mt-2">Log Out</button>
-              </div>
-
             </div>
           </div>
         </div>
       </div>
+        <Footer />
 
-      {/* Modal for Product Details */}
-      {selectedOrder && (
-        <div
-          className={`modal fade ${showModal ? 'show' : ''}`}
-          style={{
-            display: showModal ? 'block' : 'none',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)', // Dark background overlay
-          }}
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Order #{selectedOrder.id} Details</h5>
-                <button type="button" className="close" onClick={handleCloseModal}>
-                  <span>&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <p><strong>Date: </strong>{selectedOrder.date}</p>
-                <p><strong>Total: </strong>{selectedOrder.total}</p>
-                <p><strong>Status: </strong>{selectedOrder.status}</p>
-
-                <h5 style={{ color: '#6A0DAD' }}>Products Ordered</h5>
-                <div className="product-list">
-                  {selectedOrder.products.map((product, index) => (
-                    <div key={index} className="card mb-3" style={{ borderRadius: '10px' }}>
-                      <img src={product.image} className="card-img-top" alt={product.name} style={{ borderRadius: '10px 10px 0 0' }} />
-                      <div className="card-body">
-                        <h5 className="card-title">{product.name}</h5>
-                        <p className="card-text"><strong>Quantity: </strong>{product.quantity}</p>
-                        <p className="card-text"><strong>Price: </strong>{product.price}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
+
   );
 };
 
 export default UserAccount;
-
 
 
 
