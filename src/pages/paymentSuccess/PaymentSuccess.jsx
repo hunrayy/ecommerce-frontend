@@ -2,87 +2,87 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import BasicLoader from '../../components/loader/BasicLoader'
+import BasicLoader from '../../components/loader/BasicLoader';
 import { CartContext } from '../cart/CartContext';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 
 const PaymentSuccess = () => {
-    const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
+    const { cartProducts } = useContext(CartContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-    const [paymentPreviouslyMade, setPaymentPreviouslyMade] = useState(false)
+    const [paymentPreviouslyMade, setPaymentPreviouslyMade] = useState(false);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const detailsToken = searchParams.get('details')
-    const token = searchParams.get('token')
-    const PayerID = searchParams.get('PayerID')
+    const transactionId = searchParams.get('transaction_id'); // Get transaction_id from URL
+    const tx_ref = searchParams.get('tx_ref'); // Get tx_ref from URL
 
     const saveProductsToDb = async () => {
-        const products = cartProducts?.products
-        const authToken = Cookies.get("authToken")
-        const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/save-products-to-db-after-payment`, {cartProducts: cartProducts.products, detailsToken: detailsToken}, {
-            headers: {
-                Authorization: `Bearer ${authToken}`
+        const authToken = Cookies.get("authToken");
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/save-products-to-db-after-payment`, {
+                cartProducts: cartProducts.products,
+                transactionId // Send transaction_id to the backend
+            }, {
+                headers: {
+                    Authorization: `Bearer ${authToken}`
+                }
+            });
+
+            if (response.data.code === "success") {
+                localStorage.clear();
+                setPaymentConfirmed(true);
+            } else if (response.data.code === "error") {
+                setError(response.data.reason);
             }
-        })
-        if(feedback.data.code == "success"){
-            localStorage.clear()
-            setPaymentConfirmed(true); // Payment confirmed
-        }else if(feedback.data.code == "error"){
-           return  <div className="container">
-            <div className="alert alert-danger text-center mt-5">
-                {feedback.data.reason}
-            </div>
-        </div>
+        } catch (err) {
+            setError("An error occurred while saving products to the database.");
         }
-    }
+    };
 
     useEffect(() => {
+        console.log(tx_ref)
         const validatePayment = async (retryCount = 0) => {
-            const authToken = Cookies.get("authToken")
+            const authToken = Cookies.get("authToken");
+
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/paypal/validate-payment?token=${token}&PayerID=${PayerID}`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/validate-payment?tx_ref=${tx_ref}`, {
                     headers: {
                         Authorization: `Bearer ${authToken}`
                     }
                 });
-                const data = response.data;
-                console.log(data)
-    
-                if (data.code == "already-made") {
-                    setPaymentPreviouslyMade(true)
-                } else if (data.success) {
-                    // Save product to database
-                    saveProductsToDb()
+
+                if (response.data.success) {
+                    saveProductsToDb(); // Save product to the database
+                } else if (response.data.code === "already-made") {
+                    setPaymentPreviouslyMade(true);
                 } else {
-                    setError('We encountered an issue verifying your payment. Please try again or contact support.');
+                    setError(`Payment verification failed: ${response.data.message}`);
                 }
             } catch (err) {
                 if (retryCount < 3) {
-                    // Retry the payment validation up to 3 times before showing error
                     setTimeout(() => {
                         validatePayment(retryCount + 1);
-                    }, 2000); // Wait 2 seconds before retrying
+                    }, 2000);
                 } else {
-                    console.log(err.message)
                     setError('Error validating payment after multiple attempts.');
                 }
             } finally {
                 setLoading(false);
             }
         };
-    
+
         // Start the validation process
         validatePayment();
     }, [searchParams, navigate]);
-    
 
     if (loading) {
-        return <div style={{width: "100vw", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
-            <BasicLoader />
-        </div> // Show loading state while validating
+        return (
+            <div style={{ width: "100vw", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <BasicLoader />
+            </div>
+        );
     }
 
     if (error) {
@@ -109,7 +109,7 @@ const PaymentSuccess = () => {
                             <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
                                 Back to Home
                             </button>
-                            <Link to = "/user-account" className="btn btn-outline-success btn-lg mt-md-2" >
+                            <Link to="/user-account" className="btn btn-outline-success btn-lg mt-md-2">
                                 View Order Details
                             </Link>
                         </div>
@@ -118,7 +118,8 @@ const PaymentSuccess = () => {
             </div>
         );
     }
-    if(paymentPreviouslyMade){
+
+    if (paymentPreviouslyMade) {
         return (
             <div className="container d-flex justify-content-center align-items-center vh-100">
                 <div className="card text-center shadow-lg p-4" style={{ borderRadius: '15px', maxWidth: '500px' }}>
@@ -133,7 +134,7 @@ const PaymentSuccess = () => {
                                 <button className="btn btn-success btn-lg me-3 col-md-5" onClick={() => navigate('/')}>
                                     Back to Home
                                 </button>
-                                <Link to = "/user-account" className="btn btn-outline-success btn-lg mt-md-0 mt-2 col-md-6" >
+                                <Link to="/user-account" className="btn btn-outline-success btn-lg mt-md-0 mt-2 col-md-6">
                                     View Order Details
                                 </Link>
                             </div>
@@ -148,3 +149,45 @@ const PaymentSuccess = () => {
 };
 
 export default PaymentSuccess;
+
+
+    // useEffect(() => {
+    //     const validatePayment = async (retryCount = 0) => {
+    //         const authToken = Cookies.get("authToken")
+    //         try {
+    //             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/paypal/validate-payment?token=${token}&PayerID=${PayerID}`, {
+    //                 headers: {
+    //                     Authorization: `Bearer ${authToken}`
+    //                 }
+    //             });
+    //             console.log(response)
+    //             // const data = response.data;
+    //             // console.log(data)
+    
+    //             // if (data.code == "already-made") {
+    //             //     setPaymentPreviouslyMade(true)
+    //             // } else if (data.success) {
+    //             //     // Save product to database
+    //             //     saveProductsToDb()
+    //             // } else {
+    //             //     setError('We encountered an issue verifying your payment. Please try again or contact support.');
+    //             // }
+    //         } catch (err) {
+    //             if (retryCount < 3) {
+    //                 // Retry the payment validation up to 3 times before showing error
+    //                 setTimeout(() => {
+    //                     validatePayment(retryCount + 1);
+    //                 }, 2000); // Wait 2 seconds before retrying
+    //             } else {
+    //                 console.log(err.message)
+    //                 setError('Error validating payment after multiple attempts.');
+    //             }
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    
+    //     // Start the validation process
+    //     validatePayment();
+    // }, [searchParams, navigate]);
+    

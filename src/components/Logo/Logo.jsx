@@ -1,9 +1,10 @@
 
 
 
-
+import { useNavigate } from "react-router-dom"
 const Logo = () => {
-    return <div>
+    const navigate = useNavigate()
+    return <div onClick={()=> navigate("/", {replace: true})} style={{cursor: "pointer"}}>
         <div style={{fontFamily: "cursive", fontSize: "40px", fontWeight: "bold"}}>
             <span style={{color: "#3788db"}}>B</span>
             <span style={{color: "#3788db"}}>B</span>

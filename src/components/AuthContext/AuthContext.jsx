@@ -45,7 +45,8 @@ export const AuthProvider = ({children}) => {
                 })
             }else{
                 navigate('/', {
-                    replace: true
+                    replace: true,
+                    state: {justLoggedIn: true}
                 });
             }
         }

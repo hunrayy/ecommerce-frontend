@@ -51,7 +51,6 @@
         align-items: start;
     }
     .cart-text-wrapper{
-        /* gap: 30%; */
-        gap: 50%;
+        gap: 30%;
     }
 }

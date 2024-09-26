@@ -60,6 +60,7 @@ const Identification = () => {
           Cookies.set("_emt", verificationCode, { expires: 5 / 1440 });
           // Pass email via state and token through URL
           navigate(`/email-verification/${feedback.data.genratedToken}`, { state: { email: formData.email } });
+
         } else {
           setFormData((prev) => ({
             ...prev,

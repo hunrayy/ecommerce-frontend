@@ -96,7 +96,7 @@ const VerifyEmailCode = () => {
       setServerSuccessFeedback({success: false, registerToken: ""})
       // Trigger form submission when the code is valid
       // document.getElementById("verificationForm").submit();
-      console.log(token) 
+      // console.log(token) 
       const verificationCode = Cookies.get("_emt")
       const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/verify-email-verification-code`, {verificationCode: code}, {
         headers: {
@@ -120,9 +120,12 @@ const VerifyEmailCode = () => {
     }
   };
 
-  const handleResendClick = () => {
+  const handleResendClick = async () => {
     // Logic to resend the verification code
-    alert("Verification code resent!");
+    // alert("Verification code resent!");
+    // const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/send-email-verification-code`, { email: email });
+    navigate("/identification", {replace: true})
+
   };
 
   return (

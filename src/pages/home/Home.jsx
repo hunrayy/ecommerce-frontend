@@ -5,9 +5,11 @@ import Products from "../../components/products/Products";
 import Footer from "../../components/footer/Footer";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../components/AuthContext/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Home = () => {
+    const location = useLocation()
+    const justLoggedIn = location.state?.justLoggedIn
     const { user } = useAuth();
     const navigate = useNavigate();
     useEffect(()=> {
@@ -20,7 +22,12 @@ const Home = () => {
     })
     
     return (
-        <div className="home-page-container">
+        <div className="home-page-container">   
+            {justLoggedIn &&
+                <div className="arrow-box">
+                    <b>Welcome back {user?.user?.firstname}!</b>
+                </div>
+            }
             <Navbar />
             <Banner />
             <Products />

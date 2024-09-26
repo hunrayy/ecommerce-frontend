@@ -16,6 +16,7 @@
     position: fixed;
     top: 40vh;
     left: -400px;
+    z-index: 2;
   }
   @keyframes arrow-box {
     0%{left: -400px;}

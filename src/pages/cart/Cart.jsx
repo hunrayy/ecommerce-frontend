@@ -81,7 +81,7 @@ const Cart = () => {
                       <div className="cart-products-wrapper mb-3">
                         <div className="col-lg-5">
                           <div className="d-flex">
-                            <img src={each_item.img} className="border rounded me-3" style={{ width: "100px", height: "130px" }} />
+                            <img src={each_item.img} className="border rounded me-3" style={{ width: "100px", height: "130px", cursor: "pointer" }} onClick={()=> navigate(`/product/${each_item.name}`, {replace: true})} />
                             <div>
                               <a href="#" className="nav-link">{each_item.name}</a>
                               <p className="text-muted ">{each_item.description}</p>

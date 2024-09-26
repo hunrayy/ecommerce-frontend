@@ -89,7 +89,7 @@ const CheckOut = () => {
       const token = Cookies.get("authToken")
       if (validateForm()) {
         setLoading(true)
-        axios.post(`${import.meta.env.VITE_BACKEND_URL}/paypal/make-payment`, formData,
+        axios.post(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/make-payment`, formData,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -97,20 +97,26 @@ const CheckOut = () => {
           }
         ).then((feedback) => {
           console.log(feedback)
-          if(feedback.data.code == "error"){
-            if (feedback.data.reason.includes("CURRENCY_NOT_SUPPORTED")) {
-              toast.error("Unfortunately, the selected currency is not supported for payments. Please try another currency.");
+          if(feedback.data.error){
+              toast.error(feedback.data.error);
+          }else if(feedback.data.code == "error"){
+            toast.error(feedback.data.reason)
           }
-            toast.error()
-          }
-          const links = feedback.data.links;
+          // const links = feedback.data.links;
 
           // Find the link with rel: "approve"
-          const approveLink = links.find(link => link.rel === "approve");
+          // const approveLink = links.find(link => link.rel === "approve");
 
-          if (approveLink) {
+          // if (approveLink) {
+          //   // Redirect the user to PayPal approval page
+          //   window.location.href = approveLink.href;
+          // } else {
+          //   // Handle the error if the approval link is missing
+          //   toast.error("There was an issue connecting to the payment provider. Please try again.");
+          // }
+          if (feedback.data.data.link) {
             // Redirect the user to PayPal approval page
-            window.location.href = approveLink.href;
+            window.location.href = feedback.data.data.link;
           } else {
             // Handle the error if the approval link is missing
             toast.error("There was an issue connecting to the payment provider. Please try again.");
@@ -237,19 +243,21 @@ const CheckOut = () => {
 
                 <h5 className="card-title">Payment</h5>
                 <small className="mb-3">All transactions are secure and encrypted.</small><br />
-                <small><b>Before making payment, kindly ensure  that your desired payment currency is supported by Paypal</b></small>
+                <small><b>Before making payment, kindly ensure  that your desired payment currency is supported by Flutterwave</b></small>
 
-                <div className="row mb-3 mt-2">
-                  <div className="col-lg-12 mb-3">
+                <div className="row mb-3 mt-2 ">
+                  <div className="col-lg-12 mb-3 ">
                     {/* <!-- Default checked radio --> */}
-                    <div className="form-check h-100 border rounded-3">
+                    <div className="form-check h-100 border rounded-3" style={{minHeight: "250px"}}>
                       <div className="p-3">
                         <input className="form-check-input" type="radio" readOnly checked />
-                        <h5 className="col-3" style={{fontFamily: "Outfit"}}>Paypal</h5>
+                        <h5 className="col-3" style={{fontFamily: "Outfit", width: "100%"}}>Flutterwave</h5>
                         <small>After clicking pay now, you will be redirected to make payment</small>
                       </div>
                         <div>
-                          <img style={{width: "100%", height: "auto", maxWidth: "250px"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr2wrfKVK1n5mjpmuHbIKlNb3PbTLBdwFEAw&s" alt="paypal logo" />
+                          {/* <img style={{width: "100%", height: "auto", maxWidth: "250px"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr2wrfKVK1n5mjpmuHbIKlNb3PbTLBdwFEAw&s" alt="paypal logo" /> */}
+                          <img style={{width: "100%", height: "auto", maxWidth: "250px"}} src="data:image/png;base64,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" alt="Flutterwave image" />
+
                         </div>
                     </div>
                   </div>
@@ -265,11 +273,11 @@ const CheckOut = () => {
               </div>
           <div className=" checkout-item-summary">
             <div className=" justify-content-lg-end">
-              <div className="" style={{ maxWidth: "320px" }}>
+              <div className="">
                 <h6 className="mb-3">Summary</h6>
 
                 
-                {cartProducts.products.map((product, index) => {
+                {cartProducts.products.slice().reverse().map((product, index) => {
                   // console.log(product)
                   const currencySymbol = currencySymbols[selectedCurrency];
                   let convertedPrice = convertCurrency(product.price, 'NGN', selectedCurrency);
