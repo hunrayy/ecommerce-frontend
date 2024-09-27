@@ -17,7 +17,11 @@
     align-items: center;
     height: 100px;
     justify-content: space-between;
-
+}
+@media (max-width: 767px) {
+    .wrapper{
+        height: 80px;
+    }
 }
 
 .links-container{

@@ -79,7 +79,10 @@ export const CurrencyProvider = ({ children }) => {
     }
     const convertedAmount = (amount / rates[fromCurrency]) * rates[toCurrency];
     console.log(typeof(convertedAmount))
-    return isNaN(convertedAmount) ? NaN : convertedAmount.toFixed(2).toLocaleString();
+    // return isNaN(convertedAmount) ? NaN : convertedAmount.toFixed(2).toLocaleString();
+    // return isNaN(convertedAmount) ? NaN : convertedAmount.toFixed(2);
+    return isNaN(convertedAmount) ? NaN : parseFloat(convertedAmount.toFixed(2));
+
   };
 
   const handleCurrencyChange = (newCurrency) => {

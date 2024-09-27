@@ -17,6 +17,7 @@ const PaymentSuccess = () => {
     const navigate = useNavigate();
     const transactionId = searchParams.get('transaction_id'); // Get transaction_id from URL
     const tx_ref = searchParams.get('tx_ref'); // Get tx_ref from URL
+    const detailsToken = searchParams.get('details')
 
     const saveProductsToDb = async () => {
         const authToken = Cookies.get("authToken");
@@ -26,7 +27,8 @@ const PaymentSuccess = () => {
                 transactionId // Send transaction_id to the backend
             }, {
                 headers: {
-                    Authorization: `Bearer ${authToken}`
+                    Authorization: `Bearer ${authToken}`,
+                    detailsToken: detailsToken
                 }
             });
 
@@ -52,8 +54,9 @@ const PaymentSuccess = () => {
                         Authorization: `Bearer ${authToken}`
                     }
                 });
+                console.log(response)
 
-                if (response.data.success) {
+                if (response.data.code == "success") {
                     saveProductsToDb(); // Save product to the database
                 } else if (response.data.code === "already-made") {
                     setPaymentPreviouslyMade(true);
@@ -131,9 +134,9 @@ const PaymentSuccess = () => {
                         <p className="card-text">It looks like you've already completed this payment. If you have any questions or concerns, please reach out to our customer support.</p>
                         <div className="mt-4">
                             <div className="row">
-                                <button className="btn btn-success btn-lg me-3 col-md-5" onClick={() => navigate('/')}>
+                                <Link to="/" className="btn btn-success btn-lg me-3 col-md-5" onClick={() => navigate('/')}>
                                     Back to Home
-                                </button>
+                                </Link>
                                 <Link to="/user-account" className="btn btn-outline-success btn-lg mt-md-0 mt-2 col-md-6">
                                     View Order Details
                                 </Link>

@@ -3,6 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Banner from "../../components/banner/Banner";
 import Products from "../../components/products/Products";
 import Footer from "../../components/footer/Footer";
+import FooterVideo from "../../components/footerVideo/FooterVideo";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -31,6 +32,7 @@ const Home = () => {
             <Navbar />
             <Banner />
             <Products />
+            <FooterVideo />
             <Footer />
         </div>
     );

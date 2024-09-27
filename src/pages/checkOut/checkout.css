@@ -5,14 +5,17 @@
     padding: 48px;
 }
 .checkout-item-summary{
+    /* background-color: red; */
     position: fixed;
     right: 8%;
     overflow-y: auto;
     max-height: 400px;
     padding-bottom: 20px;
+    width: 250px;
 }
 @media (max-width: 991px) {
     .checkout-item-summary{
+        width: 100%;
         position: static;
         padding: 20px;
     }

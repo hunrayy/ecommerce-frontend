@@ -7,6 +7,9 @@ import { CurrencyContext } from "../all_context/CurrencyContext"
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 import axios from "axios"
+import HomePageLoader from "../homePageLoader/HomePageLoader"
+import jsonProducts from "./products.json"
+
 
 
 
@@ -23,14 +26,23 @@ const Products = () => {
 
 
     useEffect(()=> {
+        setAllProducts({
+            products: [],
+            products_loading: true
+        })
         
         axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`).then((feedback) => {
-            // console.log(feedback)
+            console.log(feedback)
             setAllProducts({
                 products: feedback.data.data,
                 products_loading: false
             })
         })
+        console.log(jsonProducts)
+        // setAllProducts({
+        //     products: jsonProducts,
+        //     products_loading: false
+        // })
         // get cart items
         const getCartItems = JSON.parse(localStorage.getItem("cart_items"))
         setCartItems(getCartItems);
@@ -53,21 +65,30 @@ const Products = () => {
             <div style={{width: "100%", height: "50px", backgroundColor: "green", display: "flex", justifyContent: "center", alignItems: "center", color: "white", position: "fixed", top: "0", zIndex: "1"}}>{cartProducts.addToCartAnimationMessage}</div>
             : null
         }
+{/* <div>
+  <video loop  autoplay muted playsInline name="media" style={{width: "100%", height: "auto"}}>
+    <source src="https://images.hergivenhair.com/hghemail/2023/images/adv.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div> */}
+ 
+
+
 
         <section>
             <div className="container my-5 product-page-container">
                 <header className="mb-4">
                 <h3>New products</h3>
                 </header>
-
+                {allProducts.products_loading && <HomePageLoader />}
                 <div className="row">
-                    {allProducts.products?.slice().reverse().map((product) =>{
+                    {allProducts.products?.slice().reverse().map((product, index) =>{
                         console.log(product)
                         const inCart = cartItems?.some(item => item.id === product.id)
                         const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
                         const convertedPrice = Number(convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency)).toLocaleString();
                         const currencySymbol = currencySymbols[selectedCurrency];
-                        return (<div className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.productName)}>
+                        return (<div key={index} className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.productName)}>
                         <div className="my-2">
                    
                             <img src={product.productImage} className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} />
@@ -86,6 +107,8 @@ const Products = () => {
                 </div>
             </div>
         </section> 
+        
+
 
 
     </div>

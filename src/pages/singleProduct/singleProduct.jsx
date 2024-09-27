@@ -195,7 +195,8 @@ const SingleProduct = () => {
                     <div className="mb-3 d-flex">
                       <div className="h5" style={{display: "flex", gap: "5px"}}>
                         <span>{currencySymbol}</span>
-                        <span>{convertCurrency(product.price, 'NGN', selectedCurrency)}</span>
+                        {/* <span>{convertCurrency(product.price, 'NGN', selectedCurrency)}</span> */}
+                        <span>{(convertedPrice).toLocaleString()}</span>
                       </div>
                       <span className="text-muted">/per item</span>
                     </div>

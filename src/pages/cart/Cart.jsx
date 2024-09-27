@@ -1,3 +1,26 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import "./cart.css";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
@@ -16,6 +39,10 @@ const Cart = () => {
   const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
   const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
   const [allCartItems, setAllCartItems] = useState({ products: [] });
+  const [removeItemFromCartModal, setRemoveItemFromCartModal] = useState({
+    show: false,
+    eachItem: null
+  })
   
 
   useEffect(() => {
@@ -30,15 +57,19 @@ const Cart = () => {
         setIsLoading(false); // Allow page to render for non-admin users
     }
   }, [use_auth.user, navigate]);
-  const handleRemoveFromCart = (product) => {
-    addToCart(product);
-  };
+  // const handleRemoveFromCart = (product) => {
+  //   addToCart(product);
+  // };
 
   const updateItemQuantity = (each_item, quantity) => {
     const updatedProducts = allCartItems.products.map((item) => item.id === each_item.id ? { ...item, quantity: item.quantity + quantity } : item);
     setAllCartItems({ products: updatedProducts });
     localStorage.setItem("cart_items", JSON.stringify(updatedProducts));
   };
+
+  // const showRemoveFromCartModal = (each_item) => {
+  //   setRemoveItemFromCartModal({show: true, eachItem: each_item})
+  // }
 
   const increaseButton = (each_item) => updateCartItemQuantity(each_item.id, each_item.quantity + 1);
   const decreaseButton = (each_item) => {
@@ -52,6 +83,26 @@ const Cart = () => {
     return null; // Optionally, you can return a loader here
   }else{ return <div className="cart-page-container">
       <Navbar />
+      {/* remove item from cart waring modal start */}
+      {removeItemFromCartModal.show && removeItemFromCartModal.eachItem &&
+        <div className="remove-item-from-cart-overlay" onClick={()=> setRemoveItemFromCartModal({show: false, eachItem: null})}>
+          <div className="remove-item-from-cart-wrapper" onClick={(e) => e.stopPropagation()}>
+            <div style={{display: "flex", justifyContent: "space-between"}}>
+              <h5>Remove From Cart</h5> <span onClick={()=> setRemoveItemFromCartModal(false)} style={{cursor: "pointer"}}><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            <p>Do you really want to remove this item from cart?</p>
+            <div style={{display: "flex", gap: "20px"}}>
+              <button onClick={()=> setRemoveItemFromCartModal({show: false, eachItem: null})} className="btn" style={{border: "1px solid purple", width: "100%", padding: "10px"}}>Cancel</button>
+              <button onClick={()=> {addToCart(removeItemFromCartModal.eachItem), setRemoveItemFromCartModal({show: false, eachItem: null})}} className="btn" style={{background: "purple", color: "white", width: "100%", display: "flex", gap: "10px", justifyContent: "center", alignItems: "center"}}>
+                <i className="fa-solid fa-trash"></i>
+                <span>Remove</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+      {/* remove item from cart waring modal end */}
+
       <div className="breadcrumb-container">
         <div className="container py-4">
           <nav className="d-flex">
@@ -110,7 +161,7 @@ const Cart = () => {
                           </div>
                         </div>
                         <div style={{}}>
-                          <button className="btn btn-light border text-danger" onClick={() => handleRemoveFromCart(each_item)}> Remove <i className="fa-solid fa-trash"></i></button>
+                          <button className="btn btn-light border text-danger" onClick={() => setRemoveItemFromCartModal({show: true, eachItem: each_item})}> Remove <i className="fa-solid fa-trash"></i></button>
                         </div>
                         </div>
                       </div>

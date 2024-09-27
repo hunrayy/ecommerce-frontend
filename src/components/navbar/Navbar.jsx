@@ -103,7 +103,12 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="">
-                <div className="d-flex float-end text-light">
+              {/* d-flex float-end  */}
+                <div className="text-light" style={{display: "flex"}}>
+                <Link to="/cart" style={{ fontWeight: "bold" }} className="border rounded py-1 px-3 nav-link d-flex align-items-center mx-1">
+                    <i class="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
+                    <p className="d-none d-md-block mb-0">Search</p>
+                  </Link>
                   <div className="dropdown" ref={dropdownRef}>
                     <button onClick={() => setDropdown(prev => !prev)} style={{ fontWeight: "bold" }} className="account-details-dropdown dropdown-toggle me-1 border rounded py-1 px-3 nav-link d-flex align-items-center">
                       <i className="fas fa-user-alt m-1 me-md-2"></i>
