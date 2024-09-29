@@ -223,7 +223,7 @@ const AllProducts = () => {
                                         <div className="pl-2 pt-2">
                                             <h5 style={{ display: "flex", gap: "5px" }}>
                                                 <span>{currencySymbol}</span>
-                                                <span>{convertedPrice}</span>
+                                                <span>{convertedPrice.toLocaleString()}</span>
                                             </h5>
                                             <p className="mb-0">{product.productName}</p>
                                             <p className="text-muted">{product.productDescription}</p>

@@ -4,6 +4,7 @@ import App from './App.jsx'
 import "./App.css"
 import { BrowserRouter } from "react-router-dom"
 import { CurrencyProvider } from './components/all_context/CurrencyContext.jsx'
+import { NotificationProvider } from './components/all_context/NotificationContext.jsx'
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import '@fortawesome/fontawesome-free/css/all.min.css';
 // import 'bootstrap-icons/icons'
@@ -14,11 +15,13 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-  <CurrencyProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </CurrencyProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+    <NotificationProvider>
+    <CurrencyProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </CurrencyProvider>
+    </NotificationProvider>
+  // </React.StrictMode>
 )

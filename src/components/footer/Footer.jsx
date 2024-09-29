@@ -72,7 +72,7 @@ const Footer = () => {
                 </li></ul>
 
   <div class="footer-bottom">
-    <p>&copy; 2024 Hair Beauty Store. All Rights Reserved. | Developed by <a href="#">Henry Okiyi</a></p>
+    <p>&copy; 2024 beautybykiara. All Rights Reserved. | Developed by <a href="#">Henry Okiyi</a></p>
   </div>
 </footer>
 

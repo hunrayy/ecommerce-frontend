@@ -89,7 +89,8 @@
     background-color: #111;
     color: #999;
     font-size: 0.85rem;
-  }
+    margin-top: 20px;
+  } 
   
   .footer-bottom p {
     margin: 0;

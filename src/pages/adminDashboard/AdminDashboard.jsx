@@ -6,7 +6,9 @@ import CreateProduct from "../../components/adminUtilities/createProduct/CreateP
 import AllProducts from "../../components/adminUtilities/allProducts/AllProducts";
 import SearchComponent from "../../components/adminUtilities/searchComponent/SearchComponent";
 import AdminNotification from "../../components/adminUtilities/adminNotification/AdminNotification";
+import AdminSettingsPage from "../../components/adminUtilities/adminSettings/AdminSettingsPage";
 import AdminShippingPolicy from "../../components/adminUtilities/adminShippingPolicy/AdminShippingPolicy";
+import { useNotification } from "../../components/all_context/NotificationContext";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -15,6 +17,7 @@ import AdminRefundPolicy from "../../components/adminUtilities/adminRefundPolicy
 
 
 const AdminDashboard = () => {
+    const { badgeCount} = useNotification();
     const use_auth = useAuth()
     const navigate = useNavigate()
     const [shownav, setShownav] = useState(false);
@@ -26,7 +29,7 @@ const AdminDashboard = () => {
         settings_page: false,
         notifications_page: false,
         shipping_policy_page: false,
-        refund_policy_page: false
+        refund_policy_page: false,
     });
     const [pagesDropdown, setPagesDropdown] = useState(false)
 
@@ -97,7 +100,7 @@ const AdminDashboard = () => {
                             <i className="fa-solid fa-gear"></i> <span>Settings</span>
                         </div>
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('notifications')}>
-                            <i className="fa-solid fa-bell"></i> <span>Notifications</span>
+                            <i className="fa-solid fa-bell"></i> <div style={{display: "flex"}}><span>Notifications</span> {badgeCount > 0 && <div style={{width: "15px", height: "15px", background: "red", borderRadius: "50%", textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center", color: "white", fontSize: "10px", fontWeight: "bold"}}>{badgeCount}</div>} </div>  
                         </div>
                         <div className="admin-sidebar-icon-wrapper text-danger" onClick={() => use_auth.logoutUser()}>
                             <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
@@ -114,6 +117,7 @@ const AdminDashboard = () => {
                     {pages.notifications_page && <AdminNotification />}
                     {pages.shipping_policy_page && <AdminShippingPolicy />}
                     {pages.refund_policy_page && <AdminRefundPolicy />}
+                    {pages.settings_page && <AdminSettingsPage />}
                     
                     {/* Add other components as needed */}
                 </div>
