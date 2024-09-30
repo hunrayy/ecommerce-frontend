@@ -142,7 +142,7 @@ const AdminSettingsPage = () => {
             <label>Email</label>
             {errors.email && <div className="invalid-feedback">{errors.email}</div>}
             <div style={{ display: "flex", justifyContent: "right" }}>
-              {otpLoading ? "sending..." : ( 
+              {/* {otpLoading ? "sending..." : ( 
                 OtpSent ? (
                   <span className="badge bg-success">OTP sent</span>
                 ) : (
@@ -150,7 +150,7 @@ const AdminSettingsPage = () => {
                     Click to send OTP
                   </button>
                 )
-              )}
+              )} */}
 
             </div>
             {errors.otp && <div className="text-danger">{errors.otp}</div>}
