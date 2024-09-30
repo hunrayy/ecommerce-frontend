@@ -18,18 +18,22 @@ export const NotificationProvider = ({ children }) => {
     // Initialize badgeCount from localStorage on first render
 });
 // return storedBadgeCount ? parseInt(storedBadgeCount, 10) : 0;
+const getallUnreadNotification = () => {
+  axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-admin-unread-notifications`,
+      {
+          headers: {
+              Authorization: `Bearer ${authToken}`
+          }
+      }
+  ).then((unreadNotifications) => {
+      console.log(unreadNotifications)
+      setBadgeCount(unreadNotifications.data.data.length)
+  })
+
+}
 
 useEffect(() => {
-    axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-admin-unread-notifications`,
-        {
-            headers: {
-                Authorization: `Bearer ${authToken}`
-            }
-        }
-    ).then((unreadNotifications) => {
-        console.log(unreadNotifications)
-        setBadgeCount(unreadNotifications.data.data.length)
-    })
+    getallUnreadNotification()
     console.log("useEffect called - subscribing to Pusher event");
 
     const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
@@ -40,25 +44,26 @@ useEffect(() => {
 
     channel.bind('new-user', (data) => {
       console.log("new-user event received:", data);
-      toast.warning(`${data.message}`);
+      toast.info(`${data.message}`);
+      getallUnreadNotification()
 
-      setNotifications((prev) => [...prev, data]);
+      // setNotifications((prev) => [...prev, data]);
 
-      setBadgeCount((prev) => {
-        // Get current badgeCount from localStorage
-        const storedBadgeCount = localStorage.getItem('badgeCount');
+      // setBadgeCount((prev) => {
+      //   // Get current badgeCount from localStorage
+      //   const storedBadgeCount = localStorage.getItem('badgeCount');
         
-        // If badgeCount exists, parse and increment it; otherwise, set it to 1
-        const updatedBadgeCount = storedBadgeCount ? parseInt(storedBadgeCount, 10) + 1 : 1;
+      //   // If badgeCount exists, parse and increment it; otherwise, set it to 1
+      //   const updatedBadgeCount = storedBadgeCount ? parseInt(storedBadgeCount, 10) + 1 : 1;
         
-        // Log the current and updated values
-        console.log(`Previous badgeCount: ${storedBadgeCount}, Updated badgeCount: ${updatedBadgeCount}`);
+      //   // Log the current and updated values
+      //   console.log(`Previous badgeCount: ${storedBadgeCount}, Updated badgeCount: ${updatedBadgeCount}`);
       
-        // Update localStorage with new badgeCount
-        localStorage.setItem('badgeCount', updatedBadgeCount.toString());
+      //   // Update localStorage with new badgeCount
+      //   localStorage.setItem('badgeCount', updatedBadgeCount.toString());
       
-        return updatedBadgeCount;
-      });
+      //   return updatedBadgeCount;
+      // });
     });
 
     return () => {
@@ -68,14 +73,9 @@ useEffect(() => {
     };
 }, []); // Ensure the effect only runs once
 
-  const clearNotifications = () => {
-    setNotifications([]);
-    setBadgeCount(0);
-    localStorage.setItem('badgeCount', '0'); // Reset localStorage badgeCount
-  };
 
   return (
-    <NotificationContext.Provider value={{ notifications, badgeCount, clearNotifications }}>
+    <NotificationContext.Provider value={{ notifications, badgeCount, setBadgeCount }}>
       {children}
     </NotificationContext.Provider>
   );

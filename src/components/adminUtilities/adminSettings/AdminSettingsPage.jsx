@@ -1,67 +1,221 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './adminSettingsPage.css'; // Import custom CSS
+import { useAuth } from "../../AuthContext/AuthContext";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 const AdminSettingsPage = () => {
-  const [username, setUsername] = useState('Admin');
-  const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('');
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [successMessage, setSuccessMessage] = useState('');
+  const use_auth = useAuth();
+  const adminDetails = use_auth?.user?.user || {};
 
-  const handleSaveProfile = (e) => {
+  // State to store form data, including OTP
+  const [formData, setFormData] = useState({
+    firstname: adminDetails.firstname || '',
+    lastname: adminDetails.lastname || '',
+    email: adminDetails.email || '',
+    countryOfWarehouseLocation: adminDetails.countryOfWarehouseLocation || '',
+    internationalShippingFeeInNaira: adminDetails.internationalShippingFeeInNaira || '',
+    domesticShippingFeeInNaira: adminDetails.domesticShippingFeeInNaira || '',
+    otp: '' // Add OTP to form data
+  });
+
+  // State to track if OTP has been sent
+  const [OtpSent, setOtpSent] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false)
+
+  // State to handle form validation errors
+  const [errors, setErrors] = useState({});
+
+  // Function to handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Function to validate form inputs
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.firstname.trim()) newErrors.firstname = "First name is required";
+    if (!formData.lastname.trim()) newErrors.lastname = "Last name is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email format";
+
+    if (!formData.countryOfWarehouseLocation.trim()) newErrors.countryOfWarehouseLocation = "Country is required";
+    if (!formData.domesticShippingFeeInNaira) newErrors.domesticShippingFeeInNaira = "Domestic shipping fee is required";
+    if (!formData.internationalShippingFeeInNaira) newErrors.internationalShippingFeeInNaira = "International shipping fee is required";
+
+    if (!OtpSent) newErrors.otp = "OTP must be sent to verify email";
+    if (!formData.otp) newErrors.otp = "OTP is required";
+    return newErrors;
+  };
+
+  // Function to send OTP
+  const sendOTP = async (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    setSuccessMessage('Profile updated successfully!');
-    console.log('Profile saved:', { username, email, password, notificationsEnabled });
+    setOtpLoading(true)
+    const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/send-email-verification-code`, {email: formData.email})
+    console.log(feedback)
+    if(feedback.data.code == "success"){
+      setOtpLoading(false)
+      const verificationCode = feedback.data.verificationCode;
+      Cookies.set("_emt", verificationCode, { expires: 5 / 1440 });
+      toast.success("OTP sent successfully")
+      setOtpSent(true);
+    }else if(feedback.data.code == "error"){
+      setOtpLoading(false)
+      toast.error(`${feedback.data.message}`)
+    }else{
+      setOtpLoading(false)
+      toast.error("An error occured while sending OTP")
+      
+    }
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validate form before submission
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors); // Set validation errors
+    } else {
+      setErrors({}); // Clear errors if validation passes
+
+      // Proceed with form submission
+      const codeFromCookies = Cookies.get("_emt")
+      console.log('Form data:', formData, "code from cookies: ", codeFromCookies);
+      
+      // You can submit the formData (which now includes OTP) to your backend here using axios or other methods
+    }
   };
 
   return (
-    <div className="admin-settings-container">
-      <h1>Admin Settings</h1>
-      {successMessage && <div className="alert alert-success">{successMessage}</div>}
-      <form onSubmit={handleSaveProfile} className="settings-form">
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">New Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Leave blank to keep current password"
-          />
-        </div>
-        <div className="form-group">
-          <label>
-            <input
-              type="checkbox"
-              checked={notificationsEnabled}
-              onChange={(e) => setNotificationsEnabled(e.target.checked)}
+    <div>
+      <div className="bread-crumb">
+        <div>Before proceeding, an OTP will be sent to the email you input below</div>
+      </div>
+
+      <div className="admin-settings-container">
+        <h1 className='text-center mb-4'>Admin Settings</h1>
+
+        <form className="settings-form" onSubmit={handleSubmit}>
+          <div className="form-floating mb-3">
+            <input 
+              type="text" 
+              name="firstname" 
+              value={formData.firstname} 
+              className={`form-control ${errors.firstname ? 'is-invalid' : ''}`} 
+              placeholder="First name" 
+              onChange={handleInputChange}
+              required 
             />
-            Enable Notifications
-          </label>
-        </div>
-        <button type="submit" className="btn btn-primary">Save Changes</button>
-      </form>
+            <label>First name</label>
+            {errors.firstname && <div className="invalid-feedback">{errors.firstname}</div>}
+          </div>
+
+          <div className="form-floating mb-3">
+            <input 
+              type="text" 
+              name="lastname" 
+              value={formData.lastname} 
+              className={`form-control ${errors.lastname ? 'is-invalid' : ''}`} 
+              placeholder="Last name" 
+              onChange={handleInputChange}
+              required 
+            />
+            <label>Last name</label>
+            {errors.lastname && <div className="invalid-feedback">{errors.lastname}</div>}
+          </div>
+
+          <div className="form-group form-floating mb-4">
+            <input 
+              type="email" 
+              name="email" 
+              value={formData.email} 
+              className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
+              placeholder="Email" 
+              onChange={handleInputChange}
+              required 
+            />
+            <label>Email</label>
+            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+            <div style={{ display: "flex", justifyContent: "right" }}>
+              {otpLoading ? "sending..." : ( 
+                OtpSent ? (
+                  <span className="badge bg-success">OTP sent</span>
+                ) : (
+                  <button className="btn btn-sm" style={{ background: "purple", color: "white" }} onClick={sendOTP}>
+                    Click to send OTP
+                  </button>
+                )
+              )}
+
+            </div>
+            {errors.otp && <div className="text-danger">{errors.otp}</div>}
+          </div>
+
+          <div className="form-group form-floating mb-4">
+            <input 
+              type="text" 
+              name="countryOfWarehouseLocation" 
+              value={formData.countryOfWarehouseLocation} 
+              placeholder="Country of Warehouse Location" 
+              className={`form-control ${errors.countryOfWarehouseLocation ? 'is-invalid' : ''}`} 
+              onChange={handleInputChange}
+              required 
+            />
+            <label>Country of Warehouse location</label>
+            {errors.countryOfWarehouseLocation && <div className="invalid-feedback">{errors.countryOfWarehouseLocation}</div>}
+          </div>
+
+          <div className="form-group mb-4">
+            <label>Flat rate shipping fee for domestic delivery (in naira):</label>
+            <input 
+              type="number" 
+              name="domesticShippingFeeInNaira" 
+              value={formData.domesticShippingFeeInNaira} 
+              className={`form-control form-control-lg ${errors.domesticShippingFeeInNaira ? 'is-invalid' : ''}`} 
+              onChange={handleInputChange} 
+              required 
+            />
+            {errors.domesticShippingFeeInNaira && <div className="invalid-feedback">{errors.domesticShippingFeeInNaira}</div>}
+          </div>
+
+          <div className="form-group mb-4">
+            <label>Flat rate shipping fee for international delivery (in naira):</label>
+            <input 
+              type="number" 
+              name="internationalShippingFeeInNaira" 
+              value={formData.internationalShippingFeeInNaira} 
+              className={`form-control form-control-lg ${errors.internationalShippingFeeInNaira ? 'is-invalid' : ''}`} 
+              onChange={handleInputChange} 
+              required 
+            />
+            {errors.internationalShippingFeeInNaira && <div className="invalid-feedback">{errors.internationalShippingFeeInNaira}</div>}
+          </div>
+
+          <div className="form-group mb-4">
+            <label>Enter OTP received</label>
+            <input 
+              type="number" 
+              name="otp" 
+              value={formData.otp} 
+              className={`form-control form-control-lg ${errors.otp ? 'is-invalid' : ''}`} 
+              placeholder="Enter OTP" 
+              onChange={handleInputChange}
+              required 
+            />
+            {errors.otp && <div className="invalid-feedback">{errors.otp}</div>}
+          </div>
+
+          <div className="d-grid">
+            <button type="submit" className="btn btn-primary btn-lg">Save Changes</button>
+          </div>
+
+        </form>
+      </div>
     </div>
   );
 };
@@ -90,142 +244,107 @@ export default AdminSettingsPage;
 
 
 
-// import React, { useState } from 'react';
-// import { Container, Row, Col, Card, Form, Button, ListGroup } from 'react-bootstrap';
+
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import './adminSettingsPage.css'; // Import custom CSS
+// import { useAuth } from "../../AuthContext/AuthContext"
+// import axios from 'axios';
 
 // const AdminSettingsPage = () => {
-//   const [username, setUsername] = useState('Admin');
-//   const [email, setEmail] = useState('admin@example.com');
-//   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-//   const [password, setPassword] = useState('');
-//   const [confirmPassword, setConfirmPassword] = useState('');
-
-//   const handleSaveProfile = (e) => {
-//     e.preventDefault();
-//     // Handle saving profile logic
-//     console.log('Profile saved:', { username, email });
-//   };
-
-//   const handleSaveSecurity = (e) => {
-//     e.preventDefault();
-//     // Handle saving security logic
-//     console.log('Security settings saved:', { password });
-//   };
-
+//   const use_auth = useAuth()
+//   const adminDetails = use_auth?.user?.user
+//   const [formData, setFormData] = useState({
+//     firstname: adminDetails.firstname,
+//     lastname: adminDetails.lastname,
+//     email: adminDetails.email,
+//     countryOfWarehouseLocation: adminDetails.countryOfWarehouseLocation,
+//     internationalShippingFeeInNaira: adminDetails.internationalShippingFeeInNaira,
+//     domesticShippingFeeInNaira: adminDetails.domesticShippingFeeInNaira 
+//   })
+//   const [OtpSent, setOtpSent] = useState(false)
+//   const sendOTP = () => {
+//     setOtpSent(true)
+//   }
 //   return (
-//     <Container className="mt-4">
-//       <h1 className="text-center mb-4">Admin Settings</h1>
-//       <Row>
-//         {/* User Management Section */}
-//         <Col md={6}>
-//           <Card className="mb-4">
-//             <Card.Header>User Management</Card.Header>
-//             <Card.Body>
-//               <Form onSubmit={handleSaveProfile}>
-//                 <Form.Group controlId="formUsername">
-//                   <Form.Label>Username</Form.Label>
-//                   <Form.Control
-//                     type="text"
-//                     placeholder="Enter username"
-//                     value={username}
-//                     onChange={(e) => setUsername(e.target.value)}
-//                   />
-//                 </Form.Group>
+//     <div>
+//                   <div className="bread-crumb">
+//                 {/* <div style={{fontSize: "20px", fontWeight: "semi bold"}}>Admin Dashboard </div> */}
+//                 <div>Before proceeding, an otp will be sent to the email you input below</div>
+//             </div>
+//       <div className="admin-settings-container">
+//         <h1 className='text-center mb-4'>Admin Settings</h1>
+//         <form className="settings-form">
+//         <div className="form-floating mb-3">
+//           <input type="text" value={formData.firstname} className="form-control" placeholder="First name" required />
+//           <label>First name</label>
+//         </div>
 
-//                 <Form.Group controlId="formEmail">
-//                   <Form.Label>Email</Form.Label>
-//                   <Form.Control
-//                     type="email"
-//                     placeholder="Enter email"
-//                     value={email}
-//                     onChange={(e) => setEmail(e.target.value)}
-//                   />
-//                 </Form.Group>
+//         <div className="form-floating mb-3">
+//           <input type="text" value={formData.lastname} className="form-control" placeholder="Last name" required />
+//           <label>Last name</label>
+//         </div>
 
-//                 <Button variant="primary" type="submit">
-//                   Save Profile
-//                 </Button>
-//               </Form>
-//             </Card.Body>
-//           </Card>
-//         </Col>
+//           <div className="form-group form-floating mb-4">
+//             <input type="email" value={formData.email} className='form-control' placeholder='email' required />
+//             <label>Email</label>
+//             <div style={{display: "flex", justifyContent: "right"}}>
+//               {OtpSent ? <span className='badge bg-success'>OTP sent</span> : <button className='btn btn-sm' style={{background: "purple", color: "white"}} onClick={sendOTP}>click to send otp</button>}
+//             </div>
+//           </div>
 
-//         {/* Notifications Section */}
-//         <Col md={6}>
-//           <Card className="mb-4">
-//             <Card.Header>Notifications</Card.Header>
-//             <Card.Body>
-//               <Form>
-//                 <Form.Group controlId="formNotifications">
-//                   <Form.Check
-//                     type="checkbox"
-//                     label="Enable Notifications"
-//                     checked={notificationsEnabled}
-//                     onChange={(e) => setNotificationsEnabled(e.target.checked)}
-//                   />
-//                 </Form.Group>
-//                 <Button variant="primary" type="button">
-//                   Update Notifications
-//                 </Button>
-//               </Form>
-//             </Card.Body>
-//           </Card>
-//         </Col>
-//       </Row>
 
-//       <Row>
-//         {/* Security Settings Section */}
-//         <Col md={12}>
-//           <Card>
-//             <Card.Header>Security Settings</Card.Header>
-//             <Card.Body>
-//               <Form onSubmit={handleSaveSecurity}>
-//                 <Form.Group controlId="formPassword">
-//                   <Form.Label>New Password</Form.Label>
-//                   <Form.Control
-//                     type="password"
-//                     placeholder="Enter new password"
-//                     value={password}
-//                     onChange={(e) => setPassword(e.target.value)}
-//                   />
-//                 </Form.Group>
+//           <div className="form-group form-floating mb-4">
+//             <input type="text" value={formData.countryOfWarehouseLocation} placeholder="country" className='form-control' />
+//             <label>Country of Warehouse location</label>
+//           </div>
 
-//                 <Form.Group controlId="formConfirmPassword">
-//                   <Form.Label>Confirm Password</Form.Label>
-//                   <Form.Control
-//                     type="password"
-//                     placeholder="Confirm new password"
-//                     value={confirmPassword}
-//                     onChange={(e) => setConfirmPassword(e.target.value)}
-//                   />
-//                 </Form.Group>
+//           <div className="form-group mb-4">
+//             <label>Flat rate shipping fee for domestic delivery (in naira):</label>
+//             <input type="number" value={formData.domesticShippingFeeInNaira} className='form-control form-control-lg' />
+//           </div>
 
-//                 <Button variant="primary" type="submit">
-//                   Save Security Settings
-//                 </Button>
-//               </Form>
-//             </Card.Body>
-//           </Card>
-//         </Col>
-//       </Row>
-      
-//       {/* Recent Activity Section */}
-//       <Row className="mt-4">
-//         <Col md={12}>
-//           <Card>
-//             <Card.Header>Recent Activity</Card.Header>
-//             <Card.Body>
-//               <ListGroup>
-//                 <ListGroup.Item>User "John Doe" created an account.</ListGroup.Item>
-//                 <ListGroup.Item>User "Jane Smith" updated their profile.</ListGroup.Item>
-//                 <ListGroup.Item>Password changed for user "Alice Brown".</ListGroup.Item>
-//               </ListGroup>
-//             </Card.Body>
-//           </Card>
-//         </Col>
-//       </Row>
-//     </Container>
+//           <div className="form-group mb-4">
+//             <label>Flat rate shipping fee for international delivery (in naira)</label>
+//             <input type="number" value={formData.internationalShippingFeeInNaira} className='form-control form-control-lg' />
+//           </div>
+
+//           <div className="form-group mb-4">
+//             <label>Enter OTP sent</label>
+//             <input type="number" className='form-control form-control-lg' />
+//           </div>
+
+//           <div className="d-grid">
+//             <button type="submit" className="btn btn-primary btn-lg">Save Changes</button>
+//           </div>
+
+//         </form>
+//       </div>
+//     </div>
 //   );
 // };
 
 // export default AdminSettingsPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

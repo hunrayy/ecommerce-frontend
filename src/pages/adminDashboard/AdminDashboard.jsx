@@ -48,6 +48,7 @@ const AdminDashboard = () => {
     };
     const token = Cookies.get("authToken")
     useEffect(() => {
+        console.log(badgeCount)
         //make an api call to validate the admin's token on page load
         axios.post(`${import.meta.env.VITE_BACKEND_URL}/is-admin-token-active`, {data: null}, {
             headers: {

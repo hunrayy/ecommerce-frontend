@@ -28,9 +28,10 @@ const Identification = () => {
 
     if (!formData.email) {
       errors.email = "Email is required.";
-    } else if (!emailPattern.test(formData.email)) {
-      errors.email = "Invalid email format.";
     }
+    //  else if (!emailPattern.test(formData.email)) {
+    //   errors.email = "Invalid email format.";
+    // }
 
     return errors;
   };
