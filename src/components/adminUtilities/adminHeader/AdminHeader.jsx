@@ -20,19 +20,19 @@ const AdminHeader = ({ shownav, setShownav }) => {
         <div>
             <div className="admin-header-container">
                 <div className="d-flex align-items-center" style={{ gap: "20px" }}>
-                    <i class="fa-solid fa-bars admin-menubar" style={{ fontSize: "25px" }} onClick={() => setShownav(true)}></i>
+                    <i className="fa-solid fa-bars admin-menubar" style={{ fontSize: "25px" }} onClick={() => setShownav(true)}></i>
                     <Logo />
                 </div>
                 
                 <div className="admin-logo-container">
                     <div className="admin-icon-container d-none d-md-block" style={{ fontFamily: "Courier New, Courier, monospace" }}> 
-                        Today: {date} <i class="fa-regular fa-calendar"></i>
+                        Today: {date} <i className="fa-regular fa-calendar"></i>
                     </div>
                     <div className="admin-icon-container">
-                        <span className="d-none d-md-block">Settings</span> <i class="fa-solid fa-gear"></i>
+                        <span className="d-none d-md-block">Settings</span> <i className="fa-solid fa-gear"></i>
                     </div>
                     <div className="admin-icon-container">
-                        <span className="d-none d-md-block">Notifications</span> <i class="fa-regular fa-bell"></i>
+                        <span className="d-none d-md-block">Notifications</span> <i className="fa-regular fa-bell"></i>
                     </div>
                 </div>
             </div>

@@ -57,7 +57,7 @@ const Dashboard = () => {
                     <p>{use_auth.user.user?.firstname} {use_auth.user.user?.lastname}</p>
                     <p>{use_auth.user.user?.email}</p>
                     <p><b>Role:</b> Super admin</p>
-                    <p style={{display: "flex", alignItems: "center", gap: "2px"}}><b>Status: &nbsp;</b> Online <div style={{width: "5px", height: "5px", borderRadius: "50%", background: "green"}}></div></p>
+                    <div style={{display: "flex", alignItems: "center", gap: "2px"}}><b>Status: &nbsp;</b> Online <div style={{width: "5px", height: "5px", borderRadius: "50%", background: "green"}}></div></div>
                 </div>
             </div>
         </div>

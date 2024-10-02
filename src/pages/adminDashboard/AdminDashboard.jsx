@@ -83,7 +83,7 @@ const AdminDashboard = () => {
                         </div>   
                         <div className="dmin-sidebar-dropdown-container">
     <div className="admin-sidebar-icon-wrapper" onClick={() => setPagesDropdown(!pagesDropdown)}>
-        <i className="fa-solid fa-book"></i> <span>Pages</span> {pagesDropdown ? <i class="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
+        <i className="fa-solid fa-book"></i> <span>Pages</span> {pagesDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
     </div>
     <div className={`admin-sidebar-dropdown-wrapper ${pagesDropdown ? 'open' : ''}`}>
         <div onClick={() => showPage('shipping_policy')}>Shipping policy</div>
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
                             <i className="fa-solid fa-bell"></i> <div style={{display: "flex"}}><span>Notifications</span> {badgeCount > 0 && <div style={{width: "15px", height: "15px", background: "red", borderRadius: "50%", textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center", color: "white", fontSize: "10px", fontWeight: "bold"}}>{badgeCount}</div>} </div>  
                         </div>
                         <div className="admin-sidebar-icon-wrapper text-danger" onClick={() => use_auth.logoutUser()}>
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            <i className="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
                         </div>
                     </div>
                     

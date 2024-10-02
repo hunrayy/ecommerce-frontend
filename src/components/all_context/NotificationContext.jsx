@@ -19,16 +19,17 @@ export const NotificationProvider = ({ children }) => {
 });
 // return storedBadgeCount ? parseInt(storedBadgeCount, 10) : 0;
 const getallUnreadNotification = () => {
-  axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-admin-unread-notifications`,
-      {
-          headers: {
-              Authorization: `Bearer ${authToken}`
-          }
-      }
-  ).then((unreadNotifications) => {
-      console.log(unreadNotifications)
-      setBadgeCount(unreadNotifications.data.data.length)
-  })
+  // axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-admin-unread-notifications`,
+  //     {
+  //         headers: {
+  //             Authorization: `Bearer ${authToken}`
+  //         }
+  //     }
+  // ).then((unreadNotifications) => {
+  //     console.log(unreadNotifications)
+  //     setBadgeCount(unreadNotifications.data.data.length)
+  // })
+  console.log("hello")
 
 }
 

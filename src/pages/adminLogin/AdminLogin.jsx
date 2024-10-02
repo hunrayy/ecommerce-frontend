@@ -27,13 +27,14 @@ const AdminLogin = () => {
 
   const validateForm = () => {
     const errors = {};
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!formData.email) {
       errors.email = "Email is required.";
-    } else if (!emailPattern.test(formData.email)) {
-      errors.email = "Invalid email format.";
-    }
+    } 
+    // else if (!emailPattern.test(formData.email)) {
+    //   errors.email = "Invalid email format.";
+    // }
 
     if (!formData.password) {
       errors.password = "Password is required.";

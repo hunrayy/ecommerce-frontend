@@ -90,7 +90,7 @@ const Register = () => {
             }
         }
       );
-      console.log(feedback)
+      // console.log(feedback)
      if(feedback){
         setFormData((prev) => ({
             ...prev,
@@ -124,6 +124,7 @@ const Register = () => {
             Authorization: `Bearer ${token}`
           }
         });
+        // console.log(response)
 
         if (response.data.code === "invalid-jwt") {
           navigate("/page-not-found", { replace: true });
