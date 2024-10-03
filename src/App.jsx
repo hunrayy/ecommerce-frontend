@@ -19,6 +19,7 @@ import CheckOut from "./pages/checkOut/CheckOut"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import UserAccount from "./pages/userAccount/UserAccount"
+import AllProducts from "./pages/allProducts/AllProducts"
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <CartProvider>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/collections/all" element={<AllProducts />} />
             <Route path="/product/:product_name" element={<SingleProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products/checkout" element={<CheckOut />} />

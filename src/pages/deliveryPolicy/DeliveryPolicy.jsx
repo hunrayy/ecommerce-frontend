@@ -13,13 +13,13 @@ const DeliveryPolicy = () => {
 
                         <li>We aim to process and dispatch all orders within 2-3 working days. During peak times or sales, processing may take longer.</li>
 
-                        <li>Delivery times depend on your location:
-                            <ul type="circle" style={{marginLeft: "20px"}}>
+                        <div>Delivery times depend on your location:
+                            <ul type="circle" style={{padding: "10px 15px"}}>
                                 <li>Local deliveries (within the city): 1-3 working days</li>
                                 <li>National deliveries: 3-7 working days</li>
                                 <li>International deliveries: 7-21 working days</li>
                             </ul>
-                        </li>
+                        </div>
 
                         <li>Once your order has been dispatched, you will receive a shipping confirmation email with a tracking number. You can use this to track the status of your delivery.</li>
 

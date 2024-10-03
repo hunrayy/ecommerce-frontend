@@ -8,6 +8,7 @@ import SearchComponent from "../../components/adminUtilities/searchComponent/Sea
 import AdminNotification from "../../components/adminUtilities/adminNotification/AdminNotification";
 import AdminSettingsPage from "../../components/adminUtilities/adminSettings/AdminSettingsPage";
 import AdminShippingPolicy from "../../components/adminUtilities/adminShippingPolicy/AdminShippingPolicy";
+import AdminDeliveryPolicy from "../../components/adminUtilities/adminDeliveryPolicy/AdminDeliveryPolicy";
 import { useNotification } from "../../components/all_context/NotificationContext";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import axios from "axios";
@@ -30,6 +31,7 @@ const AdminDashboard = () => {
         notifications_page: false,
         shipping_policy_page: false,
         refund_policy_page: false,
+        delivery_policy_page: false
     });
     const [pagesDropdown, setPagesDropdown] = useState(false)
 
@@ -42,7 +44,8 @@ const AdminDashboard = () => {
             settings_page: page === 'settings',
             notifications_page: page === 'notifications',
             shipping_policy_page: page === 'shipping_policy',
-            refund_policy_page: page === 'refund_policy'
+            refund_policy_page: page === 'refund_policy',
+            delivery_policy_page: page === 'delivery_policy'
         });
         setShownav(false);  // Close the sidebar when a page is selected
     };
@@ -88,9 +91,7 @@ const AdminDashboard = () => {
     <div className={`admin-sidebar-dropdown-wrapper ${pagesDropdown ? 'open' : ''}`}>
         <div onClick={() => showPage('shipping_policy')}>Shipping policy</div>
         <div onClick={() => showPage('refund_policy')}>Refund policy</div>
-        <div>Page</div>
-        <div>Hgdhagh</div>
-        <div>Home</div>
+        <div onClick={() => showPage('delivery_policy')}>Delivery policy</div>
     </div>
 </div>
 
@@ -118,6 +119,7 @@ const AdminDashboard = () => {
                     {pages.notifications_page && <AdminNotification />}
                     {pages.shipping_policy_page && <AdminShippingPolicy />}
                     {pages.refund_policy_page && <AdminRefundPolicy />}
+                    {pages.delivery_policy_page && <AdminDeliveryPolicy />}
                     {pages.settings_page && <AdminSettingsPage />}
                     
                     {/* Add other components as needed */}

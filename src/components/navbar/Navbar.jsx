@@ -66,7 +66,7 @@ const Navbar = () => {
                       <Link to="/" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Home</Link>
                     </div>
                     <div>
-                      <a href="#" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Shop all</a>
+                      <Link to='/collections/all' style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Shop all</Link>
                     </div>
                     <div>
                       <label htmlFor="currency" style={{ fontWeight: "bold", color: "white"}}>Currency: </label>
@@ -106,7 +106,7 @@ const Navbar = () => {
               {/* d-flex float-end  */}
                 <div className="text-light" style={{display: "flex"}}>
                 <Link to="/cart" style={{ fontWeight: "bold" }} className="border rounded py-1 px-3 nav-link d-flex align-items-center mx-1">
-                    <i class="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
+                    <i className="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
                     <p className="d-none d-md-block mb-0">Search</p>
                   </Link>
                   <div className="dropdown" ref={dropdownRef}>
@@ -135,13 +135,13 @@ const Navbar = () => {
                             
                           }
                           <li>
-                            <Link to={use_auth.user.is_user_logged ? "/user-account" : "/login"} className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-user " style={{fontSize: "20px"}}></i>My Account</Link>
+                            <Link to={use_auth.user.is_user_logged ? "/user-account" : "/login"} className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i className="fa-regular fa-user " style={{fontSize: "20px"}}></i>My Account</Link>
                           </li>
                           <li>
-                            <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-heart" style={{fontSize: "20px"}}></i>Wishlist</Link>
+                            <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i className="fa-regular fa-heart" style={{fontSize: "20px"}}></i>Wishlist</Link>
                           </li>
                           <li>
-                            <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i class="fa-regular fa-message"style={{fontSize: "20px"}}></i> Live chat</Link>
+                            <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i className="fa-regular fa-message"style={{fontSize: "20px"}}></i> Live chat</Link>
                           </li>
                           {use_auth.user.is_user_logged && <span>
                             <hr />

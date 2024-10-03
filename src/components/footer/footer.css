@@ -18,7 +18,8 @@
 }
 /* Footer Styles */
 .footer {
-    background-color: #1c1c1e;
+    /* background-color: #1c1c1e; */
+    background-color: black;
     color: #fff;
     padding: 40px 20px;
     text-align: left;

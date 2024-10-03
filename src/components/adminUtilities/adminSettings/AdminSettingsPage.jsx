@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './adminSettingsPage.css'; // Import custom CSS
 import { useAuth } from "../../AuthContext/AuthContext";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import localforage from 'localforage';
 
 const AdminSettingsPage = () => {
-  const use_auth = useAuth();
-  const adminDetails = use_auth?.user?.user || {};
+  // const use_auth = useAuth();
+  const { user, setUser } = useAuth();
+
+  const adminDetails = user.user || {};
 
   // State to store form data, including OTP
   const [formData, setFormData] = useState({
     firstname: adminDetails.firstname || '',
     lastname: adminDetails.lastname || '',
     email: adminDetails.email || '',
+    previousEmail: adminDetails.email || '',
     countryOfWarehouseLocation: adminDetails.countryOfWarehouseLocation || '',
     internationalShippingFeeInNaira: adminDetails.internationalShippingFeeInNaira || '',
     domesticShippingFeeInNaira: adminDetails.domesticShippingFeeInNaira || '',
     otp: '' // Add OTP to form data
   });
-
   // State to track if OTP has been sent
   const [OtpSent, setOtpSent] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false)
@@ -54,26 +57,26 @@ const AdminSettingsPage = () => {
   const sendOTP = async (e) => {
     e.preventDefault();
     setOtpLoading(true)
-    const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/send-email-verification-code`, {email: formData.email})
+    const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/send-email-verification-code`, { email: formData.email })
     console.log(feedback)
-    if(feedback.data.code == "success"){
+    if (feedback.data.code == "success") {
       setOtpLoading(false)
       const verificationCode = feedback.data.verificationCode;
       Cookies.set("_emt", verificationCode, { expires: 5 / 1440 });
       toast.success("OTP sent successfully")
       setOtpSent(true);
-    }else if(feedback.data.code == "error"){
+    } else if (feedback.data.code == "error") {
       setOtpLoading(false)
       toast.error(`${feedback.data.message}`)
-    }else{
+    } else {
       setOtpLoading(false)
       toast.error("An error occured while sending OTP")
-      
+
     }
   };
 
   // Function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form before submission
@@ -85,8 +88,40 @@ const AdminSettingsPage = () => {
 
       // Proceed with form submission
       const codeFromCookies = Cookies.get("_emt")
+      const authToken = Cookies.get("authToken")
       console.log('Form data:', formData, "code from cookies: ", codeFromCookies);
-      
+      const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin-settings`, { formData }, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          codeFromCookies: codeFromCookies
+        }
+      })
+      console.log(feedback)
+      if (feedback.data.code == 'invalid-jwt') {
+        toast.error(`${feedback.data.message}`)
+      } else if (feedback.data.code == "success") {
+        //update in database was successful, next, update data in localforage
+        await localforage.setItem('current_user', JSON.stringify(feedback.data.data))
+        setFormData({
+          firstname: '',
+          lastname: '',
+          email: '',
+          previousEmail: '',
+          countryOfWarehouseLocation: '',
+          internationalShippingFeeInNaira: '',
+          domesticShippingFeeInNaira: '',
+          otp: ''
+        })
+        // window.location.reload()
+        setUser({
+          is_user_logged: true,
+          user: feedback.data.data
+        })
+        toast.success('Admin record updated successfully')
+      } else {
+        toast.error("An error occured while updating admin record")
+      }
+
       // You can submit the formData (which now includes OTP) to your backend here using axios or other methods
     }
   };
@@ -102,47 +137,47 @@ const AdminSettingsPage = () => {
 
         <form className="settings-form" onSubmit={handleSubmit}>
           <div className="form-floating mb-3">
-            <input 
-              type="text" 
-              name="firstname" 
-              value={formData.firstname} 
-              className={`form-control ${errors.firstname ? 'is-invalid' : ''}`} 
-              placeholder="First name" 
+            <input
+              type="text"
+              name="firstname"
+              value={formData.firstname}
+              className={`form-control ${errors.firstname ? 'is-invalid' : ''}`}
+              placeholder="First name"
               onChange={handleInputChange}
-              required 
+              required
             />
             <label>First name</label>
             {errors.firstname && <div className="invalid-feedback">{errors.firstname}</div>}
           </div>
 
           <div className="form-floating mb-3">
-            <input 
-              type="text" 
-              name="lastname" 
-              value={formData.lastname} 
-              className={`form-control ${errors.lastname ? 'is-invalid' : ''}`} 
-              placeholder="Last name" 
+            <input
+              type="text"
+              name="lastname"
+              value={formData.lastname}
+              className={`form-control ${errors.lastname ? 'is-invalid' : ''}`}
+              placeholder="Last name"
               onChange={handleInputChange}
-              required 
+              required
             />
             <label>Last name</label>
             {errors.lastname && <div className="invalid-feedback">{errors.lastname}</div>}
           </div>
 
           <div className="form-group form-floating mb-4">
-            <input 
-              type="email" 
-              name="email" 
-              value={formData.email} 
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`} 
-              placeholder="Email" 
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+              placeholder="Email"
               onChange={handleInputChange}
-              required 
+              required
             />
             <label>Email</label>
             {errors.email && <div className="invalid-feedback">{errors.email}</div>}
             <div style={{ display: "flex", justifyContent: "right" }}>
-              {otpLoading ? "sending..." : ( 
+              {otpLoading ? "sending..." : (
                 OtpSent ? (
                   <span className="badge bg-success">OTP sent</span>
                 ) : (
@@ -157,14 +192,14 @@ const AdminSettingsPage = () => {
           </div>
 
           <div className="form-group form-floating mb-4">
-            <input 
-              type="text" 
-              name="countryOfWarehouseLocation" 
-              value={formData.countryOfWarehouseLocation} 
-              placeholder="Country of Warehouse Location" 
-              className={`form-control ${errors.countryOfWarehouseLocation ? 'is-invalid' : ''}`} 
+            <input
+              type="text"
+              name="countryOfWarehouseLocation"
+              value={formData.countryOfWarehouseLocation}
+              placeholder="Country of Warehouse Location"
+              className={`form-control ${errors.countryOfWarehouseLocation ? 'is-invalid' : ''}`}
               onChange={handleInputChange}
-              required 
+              required
             />
             <label>Country of Warehouse location</label>
             {errors.countryOfWarehouseLocation && <div className="invalid-feedback">{errors.countryOfWarehouseLocation}</div>}
@@ -172,46 +207,46 @@ const AdminSettingsPage = () => {
 
           <div className="form-group mb-4">
             <label>Flat rate shipping fee for domestic delivery (in naira):</label>
-            <input 
-              type="number" 
-              name="domesticShippingFeeInNaira" 
-              value={formData.domesticShippingFeeInNaira} 
-              className={`form-control form-control-lg ${errors.domesticShippingFeeInNaira ? 'is-invalid' : ''}`} 
-              onChange={handleInputChange} 
-              required 
+            <input
+              type="number"
+              name="domesticShippingFeeInNaira"
+              value={formData.domesticShippingFeeInNaira}
+              className={`form-control form-control-lg ${errors.domesticShippingFeeInNaira ? 'is-invalid' : ''}`}
+              onChange={handleInputChange}
+              required
             />
             {errors.domesticShippingFeeInNaira && <div className="invalid-feedback">{errors.domesticShippingFeeInNaira}</div>}
           </div>
 
           <div className="form-group mb-4">
             <label>Flat rate shipping fee for international delivery (in naira):</label>
-            <input 
-              type="number" 
-              name="internationalShippingFeeInNaira" 
-              value={formData.internationalShippingFeeInNaira} 
-              className={`form-control form-control-lg ${errors.internationalShippingFeeInNaira ? 'is-invalid' : ''}`} 
-              onChange={handleInputChange} 
-              required 
+            <input
+              type="number"
+              name="internationalShippingFeeInNaira"
+              value={formData.internationalShippingFeeInNaira}
+              className={`form-control form-control-lg ${errors.internationalShippingFeeInNaira ? 'is-invalid' : ''}`}
+              onChange={handleInputChange}
+              required
             />
             {errors.internationalShippingFeeInNaira && <div className="invalid-feedback">{errors.internationalShippingFeeInNaira}</div>}
           </div>
 
           <div className="form-group mb-4">
             <label>Enter OTP received</label>
-            <input 
-              type="number" 
-              name="otp" 
-              value={formData.otp} 
-              className={`form-control form-control-lg ${errors.otp ? 'is-invalid' : ''}`} 
-              placeholder="Enter OTP" 
+            <input
+              type="number"
+              name="otp"
+              value={formData.otp}
+              className={`form-control form-control-lg ${errors.otp ? 'is-invalid' : ''}`}
+              placeholder="Enter OTP"
               onChange={handleInputChange}
-              required 
+              required
             />
             {errors.otp && <div className="invalid-feedback">{errors.otp}</div>}
           </div>
 
           <div className="d-grid">
-            <button type="submit" className="btn btn-primary btn-lg">Save Changes</button>
+            <button type="submit" className="btn btn-lg" style={{ backgroundColor: "purple", color: "white" }}>Save Changes</button>
           </div>
 
         </form>

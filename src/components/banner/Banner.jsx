@@ -24,6 +24,7 @@ const Banner = () => {
 
   return (
     <div>
+ 
       <section className="pt-3 banner-component-container">
         <div className="container">
           <div className="row gx-3">
