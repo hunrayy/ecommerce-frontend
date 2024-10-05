@@ -41,7 +41,7 @@ const Dashboard = () => {
                             <p style={{fontSize: "40px"}}>112</p>
                         </div>
                         <div style={{display: "flex", flexDirection: "column"}}>
-                            <p className="text-muted"><b>Category</b></p>
+                            <p className="text-muted"><b>Pending orders</b></p>
                             <p style={{fontSize: "40px"}}>6</p>
                         </div>
                         <div style={{display: "flex", flexDirection: "column"}}>

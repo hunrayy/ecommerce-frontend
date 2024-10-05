@@ -113,7 +113,7 @@ const EditProductForm = ({ product, onClose}) => {
                 uploadData,
                 {
                     params: {
-                        productId: product._id
+                        productId: product.id
                     },
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -123,27 +123,28 @@ const EditProductForm = ({ product, onClose}) => {
             );
             if (feedback) {
                 console.log(feedback)
-                // setFormData({
-                //     productId: null,
-                //     productImage: null,
-                //     subImage1: null,
-                //     subImage2: null,
-                //     subImage3: null,
-                //     productName: "",
-                //     productPrice: "",
-                // });
-                // setImagePreviews({
-                //     productImage: null,
-                //     subImage1: null,
-                //     subImage2: null,
-                //     subImage3: null,
-                // });
                 setIsLoading(false);
                 if (feedback.data.code === "success") {
                     setServerSuccessState(true);
                     setTimeout(() => {
                         setServerSuccessState(false);
                     }, 5000);
+                     setFormData({
+                        productId: null,
+                        productImage: null,
+                        subImage1: null,
+                        subImage2: null,
+                        subImage3: null,
+                        productName: "",
+                        productPrice: "",
+                    });
+                    setImagePreviews({
+                        productImage: null,
+                        subImage1: null,
+                        subImage2: null,
+                        subImage3: null,
+                    });
+                    
                    
                 } else {
                     setServerErrorMessage({
@@ -166,7 +167,7 @@ const EditProductForm = ({ product, onClose}) => {
                     <div style={{ fontSize: "20px", fontWeight: "semi bold" }}>Admin Dashboard</div>
                     <div>Home / Edit Product</div>
                 </div>
-                <div style={{ padding: "20px", fontSize: "20px" }} className="d-lg-none">
+                <div style={{ padding: "20px 0 0 20px", fontSize: "20px" }} className="d-lg-none">
                     <i className="fa-solid fa-arrow-left" onClick={onClose}></i>
                 </div>
                 <div className="admin-editPage-form" style={{ padding: "20px 20px 35px 20px" }}>
@@ -176,10 +177,10 @@ const EditProductForm = ({ product, onClose}) => {
                     {serverSuccessState && <div className="arrow-box">Product successfully updated!</div>}
 
                     <h2>Edit Product</h2>
-                                         <form onSubmit={handleSubmit}>
-                         <div className="mb-3">
-                             <label htmlFor="productImage" className="form-label">Main Product Image</label>
-                             <div style={{display: "flex"}}>
+                    <form onSubmit={handleSubmit} className="row">
+                        <div className="mb-3">
+                            <label htmlFor="productImage" className="form-label">Main Product Image</label>
+                            <div style={{display: "flex"}}>
                                  <input type="file" className="form-control" id="productImage" onChange={handleInputChange} />
                                  {formData && (
                                     <div>

@@ -39,6 +39,7 @@ const AllProducts = () => {
 
     const handleDeleteConfirm = () => {
         console.log(productToDelete)
+        setProductDeleting(true)
         
         axios
             .post(`${import.meta.env.VITE_BACKEND_URL}/admin/delete-product`, {productToDelete: productToDelete},{
@@ -49,24 +50,22 @@ const AllProducts = () => {
             .then((response) => {
                 console.log(response)
                 if (response.data.code === "success") {
-                    // setAllProducts((prevState) => ({
-                    //     ...prevState,
-                    //     products: prevState.products.filter(
-                    //         (product) => product.id !== productToDelete.id
-                    //     ),
-                    // }));
-                    // setProductDeleted(true)
-                    // setTimeout(()=> {
-                    //     setProductDeleted(false)
-                    // }, 5000)
-                    window.location.reload()
-                    
-
-
+                    setAllProducts((prevState) => ({
+                        ...prevState,
+                        products: prevState.products.filter(
+                            (product) => product.id !== productToDelete.id  // Filters out the deleted product
+                        ),
+                    }));
+                    setProductDeleted(true)
+                    setTimeout(()=> {
+                        setProductDeleted(false)
+                    }, 5000)
+                    // window.location.reload()
                 }
             })
             .finally(() => {
                 setShowDeleteModal(false); // Close the confirmation modal after deleting
+                setProductDeleting(true)
              
 
             });
@@ -81,12 +80,13 @@ const AllProducts = () => {
             }));
         }, 200);
         axios
-            .get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-all-products`, {
+            .get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             })
             .then((feedback) => {
+                console.log(feedback)
                 if (feedback.data.code === "success") {
                     setAllProducts({
                         products: feedback.data.data,
@@ -183,7 +183,7 @@ const AllProducts = () => {
                     </div> */}
                     {productDeleting && <Loader />}
                      <div class="search-container search-container-fixed" style={{padding: "10px", display: "flex", alignItems: "center", gap: "20px", cursor: "pointer"}} onClick={() => setSearchState((prev) => ({...prev, isSearching: true}))}>
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <i className="fa-solid fa-magnifying-glass"></i>
                         <span className="text-muted">Search...</span>
                     </div>
                     {productDeleted &&
@@ -249,7 +249,7 @@ const AllProducts = () => {
                 >
                     <div class="search-container" onClick={() => setSearchState((prev) => ({...prev, isSearching: true}))}>
                         <input type="text" placeholder="Search..." autoFocus value={searchQuery} onChange={handleSearchChange}/>
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <i className="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px"}}>
                         <small className="text-muted">Products</small>
@@ -295,7 +295,6 @@ const AllProducts = () => {
                             </h5>
                         </div>
                         <p className="card-text">{selectedProduct.productName}</p>
-                        <p>Color: {selectedProduct.productDescription}</p>
                         <div style={{ display: "flex", justifyContent: "right", gap: "10px" }}>
                             <button onClick={() => { setPage("editProductForm") }} className="btn" style={{ backgroundColor: "purple", color: "white", width: "100%", maxWidth: "100px" }}>
                                 Edit

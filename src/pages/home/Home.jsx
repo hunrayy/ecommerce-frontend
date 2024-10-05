@@ -14,6 +14,7 @@ const Home = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     useEffect(()=> {
+        // console.log(user)
         // Redirect logic before rendering the component
         if (user && user.is_user_logged && user.user.is_an_admin && user.user.user === "admin") {
             navigate(`/admin/dashboard/${user.user.token}`);

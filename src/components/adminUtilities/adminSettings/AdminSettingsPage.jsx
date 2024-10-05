@@ -126,6 +126,25 @@ const AdminSettingsPage = () => {
     }
   };
 
+  // State to store countries fetched from the API
+  const [countries, setCountries] = useState([]);
+
+// Fetch list of countries from API on component mount
+  useEffect(()=> {
+    axios.get("https://restcountries.com/v3.1/all")
+      .then(response => {
+        const countryData = response.data.map(country => ({
+          name: country.name.common,
+          code: country.cca2
+        }));
+        setCountries(countryData);
+      })
+      .catch(error => {
+        console.error("Error fetching countries:", error);
+        toast.error("Failed to fetch countries. Please try again later.");
+      });
+  }, [])
+
   return (
     <div>
       <div className="bread-crumb">
@@ -135,46 +154,49 @@ const AdminSettingsPage = () => {
       <div className="admin-settings-container">
         <h1 className='text-center mb-4'>Admin Settings</h1>
 
-        <form className="settings-form" onSubmit={handleSubmit}>
-          <div className="form-floating mb-3">
+        <form className="settings-form row" onSubmit={handleSubmit}>
+          <div className="mb-3 col-6">
+            <label>First name</label>
             <input
               type="text"
               name="firstname"
               value={formData.firstname}
-              className={`form-control ${errors.firstname ? 'is-invalid' : ''}`}
+              className={`form-control form-control-lg ${errors.firstname ? 'is-invalid' : ''}`}
               placeholder="First name"
               onChange={handleInputChange}
+              style={{fontSize: "17px"}}
               required
             />
-            <label>First name</label>
             {errors.firstname && <div className="invalid-feedback">{errors.firstname}</div>}
           </div>
 
-          <div className="form-floating mb-3">
+          <div className="mb-3 col-6">
+            <label>Last name</label>
             <input
               type="text"
               name="lastname"
               value={formData.lastname}
-              className={`form-control ${errors.lastname ? 'is-invalid' : ''}`}
+              className={`form-control form-control-lg  ${errors.lastname ? 'is-invalid' : ''}`}
               placeholder="Last name"
               onChange={handleInputChange}
+              style={{fontSize: "17px"}}
               required
             />
-            <label>Last name</label>
             {errors.lastname && <div className="invalid-feedback">{errors.lastname}</div>}
           </div>
 
-          <div className="form-group form-floating mb-4">
+          <div className="form-group mb-4">
+            <label>Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+              className={`form-control form-control-lg ${errors.email ? 'is-invalid' : ''}`}
               placeholder="Email"
               onChange={handleInputChange}
+              style={{fontSize: "17px"}}
               required
             />
-            <label>Email</label>
             {errors.email && <div className="invalid-feedback">{errors.email}</div>}
             <div style={{ display: "flex", justifyContent: "right" }}>
               {otpLoading ? "sending..." : (
@@ -191,7 +213,7 @@ const AdminSettingsPage = () => {
             {errors.otp && <div className="text-danger">{errors.otp}</div>}
           </div>
 
-          <div className="form-group form-floating mb-4">
+          {/* <div className="form-group form-floating mb-4">
             <input
               type="text"
               name="countryOfWarehouseLocation"
@@ -203,6 +225,24 @@ const AdminSettingsPage = () => {
             />
             <label>Country of Warehouse location</label>
             {errors.countryOfWarehouseLocation && <div className="invalid-feedback">{errors.countryOfWarehouseLocation}</div>}
+          </div> */}
+                    <div className="form-group mb-4">
+            <label>Country of Warehouse location</label>
+            <select
+              name="countryOfWarehouseLocation"
+              value={formData.countryOfWarehouseLocation}
+              onChange={handleInputChange}
+              className={`form-control ${errors.countryOfWarehouseLocation ? 'is-invalid' : ''}`}
+              required
+            >
+              <option value="">Select Country</option>
+              {countries.map(country => (
+                <option key={country.code} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+            {errors.countryOfWarehouseLocation && <div className="invalid-feedback">{errors.countryOfWarehouseLocation}</div>}
           </div>
 
           <div className="form-group mb-4">
@@ -212,6 +252,7 @@ const AdminSettingsPage = () => {
               name="domesticShippingFeeInNaira"
               value={formData.domesticShippingFeeInNaira}
               className={`form-control form-control-lg ${errors.domesticShippingFeeInNaira ? 'is-invalid' : ''}`}
+              style={{fontSize: "17px"}}
               onChange={handleInputChange}
               required
             />
@@ -225,6 +266,7 @@ const AdminSettingsPage = () => {
               name="internationalShippingFeeInNaira"
               value={formData.internationalShippingFeeInNaira}
               className={`form-control form-control-lg ${errors.internationalShippingFeeInNaira ? 'is-invalid' : ''}`}
+              style={{fontSize: "17px"}}
               onChange={handleInputChange}
               required
             />
@@ -239,6 +281,7 @@ const AdminSettingsPage = () => {
               value={formData.otp}
               className={`form-control form-control-lg ${errors.otp ? 'is-invalid' : ''}`}
               placeholder="Enter OTP"
+              style={{fontSize: "17px"}}
               onChange={handleInputChange}
               required
             />
