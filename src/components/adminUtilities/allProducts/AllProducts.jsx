@@ -140,12 +140,13 @@ const AllProducts = () => {
         const performSearch = async (query) => {
             setSearchState((prev) => ({ ...prev, wordNotFound: null }));
             try {
-                const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/search-products`, {
+                const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/search-products`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                     params: { query }, // Pass search query as a parameter
                 });
+                console.log(feedback)
         
                 setSearchState((prev) => ({
                     ...prev,
@@ -258,9 +259,9 @@ const AllProducts = () => {
                     <hr />
                         <div style={{maxHeight: "400px", overflow: "auto"}}>
                         {searchState.searchData && (
-                            searchState.searchData.map((product) => {
+                            searchState.searchData.map((product, index) => {
                                 // console.log(product)
-                                return <div className="admin-search-result-container" onClick={()=> {setSearchState((prev) => ({...prev, isSearching: false, searchLoading: false, wordNotFound: null})), setSelectedProduct(product)}}>
+                                return <div key={index} className="admin-search-result-container" onClick={()=> {setSearchState((prev) => ({...prev, isSearching: false, searchLoading: false, wordNotFound: null})), setSelectedProduct(product)}}>
                                     <img src={product.productImage} alt="" width="50px"  />
                                     <p><b>{product.productName}</b></p>
                                 </div>

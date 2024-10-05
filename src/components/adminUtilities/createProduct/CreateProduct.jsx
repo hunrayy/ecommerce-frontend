@@ -5,6 +5,7 @@ import axios from "axios";
 import Loader from "../../loader/Loader";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateProduct = () => {
     const navigate = useNavigate();
@@ -122,7 +123,8 @@ const CreateProduct = () => {
                 }
             }
         } catch (error) {
-            console.log('Error uploading product:', error.message);
+            // console.log('Error uploading product:', error.message);
+            toast.error('An error occured while creating product')
             setIsLoading(false);
             setServerErrorMessage({ status: true, message: 'An error occurred. Please try again.' });
         }
@@ -143,7 +145,7 @@ const CreateProduct = () => {
                     }
                     {serverSuccessState &&
                         <div className="arrow-box">
-                            Product successfully uploaded!
+                            Product successfully created!
                         </div>
                     }
                     <h2>Create Product</h2>
@@ -169,7 +171,7 @@ const CreateProduct = () => {
                             <input type="text" className="form-control" id="productName" placeholder="Enter product name" value={formData.productName} onChange={handleInputChange} />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="productPrice" className="form-label">Product Price</label>
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira</label>
                             <input
                                 type="text"
                                 className="form-control"
