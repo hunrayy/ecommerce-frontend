@@ -63,3 +63,61 @@
         
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.new-banner-container{
+  display: flex;
+  margin-top: var(--marginAboveTop);
+}
+.new-banner-video{
+  max-width: 50%;
+  width: 100%;
+  max-height: calc(100vh - var(--marginAboveTop));
+  object-fit: cover;
+}
+
+.new-banner-carousel-container{
+  /* max-width: 50%; */
+  height: calc(100vh - var(--marginAboveTop));
+  width: 50vw;
+  border-radius: 0;
+  background: RGB(102, 0, 102);
+  background: RGB(102, 0, 90);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 767px) {
+
+  .new-banner-container {
+    display: flex; /* Keep flex layout to avoid unexpected spacing */
+    flex-direction: column; /* Stack the video and carousel vertically */
+ 
+  }
+
+
+  .new-banner-video, .new-banner-carousel-container {
+    max-width: 100%; /* Ensure both video and carousel take full width */
+    width: 100%;
+    height: 46vh; /* Keep both at 50% height or adjust to your preference */
+    margin: 0; /* Remove margin to prevent gaps */
+    padding: 0; /* Remove padding to prevent gaps */
+  }
+}

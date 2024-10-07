@@ -47,6 +47,7 @@ const PaymentSuccess = () => {
         console.log(tx_ref)
         const validatePayment = async (retryCount = 0) => {
             const authToken = Cookies.get("authToken");
+console.log(authToken)
 
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/validate-payment?tx_ref=${tx_ref}`, {

@@ -31,7 +31,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/collections/all" element={<AllProducts />} />
-            <Route path="/product/:product_name" element={<SingleProduct />} />
+            <Route path="/product/:productId" element={<SingleProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products/checkout" element={<CheckOut />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />

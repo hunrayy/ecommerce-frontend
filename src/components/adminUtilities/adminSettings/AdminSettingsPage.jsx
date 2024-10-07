@@ -21,6 +21,8 @@ const AdminSettingsPage = () => {
     countryOfWarehouseLocation: adminDetails.countryOfWarehouseLocation || '',
     internationalShippingFeeInNaira: adminDetails.internationalShippingFeeInNaira || '',
     domesticShippingFeeInNaira: adminDetails.domesticShippingFeeInNaira || '',
+    numberOfDaysForDomesticDelivery: adminDetails.numberOfDaysForDomesticDelivery || '',
+    numberOfDaysForInternationalDelivery: adminDetails.numberOfDaysForInternationalDelivery || '',
     otp: '' // Add OTP to form data
   });
   // State to track if OTP has been sent
@@ -41,15 +43,13 @@ const AdminSettingsPage = () => {
     const newErrors = {};
     if (!formData.firstname.trim()) newErrors.firstname = "First name is required";
     if (!formData.lastname.trim()) newErrors.lastname = "Last name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email format";
-
     if (!formData.countryOfWarehouseLocation.trim()) newErrors.countryOfWarehouseLocation = "Country is required";
     if (!formData.domesticShippingFeeInNaira) newErrors.domesticShippingFeeInNaira = "Domestic shipping fee is required";
     if (!formData.internationalShippingFeeInNaira) newErrors.internationalShippingFeeInNaira = "International shipping fee is required";
-
-    if (!OtpSent) newErrors.otp = "OTP must be sent to verify email";
+    if (!formData.numberOfDaysForDomesticDelivery) newErrors.numberOfDaysForDomesticDelivery = "Number of days for domestic delivery is required";
+    if (!formData.numberOfDaysForInternationalDelivery) newErrors.numberOfDaysForInternationalDelivery = "Number of days for international delivery is required";
     if (!formData.otp) newErrors.otp = "OTP is required";
+    if (!OtpSent) newErrors.otp = "OTP must be sent to verify email";
     return newErrors;
   };
 
@@ -110,6 +110,8 @@ const AdminSettingsPage = () => {
           countryOfWarehouseLocation: '',
           internationalShippingFeeInNaira: '',
           domesticShippingFeeInNaira: '',
+          numberOfDaysForDomesticDelivery: '',
+          numberOfDaysForInternationalDelivery: '',
           otp: ''
         })
         // window.location.reload()
@@ -131,6 +133,7 @@ const AdminSettingsPage = () => {
 
 // Fetch list of countries from API on component mount
   useEffect(()=> {
+    console.log(adminDetails)
     axios.get("https://restcountries.com/v3.1/all")
       .then(response => {
         const countryData = response.data.map(country => ({
@@ -185,7 +188,7 @@ const AdminSettingsPage = () => {
             {errors.lastname && <div className="invalid-feedback">{errors.lastname}</div>}
           </div>
 
-          <div className="form-group mb-4">
+          <div className="form-group mb-4 col-12 col-md-6">
             <label>Email</label>
             <input
               type="email"
@@ -226,7 +229,7 @@ const AdminSettingsPage = () => {
             <label>Country of Warehouse location</label>
             {errors.countryOfWarehouseLocation && <div className="invalid-feedback">{errors.countryOfWarehouseLocation}</div>}
           </div> */}
-                    <div className="form-group mb-4">
+                    <div className="form-group mb-4 col-12 col-md-6">
             <label>Country of Warehouse location</label>
             <select
               name="countryOfWarehouseLocation"
@@ -245,7 +248,7 @@ const AdminSettingsPage = () => {
             {errors.countryOfWarehouseLocation && <div className="invalid-feedback">{errors.countryOfWarehouseLocation}</div>}
           </div>
 
-          <div className="form-group mb-4">
+          <div className="form-group mb-4 col-12 col-md-6">
             <label>Flat rate shipping fee for domestic delivery (in naira):</label>
             <input
               type="number"
@@ -259,7 +262,7 @@ const AdminSettingsPage = () => {
             {errors.domesticShippingFeeInNaira && <div className="invalid-feedback">{errors.domesticShippingFeeInNaira}</div>}
           </div>
 
-          <div className="form-group mb-4">
+          <div className="form-group mb-4 col-12 col-md-6">
             <label>Flat rate shipping fee for international delivery (in naira):</label>
             <input
               type="number"
@@ -272,6 +275,39 @@ const AdminSettingsPage = () => {
             />
             {errors.internationalShippingFeeInNaira && <div className="invalid-feedback">{errors.internationalShippingFeeInNaira}</div>}
           </div>
+
+          <div className="form-group col-12 col-md-6">
+            <label>Local delivery time (days)</label>
+            <input
+              type="number"
+              name="numberOfDaysForDomesticDelivery"
+              value={formData.numberOfDaysForDomesticDelivery}
+              className="form-control form-control-lg"
+              style={{fontSize: "17px"}}
+              onChange={handleInputChange}
+              min="1"
+            />
+            <small id="deliveryHelp" className="form-text text-muted">
+              Number of days for domestic delivery.
+            </small>
+          </div>
+
+          <div className="form-group col-12 col-md-6">
+            <label>International delivery time (days)</label>
+            <input
+              type="number"
+              name="numberOfDaysForInternationalDelivery"
+              value={formData.numberOfDaysForInternationalDelivery}
+              className="form-control form-control-lg"
+              style={{fontSize: "17px"}}
+              onChange={handleInputChange}
+              min="1"
+            />
+            <small id="deliveryHelp" className="form-text text-muted">
+              Number of days for international delivery.
+            </small>
+          </div>
+
 
           <div className="form-group mb-4">
             <label>Enter OTP received</label>

@@ -21,6 +21,16 @@ const CheckOut = () => {
 
 
   const [countries, setCountries] = useState([])
+  const [countryOfWarehouseLocation, setCountryOfWarehouseLocation] = useState(null)
+  const [numberOfDaysForDelivery, setNumberOfDaysForDelivery] = useState({
+    numberOfDaysForDomesticDelivery: null,
+    numberOfDaysForInternationalDelivery: null
+  })
+  const [shippingFeeInNaira, setShippingFeeInNaira] = useState({
+    domesticShippingFeeInNaira: null,
+    internationalShippingFeeInNaira: null
+  })
+  const [checkoutTotal, setCheckoutTotal] = useState()
   const [selectedCountry, setSelectedCountry] = useState('')
   const [states, setStates] = useState([])
   const [loading, setLoading] = useState(false)
@@ -36,7 +46,8 @@ const CheckOut = () => {
     country: "", //initially empty, no default country
     state: "",
     totalPrice: "",
-    currency: currentCurrencyCode
+    currency: currentCurrencyCode,
+    expectedDateOfDelivery: ""
   })
 
   // Form errors state
@@ -84,11 +95,12 @@ const CheckOut = () => {
     }
 
       // Handle form submission
+    const token = Cookies.get("authToken")
     const handleSubmit = (e) => {
       e.preventDefault();
-      const token = Cookies.get("authToken")
       if (validateForm()) {
         setLoading(true)
+
         axios.post(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/make-payment`, formData,
           {
             headers: {
@@ -150,7 +162,117 @@ const CheckOut = () => {
       // console.error("Error fetching countries and states:", error)
       toast.error("Failed to fetch countries and states. Please try again later.");
     })
+
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-number-of-days-of-delivery`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((feedback) => {
+      console.log(feedback)
+      if(feedback.data.code == "success"){
+        setCountryOfWarehouseLocation(feedback.data.data.countryOfWarehouseLocation)
+        setNumberOfDaysForDelivery({
+          numberOfDaysForDomesticDelivery: feedback.data.data.numberOfDaysForDomesticDelivery,
+          numberOfDaysForInternationalDelivery: feedback.data.data.numberOfDaysForInternationalDelivery
+        })
+        setShippingFeeInNaira({
+          domesticShippingFeeInNaira: feedback.data.data.domesticShippingFeeInNaira,
+          internationalShippingFeeInNaira: feedback.data.data.internationalShippingFeeInNaira
+        })
+    
+      }
+    })
   }, [cartProducts, selectedCurrency, convertCurrency])
+
+//   function calculateExpectedDateOfDelivery(selectedCountry) {
+//     const countriesOfWarehouseLocation = [];
+//     countriesOfWarehouseLocation.push(countryOfWarehouseLocation)
+//     console.log(countriesOfWarehouseLocation)
+//     const numberOfDaysForDomesticDelivery = numberOfDaysForDelivery.numberOfDaysForDomesticDelivery; // Example number of days for domestic delivery
+//     const numberOfDaysForInternationalDelivery = numberOfDaysForDelivery.numberOfDaysForInternationalDelivery; // Example number of days for international delivery
+
+//     const currentDate = new Date();
+
+//     let expectedDateOfDelivery;
+
+//     if (countriesOfWarehouseLocation.includes(selectedCountry)) {
+//         // Calculate expected date for domestic delivery
+//         expectedDateOfDelivery = new Date(currentDate.setDate(currentDate.getDate() + numberOfDaysForDomesticDelivery));
+//     } else {
+//         // Calculate expected date for international delivery
+//         expectedDateOfDelivery = new Date(currentDate.setDate(currentDate.getDate() + numberOfDaysForInternationalDelivery));
+//     }
+
+//     return expectedDateOfDelivery.toLocaleDateString(); // Format the date as needed
+// }
+
+function calculateExpectedDateOfDelivery(selectedCountry) {
+  if(!selectedCountry){
+    return "..."
+  }
+  const numberOfDaysForDomesticDelivery = numberOfDaysForDelivery.numberOfDaysForDomesticDelivery; // Example number of days for domestic delivery
+  const numberOfDaysForInternationalDelivery = numberOfDaysForDelivery.numberOfDaysForInternationalDelivery; // Example number of days for international delivery
+
+  const currentDate = new Date();
+
+  let expectedDateOfDelivery;
+
+  if (countryOfWarehouseLocation == selectedCountry) {
+      // Calculate expected date for domestic delivery
+      expectedDateOfDelivery = new Date(currentDate.setDate(currentDate.getDate() + numberOfDaysForDomesticDelivery));
+  } else {
+      // Calculate expected date for international delivery
+      expectedDateOfDelivery = new Date(currentDate.setDate(currentDate.getDate() + numberOfDaysForInternationalDelivery));
+  }
+
+  return expectedDateOfDelivery.toLocaleDateString(); // Format the date as needed
+}
+
+  function calculateShippingFee(selectedCountry){
+    if(!selectedCountry){
+      return "..."
+    }
+    if (countryOfWarehouseLocation == selectedCountry) {
+      let convertedPrice = convertCurrency(shippingFeeInNaira.domesticShippingFeeInNaira, 'NGN', selectedCurrency);
+        // Calculate shipping fee for local delivery
+
+        // return `${currentCurrencyCode} ${convertedPrice.toLocaleString()}`
+        return convertedPrice.toLocaleString()
+      
+    } else {
+        // Calculate shipping fee for international delivery
+        let convertedPrice = convertCurrency(shippingFeeInNaira.internationalShippingFeeInNaira, 'NGN', selectedCurrency);
+        // Calculate shipping fee for local delivery
+
+        // return `${currentCurrencyCode} ${convertedPrice.toLocaleString()}`
+        return convertedPrice.toLocaleString()
+      }
+
+  }
+
+  useEffect(() => {
+    if (formData.country) {
+      // Calculate shipping fee and cart total
+      const shippingFee = parseFloat(calculateShippingFee(formData.country)); // Get numeric shipping fee
+      const cartTotal = calculateTotal(cartProducts, convertCurrency, selectedCurrency); // Get numeric cart total
+      const totalWithShipping = cartTotal + shippingFee; // Perform sum operation
+
+      // Format the total
+      const currencySymbol = currencySymbols[selectedCurrency];
+      const formattedTotal = totalWithShipping.toLocaleString();
+
+      // Update state with the new total
+      setCheckoutTotal(formattedTotal);
+
+      //calculate expected date of delivery
+      const expectedDate = calculateExpectedDateOfDelivery(formData.country)
+      setFormData((prev) => ({
+        ...prev,
+        expectedDateOfDelivery: expectedDate
+      }))
+    }
+  }, [formData.country, cartProducts, convertCurrency, selectedCurrency, currencySymbols]);
+
   return <div>
     <CheckoutHeader />
     {loading && <Loader />}
@@ -233,7 +355,7 @@ const CheckOut = () => {
                   </div>
 
                   <div className="mb-5 form-floating">
-                    <input type="number" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} />
+                    <input type="number" min="1" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} />
                     <label className="mx-4">Phone number</label>
                     {errors.phoneNumber && <small className="text-danger">{errors.phoneNumber}</small>}
                   </div>
@@ -299,11 +421,32 @@ const CheckOut = () => {
                   </div>
                 })}
                 <hr />
-                <div className="d-flex justify-content-between">
-                  <p className="mb-2 fw-bold">Total price:</p>
-                  <p className="mb-2 fw-bold"><CartTotal /></p>
+                 <div className="d-flex justify-content-between">
+                  <p className="mb-2">Subtotal:</p>
+                  <p className="mb-2"><CartTotal /></p>
                 </div>
 
+                <div className="d-flex justify-content-between">
+                  <p className="mb-2">Expected date of delivery:</p>
+                  <p className="mb-2">{formData.expectedDateOfDelivery}</p>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <p className="mb-2">Shipping fee:</p>
+                  <p className="mb-2">{}
+                  {(() => {
+                      if(!formData.country){
+                        return "..."
+                      }else{
+                        return `${currentCurrencyCode} ${calculateShippingFee(formData.country)}`; // Combine currency symbol with formatted total
+                      }
+                    })()}
+                  </p>
+                </div>
+
+                <div className="d-flex justify-content-between">
+                  <p className="mb-2 fw-bold">Total price:</p>
+                  <p className="mb-2 fw-bold">{currentCurrencyCode} {checkoutTotal}</p>
+                </div>
 
                 <div className="d-grid d-lg-none">
                     <button disabled={loading} className="btn btn-lg shadow-0 border" onClick={handleSubmit} style={{backgroundColor: "black", color: "white", fontWeight: "900", width: "100%"}}>

@@ -11,7 +11,7 @@ const AllProducts = () => {
     return <div>
         <Navbar />
         <div className="all-products-page-container">
-                       <video 
+                       {/* <video 
     muted 
     autoPlay 
     loop 
@@ -19,7 +19,15 @@ const AllProducts = () => {
     style={{width: "100%"}}
     src="https://images.hergivenhair.com/hghemail/2023/images/adv.mp4">
     Your browser does not support the video tag.
+  </video> */}
+  <div className=''>
+  <video playsInLine="playsinline" autoplay="autoplay" loop="loop" preload="none" class="video-local w-100 h-100 of-cover center-middle p-absolute mih" muted="muted" poster="//www.benaturalgirl.ng/cdn/shop/files/preview_images/f24d2a40ac394c588696b66ed00b9864.thumbnail.0000000000_small.jpg?v=1722418285" src="//www.benaturalgirl.ng/cdn/shop/videos/c/vp/f24d2a40ac394c588696b66ed00b9864/f24d2a40ac394c588696b66ed00b9864.HD-1080p-4.8Mbps-32555254.mp4?v=0">
+  <source data-src="//www.benaturalgirl.ng/cdn/shop/videos/c/vp/f24d2a40ac394c588696b66ed00b9864/f24d2a40ac394c588696b66ed00b9864.HD-1080p-4.8Mbps-32555254.mp4?v=0" type="video/mp4" />
+  <img src="//www.benaturalgirl.ng/cdn/shop/files/preview_images/f24d2a40ac394c588696b66ed00b9864.thumbnail.0000000000_small.jpg?v=1722418285" />
   </video>
+  <img src="//www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=1440" alt="Home_Page_A1_first_option_web_version_1_1.jpg" srcset="//www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=320 320w, //www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=450 450w, //www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=550 550w, //www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=750 750w, //www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=950 950w, //www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=1024 1024w, //www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=1200 1200w, //www.benaturalgirl.ng/cdn/shop/files/Home_Page_A1_first_option_web_version_1_1.jpg?v=1722599806&amp;width=1400 1400w" width="1440" height="1346" loading="eager" sizes="100vw" class="js-image-lazy w-100 h-100 of-cover" fetchpriority="high" decoding="async"></img>
+
+  </div>
             <section>
             <div className="container">
                 <header className="" style={{padding: "20px 0"}}>

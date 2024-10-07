@@ -96,7 +96,7 @@ const Navbar = () => {
                         <i className="fa-brands fa-instagram"></i>
                       </a>
                       <a style={{ color: "white" }} href="https://www.tiktok.com/@beauty_bykiara" target="_blank">
-                        <i className="fa-brands fa-x-twitter"></i>
+                        <i className="fa-brands fa-tiktok"></i>
                       </a>
                     </div>
                   </div>
@@ -104,13 +104,14 @@ const Navbar = () => {
               </div>
               <div className="">
               {/* d-flex float-end  */}
-                <div className="text-light" style={{display: "flex"}}>
-                <Link to="/cart" style={{ fontWeight: "bold" }} className="border rounded py-1 px-3 nav-link d-flex align-items-center mx-1">
-                    <i className="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
-                    <p className="d-none d-md-block mb-0">Search</p>
-                  </Link>
+                <div className="text-light" style={{display: "flex", gap: "15px"}}>
+                {/* <Link to="/cart" style={{ fontWeight: "bold" }} className="border rounded py-1 px-3 nav-link d-flex align-items-center mx-1">
+                  <i className="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
+                  <p className="d-none d-md-block mb-0">Search</p>
+                </Link> */}
+                
                   <div className="dropdown" ref={dropdownRef}>
-                    <button onClick={() => setDropdown(prev => !prev)} style={{ fontWeight: "bold" }} className="account-details-dropdown dropdown-toggle me-1 border rounded py-1 px-3 nav-link d-flex align-items-center">
+                    <button onClick={() => setDropdown(prev => !prev)} style={{ fontWeight: "bold" }} className="account-details-dropdown dropdown-toggle me-1 nav-link d-flex align-items-center">
                       <i className="fas fa-user-alt m-1 me-md-2"></i>
                       <p className="d-none d-md-block mb-0">{use_auth.user.is_user_logged ? `Hi, ${use_auth.user.user.firstname}` : "Account"}</p>
                     </button>
@@ -157,7 +158,15 @@ const Navbar = () => {
                       </div>
                     )}
                   </div>
-                  <Link to="/cart" style={{ fontWeight: "bold" }} className="border rounded py-1 px-3 nav-link d-flex align-items-center">
+                  <Link to="/cart" style={{ fontWeight: "bold" }} className="nav-link d-flex align-items-center mx-1">
+                  <i className="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
+                  <p className="d-none d-md-block mb-0">Search</p>
+                </Link>
+                  {/* <Link to="/cart" style={{ fontWeight: "bold" }} className="border rounded py-1 px-3 nav-link d-flex align-items-center">
+                    <i className="fas fa-shopping-cart m-1 me-md-2"></i>
+                    <p className="d-none d-md-block mb-0">My cart</p>&nbsp;{totalItems}
+                  </Link> */}
+                  <Link to="/cart" style={{ fontWeight: "bold" }} className="nav-link d-flex align-items-center">
                     <i className="fas fa-shopping-cart m-1 me-md-2"></i>
                     <p className="d-none d-md-block mb-0">My cart</p>&nbsp;{totalItems}
                   </Link>

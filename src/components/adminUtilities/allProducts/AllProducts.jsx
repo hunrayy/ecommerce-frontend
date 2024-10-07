@@ -40,6 +40,7 @@ const AllProducts = () => {
     const handleDeleteConfirm = () => {
         console.log(productToDelete)
         setProductDeleting(true)
+        setShowDeleteModal(false); // Close the confirmation modal after deleting
         
         axios
             .post(`${import.meta.env.VITE_BACKEND_URL}/admin/delete-product`, {productToDelete: productToDelete},{
@@ -64,8 +65,7 @@ const AllProducts = () => {
                 }
             })
             .finally(() => {
-                setShowDeleteModal(false); // Close the confirmation modal after deleting
-                setProductDeleting(true)
+                setProductDeleting(false)
              
 
             });

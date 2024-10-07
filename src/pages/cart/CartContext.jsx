@@ -110,6 +110,8 @@ const CartProvider = ({ children }) => {
       item.id === productId ? { ...item, lengthPicked: newLength } : item
     );
 
+    toast.success('Length of product updated in cart')
+
     setCartProducts((prevProducts) => ({
       ...prevProducts,
       products: updatedItems,

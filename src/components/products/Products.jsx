@@ -53,8 +53,8 @@ const Products = () => {
     const handleAddToCart = (product) => {
         addToCart(product);
     };
-    const navigateToProduct = (product_id) => {
-        navigate(`/product/${product_id}`, {
+    const navigateToProduct = (id) => {
+        navigate(`/product/${id}`, {
             replace: true
         })
     }
@@ -88,7 +88,7 @@ const Products = () => {
                         const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
                         const convertedPrice = Number(convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency)).toLocaleString();
                         const currencySymbol = currencySymbols[selectedCurrency];
-                        return (<div key={index} className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.productName)}>
+                        return (<div key={index} className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container" style={{textDecoration: "none", color: "black"}} onClick={()=>navigateToProduct(product.id)}>
                         <div className="my-2">
                    
                             <img src={product.productImage} className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} />

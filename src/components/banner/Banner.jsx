@@ -24,8 +24,36 @@ const Banner = () => {
 
   return (
     <div>
+{/* video-local w-100 h-100 of-cover center-middle p-absolute mih */}
+<div className='new-banner-container'>
+  <video className='new-banner-video' playsInLine="playsinline" autoplay="autoplay" loop="loop" preload="none" muted="muted" poster="//www.benaturalgirl.ng/cdn/shop/files/preview_images/f24d2a40ac394c588696b66ed00b9864.thumbnail.0000000000_small.jpg?v=1722418285" src="//www.benaturalgirl.ng/cdn/shop/videos/c/vp/f24d2a40ac394c588696b66ed00b9864/f24d2a40ac394c588696b66ed00b9864.HD-1080p-4.8Mbps-32555254.mp4?v=0">
+  <source data-src="//www.benaturalgirl.ng/cdn/shop/videos/c/vp/f24d2a40ac394c588696b66ed00b9864/f24d2a40ac394c588696b66ed00b9864.HD-1080p-4.8Mbps-32555254.mp4?v=0" type="video/mp4" />
+  </video>
+  <Carousel
+                prevLabel={null}
+                nextLabel={null}
+                style={{zIndex: "1"}}
+              >
+                {detailsObject.map((item, index) => (
+                  <Carousel.Item key={index}>
+                    <div className="new-banner-carousel-container" >
+                      <img
+                        src={item.imgSrc}
+                        alt={`Slide ${index + 1}`}
+                        
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                      <Carousel.Caption style={{ zIndex: "0" }}>
+                        <h5 style={{ fontFamily: "cursive" }}>{item.text}</h5>
+                      </Carousel.Caption>
+                    </div>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+
+  </div>
  
-      <section className="pt-3 banner-component-container">
+      {/* <section className="pt-3 banner-component-container">
         <div className="container">
           <div className="row gx-3">
             <main className="col-lg-9">
@@ -88,7 +116,7 @@ const Banner = () => {
        
           </div>
         </div>
-      </section>
+      </section> */}
   
     </div>
   );
