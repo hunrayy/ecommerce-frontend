@@ -316,7 +316,7 @@ const Login = () => {
               </div>
               
               <div style={{display: "flex", justifyContent: "right", padding: "5px 10px 0 0"}}>
-                <Link style={{color: "purple", textDecoration: "none"}}>Forgot password?</Link>
+                <Link to="/accounts/password/reset" style={{color: "purple", textDecoration: "none"}}>Forgot password?</Link>
               </div>
 
               <div className="d-grid">

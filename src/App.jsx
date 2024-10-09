@@ -14,12 +14,16 @@ import DeliveryPolicy from "./pages/deliveryPolicy/DeliveryPolicy"
 import PaymentSuccess from "./pages/paymentSuccess/PaymentSuccess"
 import AdminLogin from "./pages/adminLogin/AdminLogin"
 import VerifyEmailCode from "./pages/verifyEmailCode/VerifyEmailCode"
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword"
+import ResetPassword from "./pages/resetPassword/ResetPassword"
 import { AuthProvider } from "./components/AuthContext/AuthContext"
 import CheckOut from "./pages/checkOut/CheckOut"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import UserAccount from "./pages/userAccount/UserAccount"
 import AllProducts from "./pages/allProducts/AllProducts"
+import AdminForgotPassword from "./pages/adminForgotPassword/AdminForgotPassword"
+import AdminResetPassword from "./pages/adminResetPassword/AdminResetPassword"
 
 
 function App() {
@@ -38,13 +42,17 @@ function App() {
             <Route path="/identification/" element={<Identification />} />
             <Route path="/email-verification/:token" element={<VerifyEmailCode />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/accounts/password/reset" element={<ForgotPassword />} />
+            <Route path='/accounts/password/reset/reset-password/:token' element={<ResetPassword />} />
             <Route path="/user-account" element={<UserAccount />} />
             <Route path="/register/:token" element={<Register />} />
             <Route path="/policies/shipping-policy" element={<ShippingPolicy />} />
             <Route path="/policies/refund-policy" element={<RefundPolicy />} />
             <Route path="/policies/delivery-policy" element={<DeliveryPolicy />} />
             <Route path="/admin/dashboard/:token" element={<AdminDashboard />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/beautybykiara/waterfall/admin/login" element={<AdminLogin />} />
+            <Route path="/accounts/password/reset/admin/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdG5hbWUiOiJIZW5yeSIsImxhc3RuY" element={<AdminForgotPassword />} />
+            <Route path="/admin/accounts/password/reset/reset-password/:token" element={<AdminResetPassword />} />
             <Route path="/page-not-found" element={<PageNotFound />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>

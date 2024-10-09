@@ -139,7 +139,7 @@ const AdminLogin = () => {
                 )}
               </div>
               <div style={{textAlign: "right", marginTop: "20px"}} >
-                <small><Link style={{textDecoration: "none", color: "purple"}}>Forgot Password?</Link></small>
+                <small><Link  to="/accounts/password/reset/admin/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdG5hbWUiOiJIZW5yeSIsImxhc3RuY" style={{textDecoration: "none", color: "purple"}}>Forgot Password?</Link></small>
                 
               </div>
 

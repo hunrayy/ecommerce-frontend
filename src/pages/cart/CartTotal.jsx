@@ -22,7 +22,7 @@ const CartTotal = () => {
   const formattedTotal = Number(total).toLocaleString();
 
   return (
-    <span className="mb-2">{currencySymbol}{formattedTotal}</span>
+    <span className="mb-2">{currencySymbol} {formattedTotal}</span>
   );
 };
 

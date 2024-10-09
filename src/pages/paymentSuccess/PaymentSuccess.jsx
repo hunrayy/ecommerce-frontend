@@ -31,9 +31,10 @@ const PaymentSuccess = () => {
                     detailsToken: detailsToken
                 }
             });
+            console.log(response)
 
             if (response.data.code === "success") {
-                localStorage.clear();
+                localStorage.removeItem('cart_items'); //clear cart items in local storage
                 setPaymentConfirmed(true);
             } else if (response.data.code === "error") {
                 setError(response.data.reason);
