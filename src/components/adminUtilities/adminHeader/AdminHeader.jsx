@@ -25,15 +25,15 @@ const AdminHeader = ({ shownav, setShownav }) => {
                 </div>
                 
                 <div className="admin-logo-container">
-                    <div className="admin-icon-container d-none d-md-block" style={{ fontFamily: "Courier New, Courier, monospace" }}> 
+                    <div className="admin-icon-container" style={{ fontFamily: "Courier New, Courier, monospace" }}> 
                         Today: {date} <i className="fa-regular fa-calendar"></i>
                     </div>
-                    <div className="admin-icon-container">
+                    {/* <div className="admin-icon-container">
                         <span className="d-none d-md-block">Settings</span> <i className="fa-solid fa-gear"></i>
                     </div>
                     <div className="admin-icon-container">
                         <span className="d-none d-md-block">Notifications</span> <i className="fa-regular fa-bell"></i>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

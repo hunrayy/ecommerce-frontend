@@ -4,11 +4,13 @@ import AdminHeader from "../../components/adminUtilities/adminHeader/AdminHeader
 import Dashboard from "../../components/adminUtilities/dashboard/Dashboard";
 import CreateProduct from "../../components/adminUtilities/createProduct/CreateProduct";
 import AllProducts from "../../components/adminUtilities/allProducts/AllProducts";
-import SearchComponent from "../../components/adminUtilities/searchComponent/SearchComponent";
 import AdminNotification from "../../components/adminUtilities/adminNotification/AdminNotification";
 import AdminSettingsPage from "../../components/adminUtilities/adminSettings/AdminSettingsPage";
 import AdminShippingPolicy from "../../components/adminUtilities/adminShippingPolicy/AdminShippingPolicy";
 import AdminDeliveryPolicy from "../../components/adminUtilities/adminDeliveryPolicy/AdminDeliveryPolicy";
+import PendingOrders from "../../components/adminUtilities/pendingOrders/PendingOrders";
+import OutForDelivery from "../../components/adminUtilities/outForDelivery/OutForDelivery";
+import DeliveredOrders from "../../components/adminUtilities/deliveredOrders/DeliveredOrders";
 import { useNotification } from "../../components/all_context/NotificationContext";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import axios from "axios";
@@ -26,26 +28,31 @@ const AdminDashboard = () => {
         dashboard_page: true,
         createProduct_page: false,
         viewProducts_page: false,
-        search_page: false,
         settings_page: false,
         notifications_page: false,
         shipping_policy_page: false,
         refund_policy_page: false,
-        delivery_policy_page: false
+        delivery_policy_page: false,
+        pending_orders_page: false,
+        out_for_delivery_page: false,
+        delivered_orders_page: false
     });
     const [pagesDropdown, setPagesDropdown] = useState(false)
+    const [ordersDropdown, setOrdersDropdown] = useState(false)
 
     const showPage = (page) => {
         setPages({
             dashboard_page: page === 'dashboard',
             createProduct_page: page === 'createProduct',
             viewProducts_page: page === 'viewProducts',
-            search_page: page === 'search',
             settings_page: page === 'settings',
             notifications_page: page === 'notifications',
             shipping_policy_page: page === 'shipping_policy',
             refund_policy_page: page === 'refund_policy',
-            delivery_policy_page: page === 'delivery_policy'
+            delivery_policy_page: page === 'delivery_policy',
+            pending_orders_page: page === 'pending_orders',
+            out_for_delivery_page: page === 'out_for_delivery',
+            delivered_orders_page: page === 'delivered_orders'
         });
         setShownav(false);  // Close the sidebar when a page is selected
     };
@@ -84,20 +91,33 @@ const AdminDashboard = () => {
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('viewProducts')}>
                             <i className="fa-solid fa-eye"></i> <span>View products</span>
                         </div>   
-                        <div className="dmin-sidebar-dropdown-container">
-    <div className="admin-sidebar-icon-wrapper" onClick={() => setPagesDropdown(!pagesDropdown)}>
-        <i className="fa-solid fa-book"></i> <span>Pages</span> {pagesDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
-    </div>
-    <div className={`admin-sidebar-dropdown-wrapper ${pagesDropdown ? 'open' : ''}`}>
-        <div onClick={() => showPage('shipping_policy')}>Shipping policy</div>
-        <div onClick={() => showPage('refund_policy')}>Refund policy</div>
-        <div onClick={() => showPage('delivery_policy')}>Delivery policy</div>
-    </div>
-</div>
-
-                        <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('search')}>
-                            <i className="fa-solid fa-magnifying-glass"></i> <span>Search</span>
+                        <div>
+                            <div className="admin-sidebar-icon-wrapper" onClick={() => setPagesDropdown(!pagesDropdown)}>
+                                <i className="fa-solid fa-book"></i> <span>Pages</span> {pagesDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
+                            </div>
+                            <div className={`admin-sidebar-dropdown-wrapper ${pagesDropdown ? 'open' : ''}`}>
+                                <div onClick={() => showPage('shipping_policy')}>Shipping policy</div>
+                                <div onClick={() => showPage('refund_policy')}>Refund policy</div>
+                                <div onClick={() => showPage('delivery_policy')}>Delivery policy</div>
+                            </div>
                         </div>
+
+                       
+
+
+                        <div>
+                            <div className="admin-sidebar-icon-wrapper" onClick={() => setOrdersDropdown(!ordersDropdown)}>
+                            <   i className="fa-solid fa-shopping-cart"></i> <span>Orders</span> {ordersDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
+                            </div>
+                            <div className={`admin-sidebar-dropdown-wrapper ${ordersDropdown ? 'open' : ''}`}>
+                                <div onClick={() => showPage('pending_orders')}>Pending Orders</div>
+                                <div onClick={() => showPage('out_for_delivery')}>Out-For-Delivery Orders</div>
+                                <div onClick={() => showPage('delivered_orders')}>Delivered Orders</div>
+                            </div>
+                        </div>
+
+
+
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('settings')}>
                             <i className="fa-solid fa-gear"></i> <span>Settings</span>
                         </div>
@@ -115,12 +135,15 @@ const AdminDashboard = () => {
                     {pages.dashboard_page && <Dashboard />}
                     {pages.createProduct_page && <CreateProduct />}
                     {pages.viewProducts_page && <AllProducts />}
-                    {pages.search_page && <SearchComponent />}
                     {pages.notifications_page && <AdminNotification />}
                     {pages.shipping_policy_page && <AdminShippingPolicy />}
                     {pages.refund_policy_page && <AdminRefundPolicy />}
                     {pages.delivery_policy_page && <AdminDeliveryPolicy />}
                     {pages.settings_page && <AdminSettingsPage />}
+                    {pages.pending_orders_page && <PendingOrders />}
+                    {pages.out_for_delivery_page && <OutForDelivery />}
+                    {pages.delivered_orders_page && <DeliveredOrders />}
+
                     
                     {/* Add other components as needed */}
                 </div>

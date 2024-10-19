@@ -5,7 +5,13 @@
 import Logo from "../Logo/Logo"
 import { Link } from "react-router-dom"
 import "./footer.css"
+import { useState, useEffect } from "react"
 const Footer = () => {
+  const [year, setYear] = useState(null)
+  useEffect(()=> {
+    const date = new Date().getFullYear()
+    setYear(date)
+  }, [])
     return <div>
       <footer className="footer">
   <div className="container">
@@ -21,8 +27,8 @@ const Footer = () => {
     <div className="footer-section">
       <h4>Quick links</h4>
       <ul>
-        <li><a href="#">Shop all</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><Link to='/collections/all'>Shop all</Link></li>
+        <li><Link to='/pages/contact'>Contact</Link></li>
         {/* <li><a href="#">FAQs</a></li> */}
         <li><a href="#">Tracking</a></li>
       </ul>
@@ -31,9 +37,9 @@ const Footer = () => {
     <div className="footer-section">
       <h4>Policy</h4>
       <ul>
-        <li><a href="#">Shipping policy</a></li>
-        <li><a href="#">Delivery Policy</a></li>
-        <li><a href="#">Refund policy</a></li>
+        <li><Link to='/policies/shipping-policy'>Shipping Policy</Link></li>
+        <li><Link to='/policies/delivery-policy'>Delivery policy</Link></li>
+        <li><Link to='/policies/refund-policy'>Refund policy</Link></li>
         {/* <li><a href="#">Best Sellers</a></li> */}
       </ul>
     </div>
@@ -72,7 +78,7 @@ const Footer = () => {
                 </li></ul>
 
   <div className="footer-bottom">
-    <p>&copy; 2024 beautybykiara. All Rights Reserved. | Developed by <a href="#">Henry Okiyi</a></p>
+    <p>&copy; {year} beautybykiara. All Rights Reserved. | Developed by <a href="#">Henry Okiyi</a></p>
   </div>
 </footer>
 

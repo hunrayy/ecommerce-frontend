@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios for API calls
 import Cookies from "js-cookie";
 import BasicLoader from "../../loader/BasicLoader";
+import { toast } from "react-toastify";
 
 const AdminRefundPolicy = () => {
     // State for modal visibility and content to edit
@@ -60,6 +61,11 @@ const AdminRefundPolicy = () => {
             });
             console.log(response);
             // Handle successful response, if needed
+            if(response.data.code == "success"){
+                toast.success('Refund policy page updated successfully')
+            }else{
+                toast.error(response.data.message)
+            }
         } catch (error) {
             console.error("Error updating the refund policy:", error);
             // Optionally, you can roll back the UI changes in case of an error

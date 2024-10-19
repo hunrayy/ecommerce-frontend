@@ -8,10 +8,16 @@ import { useState, useContext, useRef, useEffect } from "react";
 import { CurrencyContext } from "../all_context/CurrencyContext";
 import Select from "react-select";
 import { useAuth } from "../AuthContext/AuthContext";
+import axios from "axios";
 
 const Navbar = () => {
   const [shownav, setShownav] = useState(false);
   const [dropdown, setDropdown] = useState(false);
+  const [searchState, setSearchState] = useState({isSearching: false, searchLoading: false, searchData: null, wordNotFound: null})
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
+
+
   const dropdownRef = useRef(null); // Ref for the dropdown menu
   const use_auth = useAuth()
 
@@ -29,6 +35,65 @@ const Navbar = () => {
     value: currency,
     label: `${currencySymbols[currency]} ${currencyNames[currency]} (${currency})`
   }));
+
+  // Handle search input change with debounce
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    // Show the loader immediately when the user starts typing
+    setSearchState((prev) => ({
+        ...prev,
+        searchLoading: value.length > 0,
+        wordNotFound: null
+    }));
+
+    // Clear the previous timeout
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+
+    // Set a new timeout to perform search after a delay
+    const newTimeout = setTimeout(() => {
+      if (value.trim()) {
+          performSearch(value);
+      } else {
+          // Clear the search results if query is empty
+          setSearchState((prev) => ({
+              ...prev,
+              searchData: [],
+              wordNotFound: null
+          }));
+      }
+    }, 2000); // 2 seconds debounce delay
+
+    setDebounceTimeout(newTimeout);
+};
+
+  // Debounced API call function
+  const performSearch = async (query) => {
+    setSearchState((prev) => ({ ...prev, wordNotFound: null }));
+    console.log("hello")
+    try {
+        const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/search-products`, {
+            params: { query }, // Pass search query as a parameter
+        });
+        console.log(feedback)
+
+        setSearchState((prev) => ({
+            ...prev,
+            searchLoading: false,
+            searchData: feedback.data.code === "success" ? feedback.data.data : [],
+            wordNotFound: feedback.data.code === "success" && feedback.data.data.length === 0 ? query : null
+        }));
+    } catch (error) {
+      console.log(error)
+        setSearchState((prev) => ({
+            ...prev,
+            searchLoading: false,
+            searchData: [],
+            wordNotFound: query
+        }));
+    }
+};
 
   // Effect to handle clicks outside the dropdown
   useEffect(() => {
@@ -77,7 +142,7 @@ const Navbar = () => {
                       />
                     </div>
                     <div>
-                      <a href="#" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>contact</a>
+                      <Link to='/pages/contact' style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>contact</Link>
                     </div>
                     <div>
                       <Link to="/policies/refund-policy" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Refund policy</Link>
@@ -158,10 +223,10 @@ const Navbar = () => {
                       </div>
                     )}
                   </div>
-                  <Link to="/cart" style={{ fontWeight: "bold" }} className="nav-link d-flex align-items-center mx-1">
-                  <i className="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
-                  <p className="d-none d-md-block mb-0">Search</p>
-                </Link>
+                  <div style={{ fontWeight: "bold", cursor: "pointer" }} className="nav-link d-flex align-items-center mx-1" onClick={() => setSearchState((prev) => ({...prev, isSearching: true}))}>
+                    <i className="fa-solid fa-magnifying-glass m-1 me-md-2"></i>
+                    <p className="d-none d-md-block mb-0">Search</p>
+                  </div >
                   {/* <Link to="/cart" style={{ fontWeight: "bold" }} className="border rounded py-1 px-3 nav-link d-flex align-items-center">
                     <i className="fas fa-shopping-cart m-1 me-md-2"></i>
                     <p className="d-none d-md-block mb-0">My cart</p>&nbsp;{totalItems}
@@ -176,6 +241,44 @@ const Navbar = () => {
           </div>
         </div>
       </header>
+
+      {/* search modal */}
+      {searchState.isSearching && (
+        <div className="custom-modal-overlay-form" onClick={() => setSearchState((prev) => ({...prev, isSearching: false}))}>
+          <div
+            className="card  custom-modal-card"
+            style={{
+                width: "600px",
+                padding: "20px",
+                minHeight: "250px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+              <div class="search-container" onClick={() => setSearchState((prev) => ({...prev, isSearching: true}))}>
+                  <input type="text" placeholder="Search..." autoFocus value={searchQuery} onChange={handleSearchChange}/>
+                  <i className="fa-solid fa-magnifying-glass"></i>
+              </div>
+              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px"}}>
+                  <small className="text-muted">Products</small>
+                  {searchState.searchLoading && <div className="admin-form-loader-wrapper"></div>}
+              </div>
+              <hr />
+                  <div style={{maxHeight: "400px", overflow: "auto"}}>
+                  {searchState.searchData && (
+                      searchState.searchData.map((product, index) => {
+                          // console.log(product)
+                          return <div key={index} className="admin-search-result-container" onClick={()=> {setSearchState((prev) => ({...prev, isSearching: false, searchLoading: false, wordNotFound: null})), setSelectedProduct(product)}}>
+                              <img src={product.productImage} alt="" width="50px"  />
+                              <p><b>{product.productName}</b></p>
+                          </div>
+                      })
+                  )}
+                  {searchState.wordNotFound != null && <div>Could not look up "{searchState.wordNotFound}"</div>}
+              </div>
+              
+          </div>
+      </div>
+      )}
     </div>
   );
 }

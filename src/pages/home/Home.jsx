@@ -11,6 +11,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const Home = () => {
     const location = useLocation()
     const justLoggedIn = location.state?.justLoggedIn
+    const [showPaginationButtons, setShowPaginationButtons] = useState(false)
     const { user } = useAuth();
     const navigate = useNavigate();
     useEffect(()=> {
@@ -32,7 +33,13 @@ const Home = () => {
             }
             <Navbar />
             <Banner />
-            <Products />
+            <div className="container">
+            <header style={{marginTop: "50px"}}>
+                <h3>New products</h3>
+            </header>
+
+            </div>
+            <Products showPaginationButtons={showPaginationButtons} />
             <FooterVideo />
             <Footer />
         </div>

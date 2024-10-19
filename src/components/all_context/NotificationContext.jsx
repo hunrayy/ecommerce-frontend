@@ -33,48 +33,69 @@ const getallUnreadNotification = () => {
 
 }
 
+// useEffect(() => {
+//     getallUnreadNotification()
+//     console.log("useEffect called - subscribing to Pusher event");
+
+//     const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
+//       cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+//     });
+
+//     const channel = pusher.subscribe('user-accounts');
+
+//     channel.bind('new-user', (data) => {
+//       console.log("new-user event received:", data);
+//       toast.info(`${data.message}`);
+//       getallUnreadNotification()
+
+//       // setNotifications((prev) => [...prev, data]);
+
+//       // setBadgeCount((prev) => {
+//       //   // Get current badgeCount from localStorage
+//       //   const storedBadgeCount = localStorage.getItem('badgeCount');
+        
+//       //   // If badgeCount exists, parse and increment it; otherwise, set it to 1
+//       //   const updatedBadgeCount = storedBadgeCount ? parseInt(storedBadgeCount, 10) + 1 : 1;
+        
+//       //   // Log the current and updated values
+//       //   console.log(`Previous badgeCount: ${storedBadgeCount}, Updated badgeCount: ${updatedBadgeCount}`);
+      
+//       //   // Update localStorage with new badgeCount
+//       //   localStorage.setItem('badgeCount', updatedBadgeCount.toString());
+      
+//       //   return updatedBadgeCount;
+//       // });
+//     });
+
+//     return () => {
+//       console.log("Cleaning up Pusher subscriptions");
+//       channel.unbind_all();
+//       channel.unsubscribe();
+//     };
+// }, []); // Ensure the effect only runs once
+
 useEffect(() => {
+  // getallUnreadNotification()
+  console.log("useEffect called - subscribing to Pusher event");
+
+  const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
+    cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+  });
+
+  const channel = pusher.subscribe('my-channel');
+
+  channel.bind('message-sent', (data) => {
+    console.log("event received:", data);
+    toast.info(`${data.message}`);
     getallUnreadNotification()
-    console.log("useEffect called - subscribing to Pusher event");
+  });
 
-    const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
-      cluster: import.meta.env.VITE_PUSHER_CLUSTER,
-    });
-
-    const channel = pusher.subscribe('user-accounts');
-
-    channel.bind('new-user', (data) => {
-      console.log("new-user event received:", data);
-      toast.info(`${data.message}`);
-      getallUnreadNotification()
-
-      // setNotifications((prev) => [...prev, data]);
-
-      // setBadgeCount((prev) => {
-      //   // Get current badgeCount from localStorage
-      //   const storedBadgeCount = localStorage.getItem('badgeCount');
-        
-      //   // If badgeCount exists, parse and increment it; otherwise, set it to 1
-      //   const updatedBadgeCount = storedBadgeCount ? parseInt(storedBadgeCount, 10) + 1 : 1;
-        
-      //   // Log the current and updated values
-      //   console.log(`Previous badgeCount: ${storedBadgeCount}, Updated badgeCount: ${updatedBadgeCount}`);
-      
-      //   // Update localStorage with new badgeCount
-      //   localStorage.setItem('badgeCount', updatedBadgeCount.toString());
-      
-      //   return updatedBadgeCount;
-      // });
-    });
-
-    return () => {
-      console.log("Cleaning up Pusher subscriptions");
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
+  return () => {
+    console.log("Cleaning up Pusher subscriptions");
+    channel.unbind_all();
+    channel.unsubscribe();
+  };
 }, []); // Ensure the effect only runs once
-
-
   return (
     <NotificationContext.Provider value={{ notifications, badgeCount, setBadgeCount }}>
       {children}

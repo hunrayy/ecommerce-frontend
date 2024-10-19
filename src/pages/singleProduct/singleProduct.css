@@ -57,6 +57,41 @@
     object-fit: contain;
     /* scroll-snap-align: start; */
 }
+
+
+.hover-button {
+    position: relative;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black; /* Initially black text */
+    background: transparent;
+    border: 2px solid black;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.4s ease; /* Smooth transition for text color */
+}
+
+.hover-button::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background-color: black;
+    z-index: -1;
+    transition: height 0.5s ease; /* Smooth transition for background */
+}
+
+.hover-button:hover::before {
+    height: 100%; /* Background expands on hover */
+}
+
+.hover-button:hover {
+    color: white; /* Text turns white on hover */
+}
 @media (max-width: 577px) {
     .small-images-container{
         background-color: red;

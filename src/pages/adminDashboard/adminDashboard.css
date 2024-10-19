@@ -16,7 +16,7 @@
     left: 20px;
     background-color: white;
     top: 100px;
-    gap: 20px;
+    gap: 10px;
     overflow-y: auto;
 }
 /* Scrollbar styling for Webkit browsers */

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios for API calls
 import Cookies from "js-cookie";
 import BasicLoader from "../../loader/BasicLoader";
+import { toast } from "react-toastify";
 
 const AdminShippingPolicy = () => {
     // State for modal visibility and content to edit
@@ -62,6 +63,11 @@ const AdminShippingPolicy = () => {
                 }
             });
             console.log(response);
+            if(response.data.code == "success"){
+                toast.success('Shipping policy page updated successfully')
+            }else{
+                toast.error(response.data.message)
+            }
             // Handle successful response, if needed
         } catch (error) {
             console.error("Error updating the shipping policy:", error);

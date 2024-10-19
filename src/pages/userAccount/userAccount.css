@@ -1,5 +1,6 @@
 .user-account-page-container{
   margin-top: var(--marginAboveTop);
+  background-color: var(--bodyColor);
 }
 
 
@@ -25,13 +26,6 @@ h3, h4, h5 {
   color: white;
 }
 
-.card {
-  border-radius: 15px;
-}
-
-.card-title {
-  font-weight: bold;
-}
 
 .table {
   background-color: white;
@@ -48,19 +42,4 @@ h3, h4, h5 {
 
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: rgba(242, 239, 248, 0.5);
-}
-
-.badge {
-  padding: 0.5em 1em;
-  font-size: 0.85em;
-}
-
-.btn-outline-danger {
-  border-color: #ff4d4d;
-  color: #ff4d4d;
-}
-
-.btn-outline-danger:hover {
-  background-color: #ff4d4d;
-  color: white;
 }

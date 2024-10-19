@@ -17,6 +17,7 @@ const AllProducts = () => {
         products: [],
         products_loading: false,
     });
+    const [totalProducts, setTotalProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null); // Track selected product for modal
     const [productToDelete, setProductToDelete] = useState(null); // Track product to delete
     const [productDeleting, setProductDeleting] = useState(false)
@@ -25,6 +26,9 @@ const AllProducts = () => {
     const [searchState, setSearchState] = useState({isSearching: false, searchLoading: false, searchData: null, wordNotFound: null})
     const [searchQuery, setSearchQuery] = useState("");
     const [debounceTimeout, setDebounceTimeout] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1)
+    const [perPage, setPerPage] = useState(2);
+
 
 
     const handleCloseModal = () => {
@@ -58,6 +62,7 @@ const AllProducts = () => {
                         ),
                     }));
                     setProductDeleted(true)
+                    fetchProducts()
                     setTimeout(()=> {
                         setProductDeleted(false)
                     }, 5000)
@@ -71,38 +76,78 @@ const AllProducts = () => {
             });
     };
 
-    useEffect(() => {
-        let loaderTimeout;
-        loaderTimeout = setTimeout(() => {
-            setAllProducts((prevState) => ({
-                ...prevState,
-                products_loading: true,
-            }));
-        }, 200);
+    // Handler for next page
+    const handleNextPage = () => {
+        if (currentPage < Math.ceil(totalProducts.total / perPage)) {
+            console.log()
+            setCurrentPage((prevPage) => {
+                const newPage = prevPage + 1;
+                // console.log(newPage); // This will now log the correct new page
+                return newPage;
+            });
+        }
+    };
+
+    // Handler for previous page
+    const handlePreviousPage = () => {
+
+        if (currentPage > 1) {
+            setCurrentPage((prevPage) => {
+                const newPage = prevPage - 1;
+                return newPage;
+            });
+        }
+    };
+
+    const handlePaginate = (index) => {
+        setCurrentPage((prevPage) => {
+            return index;
+        });
+    }
+
+    const fetchProducts = () => {
         axios
-            .get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((feedback) => {
-                console.log(feedback)
-                if (feedback.data.code === "success") {
-                    setAllProducts({
-                        products: feedback.data.data,
-                        products_loading: false,
-                    });
-                }
-            })
-            .finally(() => {
-                clearTimeout(loaderTimeout);
+        .get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
+            params: {
+                perPage: perPage,
+                page: currentPage
+            },headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        .then((feedback) => {
+            console.log(feedback)
+            if (feedback.data.code === "success") {
+                setTotalProducts(feedback.data.data)
+                setCurrentPage(feedback.data.data.current_page)
                 setAllProducts((prev) => ({
                     ...prev,
                     products_loading: false,
-                }));
-            });
-        return () => clearTimeout(loaderTimeout);
-    }, []);
+                    products: feedback.data.data.data
+                }))
+            }
+        })
+        // .finally(() => {
+        //     clearTimeout(loaderTimeout);
+        //     setAllProducts((prev) => ({
+        //         ...prev,
+        //         products_loading: false,
+        //     }));
+        // });
+    }
+
+    useEffect(() => {
+        fetchProducts()
+        // let loaderTimeout;
+        // loaderTimeout = setTimeout(() => {
+        //     setAllProducts((prevState) => ({
+        //         ...prevState,
+        //         products_loading: true,
+        //     }));
+        // }, 200);
+        
+        // return () => clearTimeout(loaderTimeout);
+    }, [currentPage, perPage]);
 
         // Handle search input change with debounce
         const handleSearchChange = (e) => {
@@ -197,9 +242,12 @@ const AllProducts = () => {
                     <header className="mb-4">
                         <h3>All products</h3>
                     </header>
+                    <div>
+                        <p style={{fontSize: "18px" }} className='float-right'>View all | {totalProducts.total} Products</p>
+                    </div>
                     <div className="row">
                         {allProducts.products_loading && <BasicLoader />}
-                        {allProducts.products?.slice().reverse().map((product) => {
+                        {allProducts.products?.map((product) => {
                             console.log(product)
                             const productPrice = parseFloat(product.productPriceInNaira);
                             const convertedPrice = convertCurrency(productPrice, "NGN", selectedCurrency);
@@ -233,9 +281,30 @@ const AllProducts = () => {
                                 </div>
                             );
                         })}
+                        {/* pagination button */}
+                        {
+                            allProducts.products.length > 0 && <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+                                <p><span>Page {currentPage} of {Math.ceil(totalProducts.total / perPage)}</span></p>
+                                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <button className='btn btn-dark' onClick={handlePreviousPage} disabled={currentPage < 2}>&laquo;</button>
+                                    {
+                                        (()=>{
+                                            
+                                            return Array.from({ length: Math.ceil(totalProducts.total / perPage) }, (_, index) => (
+                                                <button className={`btn btn-light ${currentPage == index + 1 && 'btn-dark'}`}  key={index} onClick={()=> handlePaginate(index + 1)}>{index + 1}</button>
+                                            ));
+                                        })()
+                                    }
+                                    <button className='btn btn-dark'  onClick={handleNextPage} disabled={currentPage == Math.ceil(totalProducts.total / perPage)}>&raquo;</button>
+
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </section>
+
+
             {/* search modal */}
             {searchState.isSearching && (
              <div className="custom-modal-overlay-form" onClick={() => setSearchState((prev) => ({...prev, isSearching: false}))}>

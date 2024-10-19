@@ -129,6 +129,20 @@
     align-items: center;
     z-index: 3;
 }
+.custom-modal-card {
+    opacity: 0; /* Initially hidden */
+    transform: translateY(-50px); /* Start slightly above */
+    animation: slideDown 0.5s ease forwards; /* Apply the animation */
+}
+
+/* Keyframes for the animation */
+@keyframes slideDown {
+    to {
+        opacity: 1; /* Fully visible */
+        transform: translateY(0); /* Moves to its final position */
+    }
+}
+
 .custom-modal-card::-webkit-scrollbar, .image-scroll-container::-webkit-scrollbar {
     width: 5px; /* Width of the scrollbar */
 }
