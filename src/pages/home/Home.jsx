@@ -34,11 +34,190 @@ const Home = () => {
             <Navbar />
             <Banner />
             <div className="container">
-            <header style={{marginTop: "50px"}}>
-                <h3>New products</h3>
-            </header>
+                <header style={{marginTop: "50px"}}>
+                    <h3>New products</h3>
+                </header>
 
             </div>
+
+
+
+
+            <div
+      style={{
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: "#f4f4f4",
+        margin: "0",
+        padding: "20px"
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          maxWidth: "600px",
+          margin: "0 auto",
+          padding: "20px",
+          borderRadius: "10px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <h1 style={{ margin: "0", color: "#333" }}>Your Order Receipt</h1>
+          <p style={{ margin: "5px 0", color: "#777" }}>
+            Thank you for shopping with us!
+          </p>
+        </div>
+
+        <div>
+          <p>Dear Henry,</p>
+          <p>
+            Thank you for your payment! We're pleased to inform you that your
+            transaction has been successfully processed.
+          </p>
+        </div>
+        <hr />
+
+        <div style={{ display: "flex", fontSize: "5px" }}>
+          <div style={{ marginRight: "20px", flex: "1" }}>
+            <h5 style={{ color: "purple" }}>Order Details</h5>
+            <p style={{margin: "5px 0"}}>
+              <strong>Tracking ID:</strong> 3511199327
+            </p>
+            <p style={{margin: "5px 0"}}>
+              <strong>Transaction ID:</strong> 729535806
+            </p>
+            <p style={{margin: "5px 0"}}>
+              <strong>Phone number:</strong> 123456
+            </p>
+            <p>
+              <strong>Date:</strong> October 21, 2024
+            </p>
+          </div>
+          <div style={{flex: "1"}}>
+            <h5 style={{ color: "purple" }}>Shipping Details</h5>
+            <p style={{margin: "5px 0"}}>
+              <strong>Country:</strong> United States
+            </p>
+            <p style={{margin: "5px 0"}}>
+              <strong>State:</strong> Georgia
+            </p>
+            <p style={{margin: "5px 0"}}>
+              <strong>City:</strong> Columbia
+            </p>
+            <p style={{margin: "5px 0"}}>
+              <strong>Address:</strong> 92 bungana drive
+            </p>
+            <p style={{margin: "5px 0"}}>
+              <strong>Postal code:</strong> 123456
+            </p>
+            <p>
+              <strong>Expected date of delivery:</strong> 04/11/2024
+            </p>
+          </div>
+        </div>
+        <hr />
+        <h6 style={{ fontWeight: "bold" }}>Summary</h6>
+
+        <div
+          style={{
+            display: "flex",
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+            padding: "10px",
+            marginBottom: "20px",
+            alignItems: "center",
+            backgroundColor: "#fafafa"
+          }}
+        >
+          <img
+            src="https://via.placeholder.com/80"
+            alt="Product Image"
+            style={{
+              width: "80px",
+              height: "80px",
+              borderRadius: "8px",
+              marginRight: "20px"
+            }}
+          />
+          <div style={{ flexGrow: 1 }}>
+            <h3 style={{ margin: "0", color: "#333", fontSize: "18px" }}>
+              Product Name 1
+            </h3>
+            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
+              Quantity: 2
+            </p>
+            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
+              Price: $50.00
+            </p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p style={{ margin: "5px 0", color: "#555", fontSize: "14px" }}>
+              Total: $100.00
+            </p>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+            padding: "10px",
+            marginBottom: "20px",
+            alignItems: "center",
+            backgroundColor: "#fafafa"
+          }}
+        >
+          <img
+            src="https://via.placeholder.com/80"
+            alt="Product Image"
+            style={{
+              width: "80px",
+              height: "80px",
+              borderRadius: "8px",
+              marginRight: "20px"
+            }}
+          />
+          <div style={{ flexGrow: 1 }}>
+            <h3 style={{ margin: "0", color: "#333", fontSize: "18px" }}>
+              Product Name 2
+            </h3>
+            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
+              Quantity: 1
+            </p>
+            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
+              Price: $75.00
+            </p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p style={{ margin: "5px 0", color: "#555", fontSize: "14px" }}>
+              Total: $75.00
+            </p>
+          </div>
+        </div>
+
+        <div style={{ textAlign: "right" }}>
+          <h5 style={{ margin: "0", color: "#333" }}>Total: $185.00</h5>
+        </div>
+
+        <div
+          style={{
+            background: "purple",
+            padding: "10px",
+            textAlign: "center",
+            color: "white",
+            marginTop: "20px"
+          }}
+        >
+          <p>
+          If you have any question or need assistance, feel free to contact our support team. 
+          </p>
+          <p>
+          Thank you for choosing us! We look forward to serving you again. 
+          </p>
+        </div>
+      </div>
+    </div>
             <Products showPaginationButtons={showPaginationButtons} />
             <FooterVideo />
             <Footer />

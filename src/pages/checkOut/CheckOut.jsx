@@ -146,7 +146,8 @@ const CheckOut = () => {
 
 
   useEffect(() => {
-    if(!use_auth.user.is_user_logged){
+    console.log('User Auth State:', use_auth.user.is_user_logged);
+    if(!use_auth?.user?.is_user_logged){
       navigate("/", {replace: true})
     }
   
@@ -157,12 +158,23 @@ const CheckOut = () => {
       currency: selectedCurrency
     }));
 
-    axios.get("https://countriesnow.space/api/v0.1/countries/states").then((feedback) => {
+    axios.get("https://countriesnow.space/api/v0.1/countries/states", { timeout: 10000 }) // timeout set to 10 seconds
+    .then((feedback) => {
+      console.log(feedback)
       setCountries(feedback.data.data)
     }).catch((error) => {
       // console.error("Error fetching countries and states:", error)
       toast.error("Failed to fetch countries and states. Please try again later.");
     })
+
+    // axios.get("https://restcountries.com/v3.1/all", { timeout: 10000 }) // timeout set to 10 seconds
+    // .then((feedback) => {
+    //   console.log(feedback)
+    //   setCountries(feedback.data)
+    // }).catch((error) => {
+    //   // console.error("Error fetching countries and states:", error)
+    //   toast.error("Failed to fetch countries and states. Please try again later.");
+    // })
 
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-number-of-days-of-delivery`,{
       headers: {
@@ -312,6 +324,21 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
                     {errors.country && <small className="text-danger">{errors.country}</small>}
 
                   </div>
+                  {/* <div className="col-12 mb-3 form-floating">
+                    <Form.Select size="lg" className={`form-select-lg ${errors.country && 'is-invalid'}`} style={{fontSize: "14px"}} name="country" value={formData.country} onChange={handleCountryChange}>
+                    <option value="">Select Country</option>
+                          
+                          {countries
+                            .sort((a, b) => a.name.common.localeCompare(b.name.common)) // Sort in descending order
+                            .map((country, index) => (
+                              <option key={index} value={country.name.common}>
+                                {country.name.common}
+                              </option>
+                          ))}
+                    </Form.Select>
+                    <label className="mx-3">Country</label>
+                    {errors.country && <small className="text-danger">{errors.country}</small>}
+                  </div> */}
                  
 
                   <div className="col-12 col-lg-6 mb-3 form-floating">
@@ -410,17 +437,17 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
                 {cartProducts.products.slice().reverse().map((product, index) => {
                   // console.log(product)
                   const currencySymbol = currencySymbols[selectedCurrency];
-                  let convertedPrice = convertCurrency(product.price, 'NGN', selectedCurrency);
+                  let convertedPrice = convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency);
                     convertedPrice = Number(convertedPrice);
                   return <div className="d-flex align-items-center mb-4" key={index}>
                     <div className="me-3 position-relative">
                       {product.quantity > 1 && <div className=" bg-dark position-absolute top-0 start-100 translate-middle  rounded-pill" style={{width: "15px", height: "15px", borderRadius: "50%", color: "white", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "10px"}}>
                         {product.quantity}
                       </div>}
-                      <img src={product.img} style={{ height: "auto", width: "100%", maxWidth: "60px"}} className="img-sm rounded border" />
+                      <img src={product.productImage} style={{ height: "auto", width: "100%", maxWidth: "60px"}} className="img-sm rounded border" />
                     </div>
                     <div>
-                      {product.name}
+                      {product.productName}
                       <div className=" text-muted">{product.lengthPicked}
                         <div className=" text-muted">{currencySymbol}{convertedPrice.toLocaleString()}  {product.quantity > 1 && <span>&nbsp; * &nbsp; {product.quantity}</span>}
                         </div>

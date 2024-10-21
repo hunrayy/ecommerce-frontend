@@ -90,7 +90,7 @@ export const AuthProvider = ({children}) => {
        })
     }
 
-
+    const [loading, setLoading] = useState(true);
     
     useEffect(() => {
 
@@ -116,6 +116,7 @@ export const AuthProvider = ({children}) => {
                         is_user_logged: false
                     })
                 }
+                setLoading(false);
             })
 
         }else{
@@ -124,6 +125,7 @@ export const AuthProvider = ({children}) => {
                 user: null,
                 is_user_logged: false
             })
+            setLoading(false);
          
         }
     }, [])

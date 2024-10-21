@@ -14,6 +14,7 @@ const PaymentSuccess = () => {
     const [paymentConfirmed, setPaymentConfirmed] = useState(false);
     const [paymentPreviouslyMade, setPaymentPreviouslyMade] = useState(false);
     const [searchParams] = useSearchParams();
+    const [cartLoading, setCartLoading] = useState(true); // New state for cart loading
     const navigate = useNavigate();
     const transactionId = searchParams.get('transaction_id'); // Get transaction_id from URL
     const tx_ref = searchParams.get('tx_ref'); // Get tx_ref from URL
@@ -35,20 +36,42 @@ const PaymentSuccess = () => {
 
             if (response.data.code === "success") {
                 localStorage.removeItem('cart_items'); //clear cart items in local storage
+                setLoading(false);
                 setPaymentConfirmed(true);
             } else if (response.data.code === "error") {
                 setError(response.data.reason);
+                setLoading(false);
             }
         } catch (err) {
             setError("An error occurred while saving products to the database.");
+            setLoading(false);
         }
     };
+
+    // useEffect(() => {
+    //     if (cartProducts && cartProducts.products) {
+    //         if (cartProducts.products.length > 0) {
+    //             setCartLoading(false); // Mark cart as fully loaded
+    //         } 
+    //         // else {
+    //         //     setError("No cart products available.");
+    //         //     setCartLoading(false);
+    //         // }
+    //     }
+    // }, [cartProducts]);
+
+    useEffect(() => {
+        if (cartProducts.products && cartProducts.products.length > 0 && !cartLoading) {
+            // Trigger save to DB after payment validation only when cart is fully loaded
+            saveProductsToDb();
+        }
+    }, [cartLoading]);
 
     useEffect(() => {
         console.log(tx_ref)
         const validatePayment = async (retryCount = 0) => {
-            const authToken = Cookies.get("authToken");
-console.log(authToken)
+        const authToken = Cookies.get("authToken");
+        console.log(authToken)
 
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/validate-payment?tx_ref=${tx_ref}`, {
@@ -59,7 +82,8 @@ console.log(authToken)
                 console.log(response)
 
                 if (response.data.code == "success") {
-                    saveProductsToDb(); // Save product to the database
+                    // saveProductsToDb(); // Save product to the database
+                    setCartLoading(false)
                 } else if (response.data.code === "already-made") {
                     setPaymentPreviouslyMade(true);
                 } else {

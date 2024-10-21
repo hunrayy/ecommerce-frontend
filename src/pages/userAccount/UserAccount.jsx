@@ -127,7 +127,7 @@ const UserAccount = () => {
                             <div className="col-md-4">
                               <p>
                                 <b>Payment</b> <br />
-                                <b>Shipping fee:</b> <span className="text-muted">{each_item.currency} {each_item.shippingFee}</span> <br />
+                                {/* <b>Shipping fee:</b> <span className="text-muted">{each_item.currency} {each_item.shippingFee}</span> <br /> */}
                                 <b>Total paid:</b> <span className="text-muted">{each_item.currency} {Number(each_item.totalPrice).toLocaleString()}</span>
                               </p>
                             </div>

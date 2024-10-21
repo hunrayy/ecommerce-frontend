@@ -1,17 +1,20 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { CurrencyContext } from '../../components/all_context/CurrencyContext';
 import {toast} from "react-toastify"
+import axios from 'axios';
+
 
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
+  
   const { selectedCurrency, convertCurrency } = useContext(CurrencyContext);
 
   // Function to calculate total price
   const calculateTotalPrice = (products) => {
     let total = 0;
   
-    products.forEach(product => {
+    products?.forEach(product => {
       const convertedPrice = convertCurrency(product.price, 'NGN', selectedCurrency);
       console.log(`Item ID: ${product.id}, Original Price: ${product.price}, Converted Price: ${convertedPrice}`);
       if (isNaN(convertedPrice)) {
@@ -22,26 +25,117 @@ const CartProvider = ({ children }) => {
       }
     });
   
-    console.log(`Total Price in ${selectedCurrency}: ${total.toFixed(2)}`);
+    // console.log(`Total Price in ${selectedCurrency}: ${total.toFixed(2)}`);
     return total.toFixed(2);
   };
 
   // Initialize the cartProducts state
-  const initializeCartProducts = () => {
+  const initializeCartProducts = async () => {
+    // Retrieve stored cart items (only id, lengthPicked, quantity)
     const storedItems = JSON.parse(localStorage.getItem('cart_items')) || [];
-    const totalPrice = calculateTotalPrice(storedItems, selectedCurrency);
-    console.log('Initializing cart products with total price:', totalPrice);
-    return {
-      products: storedItems,
-      recentlyAddedProducts: [],
-      productAddedToCartAnimation: false,
-      addToCartAnimationMessage: '',
-      totalPrice: totalPrice, // Set initial total price
-      lengthUpdateMessage: ""
-    };
-  };
+    const arrayOfIds = storedItems.map(item => item.id); // Extract the array of product ids
 
-  const [cartProducts, setCartProducts] = useState(initializeCartProducts);
+    if (arrayOfIds.length === 0 || !storedItems) {
+      return {
+        products: [],
+        recentlyAddedProducts: [],
+        productAddedToCartAnimation: false,
+        addToCartAnimationMessage: '',
+        totalPrice: 0,
+        lengthUpdateMessage: "",
+        cartEmpty: true
+      };
+    }
+
+    try {
+      // Make an API call to fetch product details using the array of IDs
+      const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-product-details`, {
+        params: {
+          ids: arrayOfIds
+        }
+      });
+      console.log(feedback)
+
+      if (feedback.data.code === 'success') {
+        // Get the valid IDs from the response
+        const validIds = feedback.data.data.map(productDetail => productDetail.id);
+
+        // Filter out invalid items from storedItems
+        const validStoredItems = storedItems.filter(item => validIds.includes(item.id));
+
+        // If there are any invalid items, update localStorage
+        if (validStoredItems.length !== storedItems.length) {
+          localStorage.setItem('cart_items', JSON.stringify(validStoredItems));
+        }
+
+
+        // Merge the storedItems (which has lengthPicked and quantity) with feedback.data.data (which has the product details)
+        const mergedProducts = feedback.data.data.map(productDetail => {
+          const storedItem = storedItems.find(item => item.id === productDetail.id);
+          const convertedPrice = Number(convertCurrency(productDetail.productPriceInNaira, 'NGN', selectedCurrency));
+
+          return {
+            ...productDetail,
+            updatedPrice: convertedPrice.toLocaleString(),
+            quantity: storedItem?.quantity || 1, // Add the stored quantity, default to 1 if not found
+            lengthPicked: storedItem?.lengthPicked || '' // Add the stored lengthPicked
+          };
+        });
+
+        // Calculate the total price
+        const totalPrice = calculateTotalPrice(mergedProducts, selectedCurrency);
+        console.log('Initializing cart products with total price:', totalPrice);
+
+        return {
+          products: mergedProducts, // Set the merged products
+          recentlyAddedProducts: [],
+          productAddedToCartAnimation: false,
+          addToCartAnimationMessage: '',
+          totalPrice: totalPrice, // Set initial total price
+          lengthUpdateMessage: "",
+          cartEmpty: false
+        };
+      } else {
+        return {
+          products: [],
+          recentlyAddedProducts: [],
+          productAddedToCartAnimation: false,
+          addToCartAnimationMessage: '',
+          totalPrice: 0,
+          lengthUpdateMessage: "",
+          cartEmpty: false
+        };
+      }
+    } 
+    catch (error) {
+      // console.error('Error fetching product details:', error.message);
+      return {
+        products: [],
+        recentlyAddedProducts: [],
+        productAddedToCartAnimation: false,
+        addToCartAnimationMessage: '',
+        totalPrice: 0,
+        lengthUpdateMessage: "",
+        cartEmpty: false
+      };
+    }
+};
+
+  // State to store cart products
+  const [cartProducts, setCartProducts] = useState({
+    products: [],
+    totalPrice: 0,
+  });
+  // Fetch and set cart products on mount
+  useEffect(() => {
+    const fetchCartProducts = async () => {
+      const products = await initializeCartProducts();
+      setCartProducts(products);
+    };
+
+    fetchCartProducts();
+  }, []);
+
 
   useEffect(() => {
     // Update the total price whenever the cart products or selected currency change
@@ -53,49 +147,37 @@ const CartProvider = ({ children }) => {
     }));
   }, [cartProducts.products, selectedCurrency]);
 
-  const addToCart = (product, lengthPicked) => {
+  const addToCart = async (product, lengthPicked) => {
     let getItems = JSON.parse(localStorage.getItem('cart_items')) || [];
     const productExists = getItems.some(item => item.id === product.id);
 
     if (productExists) {
       getItems = getItems.filter(item => item.id !== product.id);
-      setCartProducts((prevState) => ({
-        ...prevState,
-        recentlyAddedProducts: prevState.recentlyAddedProducts.filter(id => id !== product.id),
-        productAddedToCartAnimation: true,
-        addToCartAnimationMessage: "Product successfully removed"
-        
-      }));
+      const products = await initializeCartProducts();
+      setCartProducts(products);
+     
       toast.success("Product successfully removed")
     } else {
       getItems.push({
-        ...product,
+        // ...product,
+        id: product.id,
         lengthPicked: lengthPicked,
         quantity: 1
       });
-      setCartProducts((prevState) => ({
-        ...prevState,
-        recentlyAddedProducts: [product.id, ...prevState.recentlyAddedProducts],
-        productAddedToCartAnimation: true,
-        addToCartAnimationMessage: <span>Product added successfully <i className="fa-sharp fa-solid fa-circle-check px-2"></i></span>
-      }));
+      const products = await initializeCartProducts();
+      setCartProducts(products);
       toast.success("Product added successfully")
 
     }
 
-    setTimeout(() => {
-      setCartProducts((prevState) => ({
-        ...prevState,
-        productAddedToCartAnimation: false,
-      }));
-    }, 3000);
-
     localStorage.setItem('cart_items', JSON.stringify(getItems));
-    setCartProducts((prev) => ({
-      ...prev,
-      products: getItems,
-      totalPrice: calculateTotalPrice(getItems, selectedCurrency) // Update totalPrice here
-    }));
+    const products = await initializeCartProducts();
+    setCartProducts(products);
+    // setCartProducts((prev) => ({
+    //   ...prev,
+    //   products: getItems,
+    //   totalPrice: calculateTotalPrice(getItems, selectedCurrency) // Update totalPrice here
+    // }));
   };
 
   const updateCartItemLength = (productId, newLength) => {
@@ -136,7 +218,7 @@ const CartProvider = ({ children }) => {
 
     storedItem.quantity = newQuantity;
 
-    const updatedItems = cartProducts.products.map((item) =>
+    const updatedItems = cartProducts?.products?.map((item) =>
       item.id === productId ? { ...item, quantity: newQuantity } : item
     );
 
@@ -150,7 +232,7 @@ const CartProvider = ({ children }) => {
   };
 
   const calculateTotalLength = () => {
-    return cartProducts.products.length || 0;
+    return cartProducts?.products?.length || 0;
   };
 
   return (

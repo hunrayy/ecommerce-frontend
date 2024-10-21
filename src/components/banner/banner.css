@@ -94,7 +94,7 @@
 .new-banner-carousel-container{
   /* max-width: 50%; */
   height: calc(100vh - var(--marginAboveTop));
-  width: 50vw;
+  /* width: 50vw; */
   border-radius: 0;
   background: RGB(102, 0, 102);
   background: RGB(102, 0, 90);

@@ -183,7 +183,7 @@ import { toast } from 'react-toastify'
                                 <b>Tracking ID:</b> {singleOrder.tracking_id}<br/>
                                 <b>Transaction ID:</b> {singleOrder.transaction_id}<br/>
                                 <b>Initiated At:</b> {formatDate(singleOrder.created_at)}<br/>
-                                <b>Shipping Fee:</b> {singleOrder.shippingFee}<br/>
+                                {/* <b>Shipping Fee:</b> {singleOrder.shippingFee}<br/> */}
                                 <b>Total:</b> {singleOrder.currency} {Number(singleOrder.totalPrice).toLocaleString()}<br/>
                             </p>
                         </div>

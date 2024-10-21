@@ -33,7 +33,7 @@ const SingleProduct = () => {
     price: 0,
     pageNotFound: false
   });
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const [selectedImage, setSelectedImage] = useState(""); // State for the enlarged image
 
@@ -58,7 +58,7 @@ const SingleProduct = () => {
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-single-product?productId=${productId}`).then((feedback) => {
       console.log(feedback)
       if(feedback.data.code == "success"){
-        // setLoading(false)
+        setLoading(false)
         // Check if the data is a string and parse it if needed
         const productData = typeof feedback.data.data === "string" ? JSON.parse(feedback.data.data) : feedback.data.data;
         setProduct({
@@ -84,7 +84,9 @@ const SingleProduct = () => {
       }
 
     })
-  }, [cartProducts.products]);
+  // }, [cartProducts.products]);
+}, []);
+
 
   const handleAddToCart = () => {
     addToCart(product, lengthState.lengthPicked);
@@ -100,7 +102,7 @@ const SingleProduct = () => {
   };
 
   const cartItems = JSON.parse(localStorage.getItem("cart_items")) || [];
-  const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
+  // const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
   const inCart = cartItems.some(item => item.id == product.id);
 
 
@@ -115,26 +117,46 @@ const SingleProduct = () => {
     ];
 
     const convertedPrice = convertCurrency(product.price, 'NGN', selectedCurrency);
-
     
-  useEffect(()=> {
-      // Check if product is already in cart
-        // const cartItem = cartProducts.products.find((item) => item.id == product.id);
-        const cartItem = cartProducts?.products?.find((item) => item.id == product.id);
-        console.log(cartItem?.lengthPicked)
-        if (cartItem && cartItem?.lengthPicked) {
-          // console.log(cartItem.lengthPicked)
+    // const cartItem = JSON.parse(localStorage.getItem('cart_items')).find((item) => item.id == product.id);
+    // console.log(cartItem)
+    
+    useEffect(() => {
+      const cartItems = JSON.parse(localStorage.getItem('cart_items')) || [];
+      const cartItem = cartItems.find((item) => item.id == product.id);
+    
+      // Log to see the cartItem from localStorage
+      console.log('Cart item from localStorage:', cartItem);
+    
+      if (cartItem && cartItem.lengthPicked) {
+        console.log('Length picked from cart:', cartItem.lengthPicked);
+        
+        // Ensure that the picked length exists in the available lengths of hair
+        if (!lengthsOfHair.includes(cartItem.lengthPicked)) {
           setLengthState({
             length: lengthsOfHair,
-            lengthPicked: cartItem?.lengthPicked
+            lengthPicked: lengthsOfHair[0], // Fallback to the first item
           });
         } else {
+          // Set the state with the length picked from the cart
           setLengthState({
             length: lengthsOfHair,
-            lengthPicked: lengthsOfHair[0]
+            lengthPicked: cartItem.lengthPicked,
           });
         }
-  }, [product])
+      } else {
+        // If no cart item or length picked, fallback to the default first item
+        setLengthState({
+          length: lengthsOfHair,
+          lengthPicked: lengthsOfHair[0],
+        });
+      }
+    }, [product.id]);  // Ensure this runs on product change
+    
+
+  if(loading){
+    return null
+  }
 
   return (
     <div>
@@ -220,7 +242,7 @@ const SingleProduct = () => {
                     </div>
                     <hr />
                    
-                      <div className="d-grid">
+                      {product.img && <div className="d-grid">
                         <button
                           className="btn hover-button"
                           // style={inCart || isRecentlyAdded ? { backgroundColor: "black"} : { border: "1px solid black", color: "black" }}
@@ -228,9 +250,9 @@ const SingleProduct = () => {
                           style={inCart ? {background: "black", color: "white"} : null}
                           onClick={handleAddToCart}
                         >
-                          {inCart || isRecentlyAdded ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
+                          {inCart ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
                         </button>
-                      </div>
+                      </div>}
                     
                   </div>
                 </main>
@@ -238,15 +260,15 @@ const SingleProduct = () => {
             </div>
           </section>
 
-               <section class="border-top py-4" style={{backgroundColor: "var(--bodyColor)"}}>
-       <div class="container">
-         <div class="row gx-3 contain">
-           <div class="col-lg-12 mb-4 ">
-             <div class="border rounded-2 px-4 py-5 p-md-5 bg-white" style={{color: "black"}}>
+               <section className="border-top py-4" style={{backgroundColor: "var(--bodyColor)"}}>
+       <div className="container">
+         <div className="row gx-3 contain">
+           <div className="col-lg-12 mb-4 ">
+             <div className="border rounded-2 px-4 py-5 p-md-5 bg-white" style={{color: "black"}}>
                <p>FREQUENTLY ASKED QUESTIONS</p>
                <h1>FAQ</h1>
-               <p>
-                 <b><i class="fa-solid fa-truck-fast mr-2">&nbsp;&nbsp;</i>Shipping & processing information</b>
+               <p>  
+                 <b><i className="fa-solid fa-truck-fast mr-2">&nbsp;&nbsp;</i>Shipping & processing information</b>
                </p>
                <div className="text-muted">
                  <p>It takes us an average of 3-5 working days to process orders allow a few more for custom orders.</p>

@@ -25,6 +25,7 @@ import UserAccount from "./pages/userAccount/UserAccount"
 import AllProducts from "./pages/allProducts/AllProducts"
 import AdminForgotPassword from "./pages/adminForgotPassword/AdminForgotPassword"
 import AdminResetPassword from "./pages/adminResetPassword/AdminResetPassword"
+import TrackingPage from "./pages/trackingPage/trackingPage"
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
             <Route path='/accounts/password/reset/reset-password/:token' element={<ResetPassword />} />
             <Route path="/user-account" element={<UserAccount />} />
             <Route path="/register/:token" element={<Register />} />
+            <Route path="/order/tracking" element={<TrackingPage />} />
             <Route path="/policies/shipping-policy" element={<ShippingPolicy />} />
             <Route path="/pages/contact" element={<ContactUs />} />
             <Route path="/policies/refund-policy" element={<RefundPolicy />} />

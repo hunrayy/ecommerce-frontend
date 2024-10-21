@@ -8,7 +8,7 @@ export const calculateTotal = (cartProducts, convertCurrency, selectedCurrency) 
     return 0; // Return 0 if no products
   }
 
-  const total = cartProducts.products.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = cartProducts?.products?.reduce((acc, item) => acc + item.productPriceInNaira * item.quantity, 0);
   return convertCurrency(total, 'NGN', selectedCurrency);
 };
 
