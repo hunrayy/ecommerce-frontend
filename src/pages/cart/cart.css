@@ -19,11 +19,16 @@
 
 }
 .cart-text-wrapper{
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20%;
-    /* background-color: red; */
+    gap: 20%; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+
 }
 
  /* remove item from cart waring modal */
@@ -58,7 +63,9 @@
     }
     .cart-text-wrapper{
         /* gap: 100%; */
-        gap: 200px;
+
+
+        /* gap: 200px; */
         /* background-color: red; */
     }
 }
@@ -72,7 +79,7 @@
         align-items: start;
     }
     .cart-text-wrapper{
-        gap: 30%;
+        /* gap: 30%; */
     }
 }
 

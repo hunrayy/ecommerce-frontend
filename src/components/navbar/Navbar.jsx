@@ -2,7 +2,7 @@
 
 import "./navbar.css";
 import Logo from "../Logo/Logo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../../pages/cart/CartContext";
 import { useState, useContext, useRef, useEffect } from "react";
 import { CurrencyContext } from "../all_context/CurrencyContext";
@@ -11,6 +11,7 @@ import { useAuth } from "../AuthContext/AuthContext";
 import axios from "axios";
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const [shownav, setShownav] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [searchState, setSearchState] = useState({isSearching: false, searchLoading: false, searchData: null, wordNotFound: null})
@@ -267,7 +268,8 @@ const Navbar = () => {
                   {searchState.searchData && (
                       searchState.searchData.map((product, index) => {
                           // console.log(product)
-                          return <div key={index} className="admin-search-result-container" onClick={()=> {setSearchState((prev) => ({...prev, isSearching: false, searchLoading: false, wordNotFound: null})), setSelectedProduct(product)}}>
+                          // return <div key={index} className="admin-search-result-container" onClick={()=> {setSearchState((prev) => ({...prev, isSearching: false, searchLoading: false, wordNotFound: null})), setSelectedProduct(product)}}>
+                          return <div key={index} className="admin-search-result-container" onClick={()=> {navigate(`/product/${product.id}`)}}>
                               <img src={product.productImage} alt="" width="50px"  />
                               <p><b>{product.productName}</b></p>
                           </div>

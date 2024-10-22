@@ -8,7 +8,7 @@ export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
   
-  const { selectedCurrency, convertCurrency } = useContext(CurrencyContext);
+  const { fetchExchangeRates, selectedCurrency, convertCurrency } = useContext(CurrencyContext);
 
   // Function to calculate total price
   const calculateTotalPrice = (products) => {
@@ -72,14 +72,18 @@ const CartProvider = ({ children }) => {
         // Merge the storedItems (which has lengthPicked and quantity) with feedback.data.data (which has the product details)
         const mergedProducts = feedback.data.data.map(productDetail => {
           const storedItem = storedItems.find(item => item.id === productDetail.id);
-          const convertedPrice = Number(convertCurrency(productDetail.productPriceInNaira, 'NGN', selectedCurrency));
+          // const convertedPrice = convertCurrency(productDetail.productPriceInNaira, 'NGN', selectedCurrency);
+          let convertedPrice = convertCurrency(productDetail.productPriceInNaira, 'NGN', selectedCurrency);
+          convertedPrice = Number(convertedPrice);
 
-          return {
-            ...productDetail,
-            updatedPrice: convertedPrice.toLocaleString(),
-            quantity: storedItem?.quantity || 1, // Add the stored quantity, default to 1 if not found
-            lengthPicked: storedItem?.lengthPicked || '' // Add the stored lengthPicked
-          };
+            return {
+              ...productDetail,
+              updatedPrice: convertedPrice.toLocaleString(),
+              quantity: storedItem?.quantity || 1, // Add the stored quantity, default to 1 if not found
+              lengthPicked: storedItem?.lengthPicked || '' // Add the stored lengthPicked
+            };
+      
+         
         });
 
         // Calculate the total price
@@ -236,7 +240,7 @@ const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cartProducts, addToCart, calculateTotalPrice, calculateTotalLength, updateCartItemLength, updateCartItemQuantity }}>
+    <CartContext.Provider value={{ cartProducts, setCartProducts, addToCart, calculateTotalPrice, calculateTotalLength, updateCartItemLength, updateCartItemQuantity }}>
       {children}
     </CartContext.Provider>
   );

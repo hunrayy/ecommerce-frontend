@@ -5,9 +5,11 @@
 import './pendingOrders.css'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { toast } from 'react-toastify'
+import { CurrencyContext } from '../../all_context/CurrencyContext';
     const PendingOrders = () => {
+    const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
     const [pendingOrders, setPendingOrders] = useState([])
     const [singleOrder, setSingleOrder] = useState(null)
     const [outForDeliveryModal, setOutForDeliveryModal] = useState(null)
@@ -16,6 +18,7 @@ import { toast } from 'react-toastify'
     const [verificationText, setVerificationText] = useState('');
     const [verificationTextError, setVerificationTextError] = useState('');
     const [isLoading, setIsLoading] = useState(false)
+
     
 
     const getPendingOrders = async () => {
@@ -154,7 +157,7 @@ import { toast } from 'react-toastify'
             singleOrder && <div className='single-order-container-overlay' onClick={()=> setSingleOrder(null)}>
                 {console.log(singleOrder)}
                 <div className="single-order-wrapper" onClick={(e)=> {e.stopPropagation()}}>
-                <div style={{fontFamily: "Arial, sans-serif", color: "#333", lineHeight: "1.6"}}>
+                <div style={{fontFamily: "Arial, sans-serif", color: "#333"}}>
                     <h4 style={{color: "#333"}} className='mt-2'>Order Details:</h4>
                     <div className="row">
                         <div className='col-md-4 border py-2'>
@@ -193,19 +196,20 @@ import { toast } from 'react-toastify'
                         {
                             
                             JSON.parse(singleOrder.products).map((product, index) => {
-                                return <div className="card" key={index}>
-                                    <img src={product.img} className="card-img-top" style={{maxHeight: "100px", objectFit: "contain"}} alt={`product image ${index + 1}`} />
+                                return<div className="card" key={index} style={{maxWidth: "180px"}}>
+                                    <img src={product.productImage} className="card-img-top" style={{maxHeight: "100px", objectFit: "contain"}} alt={`product image ${index + 1}`} />
                                     <div className="card-body">
                                         <div style={{textAlign: "center"}}>
-                                            <p style={{margin: "0"}}><b>{product.name}</b></p>
+                                            <p style={{margin: "0"}}><b>{product.productName}</b></p>
                                             <p style={{margin: "0"}}>Length - {product.lengthPicked}</p>
                                             <p style={{margin: "0"}}>Quantity * {product.quantity}</p>
-                                            <p style={{margin: "0"}}>Price: {singleOrder.currency} {Number(product.price).toLocaleString()}</p>
+                                            <p style={{margin: "0"}}>Price: {singleOrder.currency} {convertCurrency(product.productPriceInNaira, 'NGN', singleOrder.currency).toLocaleString()}</p>
                                         </div>
                                     </div>
                                 </div>
                             })
                         }
+                        
                     </div>
                     <div className='d-flex justify-content-center justify-content-md-end mt-3'>
                         <button style={{background: "purple", color: "white"}} className='btn' onClick={()=>handleMarkAsOutForDelivery(singleOrder)}>Mark as Out for Delivery</button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './userAccount.css';
 import Navbar from "../../components/navbar/Navbar"
 import Footer from "../../components/footer/Footer"
@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
+import { CurrencyContext } from '../../components/all_context/CurrencyContext';
 
 const UserAccount = () => {
+  const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
   const use_auth = useAuth()
   const navigate = useNavigate()
   // const [user, setUser] = useState({
@@ -21,7 +23,7 @@ const UserAccount = () => {
   const [orderList, setOrderList] = useState([])
   const getUserDetails = async() => {
     const token = Cookies.get("authToken")
-    const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-user-details`, {
+    const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-user-orders`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -38,10 +40,14 @@ const UserAccount = () => {
 
 
   useEffect(()=> {
-    console.log(user)
-    !use_auth?.user?.is_user_logged && navigate("/", {replace: true})
+    !use_auth?.user?.is_user_logged && !use_auth.loading && navigate("/", {replace: true})
     getUserDetails()
-  }, [])
+  }, [use_auth.loading])
+
+  if(use_auth.loading){
+    return null
+  }
+
 
   return (
     <div className='user-account-page-container'>
@@ -98,6 +104,7 @@ const UserAccount = () => {
                           <div className="row">
                             <div className="d-flex align-items-center">
                               <div style={{width: "100%"}}><b>Tracking ID:</b> <span className="text-muted">{each_item.tracking_id}</span><br />
+                                <b>Transaction ID:</b><span className='text-muted'>{each_item.transaction_id}</span> <br />
                                 <b>Date Ordered:</b> <span className="text-muted">{new Date(each_item.created_at).toDateString()}</span>
                                 {each_item.status == 'delivered' && 
                                   <p><b>Date Delivered:</b> <span className="text-muted">{new Date(each_item.updated_at).toDateString()}</span></p>
@@ -161,32 +168,59 @@ const UserAccount = () => {
 
       // Check if products is an array before mapping
       if (Array.isArray(products)) {
+        // const convertedPrice = Number(convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency)).toLocaleString();
         return products.map((product, index) => (
-          <div key={index} className="col-lg-3 col-md-5 col-sm-6 col-6">
-            <div className="text-muted border" style={{maxWidth: "120px", textAlign: "center"}}>
-              <img
-              className='card-img-top'
-                style={{
-                  // width: "100%",
-                  // height: "auto",
-                  // maxWidth: "70px",
-                  maxHeight: "70px",
-                  objectFit: "contain",
-                }}
-                src={product.img} // Use the correct property for the image
-                alt={product.name} // Use the product name for alt text
-              />
-              <div>
-                <small>{product.name}</small>
-                <br />
-                <small>{product.lengthPicked}</small> {/* Display length or any other relevant detail */}
-                <br />
-                <small>quantity * {product.quantity}</small> {/* Display length or any other relevant detail */}
-                <br />
-                <small>{each_item.currency} {Number(product.price).toLocaleString()}</small> {/* Display the price */}
+          <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "20px"}}>
+            <div style={{display: "flex", border: "1px solid #ddd", borderRadius: "10px", padding: "10px", marginBottom: "20px", alignItems: "center", backgroundColor: "#fafafa", width: "100%", maxWidth: "300px"}}>
+              <img src={product.productImage} alt={product.productName} style={{width: "100%", height: "auto", maxWidth: "80px", objectFit: "cover", borderRadius: "8px", marginRight: "20px"}} />
+              <div style={{flexGrow: "1"}}>
+                  <h3 style={{margin: "0", color: "#333", fontSize: "18px"}}>{product.productName}</h3>
+                  <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Length: {product.lengthPicked}</p>
+                  <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Quantity: {product.quantity}</p>
+                  <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Price: {each_item.currency} {convertCurrency(product.productPriceInNaira, 'NGN', each_item.currency).toLocaleString()}</p>
               </div>
             </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          // <div key={index} className="col-lg-3 col-md-5 col-sm-6 col-6">
+          //   <div className="text-muted border" style={{maxWidth: "120px", textAlign: "center"}}>
+          //     <img
+          //     className='card-img-top'
+          //       style={{
+          //         // width: "100%",
+          //         // height: "auto",
+          //         // maxWidth: "70px",
+          //         maxHeight: "70px",
+          //         objectFit: "contain",
+          //       }}
+          //       src={product.productImage} // Use the correct property for the image
+          //       alt={product.productName} // Use the product name for alt text
+          //     />
+          //     <div>
+          //       <small>{product.productName}</small>
+          //       <br />
+          //       <small>{product.lengthPicked}</small> {/* Display length or any other relevant detail */}
+          //       <br />
+          //       <small>quantity * {product.quantity}</small> {/* Display length or any other relevant detail */}
+          //       <br />
+          //       {/* <small>{each_item.currency} {Number(product.price).toLocaleString()}</small>  */}
+          //       <small>{selectedCurrency} {Number(convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency)).toLocaleString()}</small> 
+          //     </div>
+          //   </div>
+          // </div>
         ));
       } else {
         return null

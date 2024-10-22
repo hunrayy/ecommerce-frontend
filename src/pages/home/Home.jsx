@@ -43,7 +43,7 @@ const Home = () => {
 
 
 
-            <div
+            {/* <div
       style={{
         fontFamily: "Arial, sans-serif",
         backgroundColor: "#f4f4f4",
@@ -130,11 +130,13 @@ const Home = () => {
           }}
         >
           <img
-            src="https://via.placeholder.com/80"
+            src="https://res.cloudinary.com/dih28iada/image/upload/v1729189345/beautybykiara/wvrxhfnhbglutfaaz7r7.jpg"
             alt="Product Image"
             style={{
-              width: "80px",
-              height: "80px",
+              width: "100%",
+              height: "auto",
+              maxWidth: "80px",
+              objectFit: "cover",
               borderRadius: "8px",
               marginRight: "20px"
             }}
@@ -169,13 +171,15 @@ const Home = () => {
           }}
         >
           <img
-            src="https://via.placeholder.com/80"
+            src="https://res.cloudinary.com/dih28iada/image/upload/v1729167481/beautybykiara/x26ajoag65kvuqdals4j.jpg"
             alt="Product Image"
             style={{
-              width: "80px",
-              height: "80px",
-              borderRadius: "8px",
-              marginRight: "20px"
+                width: "100%",
+                height: "auto",
+                maxWidth: "80px",
+                objectFit: "contain",
+                borderRadius: "8px",
+                marginRight: "20px"
             }}
           />
           <div style={{ flexGrow: 1 }}>
@@ -217,7 +221,7 @@ const Home = () => {
           </p>
         </div>
       </div>
-    </div>
+    </div> */}
             <Products showPaginationButtons={showPaginationButtons} />
             <FooterVideo />
             <Footer />

@@ -3,7 +3,7 @@
 import "./basicLoader.css"
 const BasicLoader = () => {
     return <div>
-            <div class="basic-spinner"></div>
+            <div className="basic-spinner"></div>
 
     </div>
 }

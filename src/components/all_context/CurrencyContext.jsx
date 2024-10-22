@@ -78,7 +78,7 @@ export const CurrencyProvider = ({ children }) => {
       return NaN;
     }
     const convertedAmount = (amount / rates[fromCurrency]) * rates[toCurrency];
-    console.log(typeof(convertedAmount))
+    // console.log(typeof(convertedAmount))
     // return isNaN(convertedAmount) ? NaN : convertedAmount.toFixed(2).toLocaleString();
     // return isNaN(convertedAmount) ? NaN : convertedAmount.toFixed(2);
     return isNaN(convertedAmount) ? NaN : parseFloat(convertedAmount.toFixed(2));
@@ -94,7 +94,7 @@ export const CurrencyProvider = ({ children }) => {
   };
 
   return (
-    <CurrencyContext.Provider value={{ selectedCurrency, convertCurrency, handleCurrencyChange, currencySymbols, currencyCodes, currentCurrencyCode, currencyNames }}>
+    <CurrencyContext.Provider value={{ fetchExchangeRates, selectedCurrency, convertCurrency, handleCurrencyChange, currencySymbols, currencyCodes, currentCurrencyCode, currencyNames }}>
       {children}
     </CurrencyContext.Provider>
   );

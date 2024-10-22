@@ -170,7 +170,7 @@ const EditProductForm = ({ product, onClose}) => {
                 <div style={{ padding: "20px 0 0 20px", fontSize: "20px" }} className="d-lg-none">
                     <i className="fa-solid fa-arrow-left" onClick={onClose}></i>
                 </div>
-                <div className="admin-editPage-form" style={{ padding: "20px 20px 35px 20px" }}>
+                <div className="admin-editPage-form" style={{ padding: "0px 20px 35px 20px" }}>
                     {serverErrorMessage.status && (
                         <div className="alert alert-danger">{serverErrorMessage.message}</div>
                     )}
@@ -230,7 +230,7 @@ const EditProductForm = ({ product, onClose}) => {
                             <label htmlFor="productPrice" className="form-label">Product Price</label>
                             <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPrice)} onChange={(e) => setFormData({ ...formData, productPrice: removeCommas(e.target.value) })} />
                         </div>
-                        <button type="submit" className="btn" style={{background: "purple", color: "white"}}>Upload</button>
+                        <button type="submit" className="btn" style={{background: "purple", color: "white"}}>Update</button>
                     </form>
                 </div>
             </div>

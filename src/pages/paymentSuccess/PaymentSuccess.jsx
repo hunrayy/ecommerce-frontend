@@ -1,21 +1,24 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import BasicLoader from '../../components/loader/BasicLoader';
 import { CartContext } from '../cart/CartContext';
+import { useAuth } from "../../components/AuthContext/AuthContext";
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
 
 const PaymentSuccess = () => {
-    const { cartProducts } = useContext(CartContext);
-    const [loading, setLoading] = useState(true);
+    const { cartProducts, setCartProducts } = useContext(CartContext);
+    const use_auth = useAuth()
+    
+    const [pageLoading, setPageLoading] = useState(true);
     const [error, setError] = useState(null);
     const [paymentConfirmed, setPaymentConfirmed] = useState(false);
     const [paymentPreviouslyMade, setPaymentPreviouslyMade] = useState(false);
     const [searchParams] = useSearchParams();
     const [cartLoading, setCartLoading] = useState(true); // New state for cart loading
     const navigate = useNavigate();
+    
     const transactionId = searchParams.get('transaction_id'); // Get transaction_id from URL
     const tx_ref = searchParams.get('tx_ref'); // Get tx_ref from URL
     const detailsToken = searchParams.get('details')
@@ -24,7 +27,7 @@ const PaymentSuccess = () => {
         const authToken = Cookies.get("authToken");
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/save-products-to-db-after-payment`, {
-                cartProducts: cartProducts.products,
+                // cartProducts: cartProducts.products,
                 transactionId // Send transaction_id to the backend
             }, {
                 headers: {
@@ -36,15 +39,19 @@ const PaymentSuccess = () => {
 
             if (response.data.code === "success") {
                 localStorage.removeItem('cart_items'); //clear cart items in local storage
-                setLoading(false);
+                setCartProducts((prev) => ({
+                    ...prev,
+                    products: []
+                }))
+                setPageLoading(false);
                 setPaymentConfirmed(true);
             } else if (response.data.code === "error") {
                 setError(response.data.reason);
-                setLoading(false);
+                setPageLoading(false);
             }
         } catch (err) {
             setError("An error occurred while saving products to the database.");
-            setLoading(false);
+            setPageLoading(false);
         }
     };
 
@@ -60,12 +67,12 @@ const PaymentSuccess = () => {
     //     }
     // }, [cartProducts]);
 
-    useEffect(() => {
-        if (cartProducts.products && cartProducts.products.length > 0 && !cartLoading) {
-            // Trigger save to DB after payment validation only when cart is fully loaded
-            saveProductsToDb();
-        }
-    }, [cartLoading]);
+    // useEffect(() => {
+    //     if (cartProducts.products && cartProducts.products.length > 0 && !cartLoading) {
+    //         // Trigger save to DB after payment validation only when cart is fully loaded
+    //         saveProductsToDb();
+    //     }
+    // }, [cartLoading]);
 
     useEffect(() => {
         console.log(tx_ref)
@@ -82,14 +89,17 @@ const PaymentSuccess = () => {
                 console.log(response)
 
                 if (response.data.code == "success") {
-                    // saveProductsToDb(); // Save product to the database
-                    setCartLoading(false)
+                    saveProductsToDb(); // Save product to the database
+                    // setCartLoading(false)
                 } else if (response.data.code === "already-made") {
                     setPaymentPreviouslyMade(true);
-                } else {
+                } else if(response.data.code == 'error'){
+                    setError(`Payment verification failed: ${response.data.message}`);
+                }else {
                     setError(`Payment verification failed: ${response.data.message}`);
                 }
             } catch (err) {
+                console.log(err.message)
                 if (retryCount < 3) {
                     setTimeout(() => {
                         validatePayment(retryCount + 1);
@@ -98,7 +108,7 @@ const PaymentSuccess = () => {
                     setError('Error validating payment after multiple attempts.');
                 }
             } finally {
-                setLoading(false);
+                setPageLoading(false);
             }
         };
 
@@ -106,7 +116,15 @@ const PaymentSuccess = () => {
         validatePayment();
     }, [searchParams, navigate]);
 
-    if (loading) {
+    useEffect(()=> {
+        !use_auth?.user?.is_user_logged && !use_auth.loading && navigate("/", {replace: true})
+    }, [use_auth.loading])
+    
+    if(use_auth.loading){
+        return null
+    }
+
+    if (pageLoading) {
         return (
             <div style={{ width: "100vw", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <BasicLoader />
@@ -118,7 +136,10 @@ const PaymentSuccess = () => {
         return (
             <div className="container">
                 <div className="alert alert-danger text-center mt-5">
+                    <p style={{textWrap: "wrap"}}>
                     {error}
+
+                    </p>
                 </div>
             </div>
         );
@@ -138,7 +159,7 @@ const PaymentSuccess = () => {
                             <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
                                 Back to Home
                             </button>
-                            <Link to="/user-account" className="btn btn-outline-success btn-lg mt-md-2">
+                            <Link to="/user-account" className="btn btn-outline-success btn-lg me-3 mt-2 mt-lg-0">
                                 View Order Details
                             </Link>
                         </div>
@@ -212,7 +233,7 @@ export default PaymentSuccess;
     //                 setError('Error validating payment after multiple attempts.');
     //             }
     //         } finally {
-    //             setLoading(false);
+    //             setPageLoading(false);
     //         }
     //     };
     

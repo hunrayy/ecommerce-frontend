@@ -209,7 +209,7 @@ const CreateProduct = () => {
                         <Card.Body>
                             <Card.Title>{formData.productName}</Card.Title>
                             <Card.Text>
-                                <strong>Price:</strong> {formatNumberWithCommas(formData.productPrice)}
+                                <strong>Price in naira:</strong> {formatNumberWithCommas(formData.productPrice)}
                             </Card.Text>
                         </Card.Body>
                     </Card>
