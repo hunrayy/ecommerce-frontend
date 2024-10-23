@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./contactUs.css";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useAuth } from "../../components/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 const ContactUs = () => {
+  const use_auth = useAuth()
+  const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         firstname: "",
         email: "",
@@ -17,8 +23,10 @@ const ContactUs = () => {
     const [error, setError] = useState("");
     const [otpSent, setOtpSent] = useState(false); // State to track if OTP has been sent
     const [otpLoading, setOtpLoading] = useState(false)
+    const [pageLoading, setPageLoading] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     const [serverSuccess, setServerSuccess] = useState(false)
+
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -102,104 +110,124 @@ const ContactUs = () => {
         }
     };
 
+    useEffect(() => {
+        if (use_auth.user.is_user_logged && use_auth.user.user.is_an_admin && use_auth.user.user.user === "admin") {
+            navigate(`/beautybykiara/admin/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqb2huc21pdGhAZ21haWwuY29tIjoiam9obnNtaXRoQGdtYWlsLmNvbSIsImpvaG4iOiJqb2hu`);
+            setPageLoading(false)
+        } else {
+            setPageLoading(false); // Allow page to render for non-admin users
+        }
+      }, [use_auth.user, navigate]);
+
+      if(pageLoading){
+        return null
+      }
+
+    
+
     return (
         <div>
-            <Navbar />
-            <div className="contact-us-container">
-                <div className="contact-us-wrapper">
-                    <h1 style={{color: "black"}}><b>Contact Us</b></h1>
-                    {error && <div className="text-danger ">{error}</div>}
-                    {serverSuccess && 
-                        <div className="d-flex">
-                            <p><i className="fa-sharp fa-solid fa-circle-check px-2 text-success"></i></p>
-                            <p><b>Thanks for contacting us. We'll get back to you as soon as possible</b></p>
+            {
+                !pageLoading && <div>
+                    <Navbar />
+                    <div className="contact-us-container">
+                        <div className="contact-us-wrapper">
+                            <h1 style={{color: "black"}}><b>Contact Us</b></h1>
+                            {error && <div className="text-danger ">{error}</div>}
+                            {serverSuccess && 
+                                <div className="d-flex">
+                                    <p><i className="fa-sharp fa-solid fa-circle-check px-2 text-success"></i></p>
+                                    <p><b>Thanks for contacting us. We'll get back to you as soon as possible</b></p>
+                                </div>
+                            }
+                            <form onSubmit={handleSubmit} className="contact-form row">
+                                <div className="form-group col-md-6 mt-2">
+                                    <label htmlFor="firstname">First Name:</label><br />
+                                    <input
+                                        type="text"
+                                        name="firstname"
+                                        id="firstname"
+                                        value={formData.firstname}
+                                        onChange={handleChange}
+                                        placeholder="Enter your first name"
+                                        className="contact-us-form-input"
+                                    />
+                                </div>
+                                <div className="form-group col-md-6 mt-2">
+                                    <label htmlFor="email">Email:</label><br />
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        placeholder="Enter your email"
+                                        className="contact-us-form-input"
+                                    />
+                                <div style={{textAlign: "right"}}>
+                                    {!otpSent && !otpLoading && <button 
+                                        onClick={handleSendOtp} // Handle OTP send
+                                        className="btn btn-sm" 
+                                        style={{ background: "black", color: "white" }}
+                                    >
+                                        Send OTP
+                                    </button>}
+                                    {otpLoading && "Sending..."}
+                                    {otpSent && <span className="badge bg-success">OTP sent</span>}
+                                </div>
+                                </div>
+                                <div className="form-group mt-3">
+                                    <label htmlFor="phone">Phone number:</label><br />
+                                    <input
+                                        type="text" // Change type to text for phone
+                                        name="phone"
+                                        id="phone"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        placeholder="Enter your phone number"
+                                        className="contact-us-form-input"
+                                    />
+                                </div>
+                                <div className="form-group mt-3">
+                                    <label htmlFor="comment">Comment:</label><br />
+                                    <textarea
+                                        name="comment"
+                                        id="comment"
+                                        value={formData.comment}
+                                        onChange={handleChange}
+                                        placeholder="Enter your comment"
+                                        className="contact-us-form-input"
+                                        style={{ minHeight: "90px" }}
+                                    />
+                                </div>
+                                <div className="form-group mt-3">
+                                    <label>OTP:</label><br />
+                                    <input
+                                        type="number"
+                                        name="otp"
+                                        min='1'
+                                        value={formData.otp}
+                                        onChange={handleChange}
+                                        placeholder="Enter OTP received"
+                                        className="contact-us-form-input"
+                                    />
+                                </div>
+                                <div className="mt-3">
+                                    <button type="submit" className="btn px-5 py-3" style={{ color: "white", background: "black" }} disabled={isLoading}>
+                                        {isLoading ? <div className="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        : "Submit"
+                                        }
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    }
-                    <form onSubmit={handleSubmit} className="contact-form row">
-                        <div className="form-group col-md-6 mt-2">
-                            <label htmlFor="firstname">First Name:</label><br />
-                            <input
-                                type="text"
-                                name="firstname"
-                                id="firstname"
-                                value={formData.firstname}
-                                onChange={handleChange}
-                                placeholder="Enter your first name"
-                                className="contact-us-form-input"
-                            />
-                        </div>
-                        <div className="form-group col-md-6 mt-2">
-                            <label htmlFor="email">Email:</label><br />
-                            <input
-                                type="email"
-                                name="email"
-                                id="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="Enter your email"
-                                className="contact-us-form-input"
-                            />
-                        <div style={{textAlign: "right"}}>
-                            {!otpSent && !otpLoading && <button 
-                                onClick={handleSendOtp} // Handle OTP send
-                                className="btn btn-sm" 
-                                style={{ background: "black", color: "white" }}
-                            >
-                                Send OTP
-                            </button>}
-                            {otpLoading && "Sending..."}
-                            {otpSent && <span className="badge bg-success">OTP sent</span>}
-                        </div>
-                        </div>
-                        <div className="form-group mt-3">
-                            <label htmlFor="phone">Phone number:</label><br />
-                            <input
-                                type="text" // Change type to text for phone
-                                name="phone"
-                                id="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                placeholder="Enter your phone number"
-                                className="contact-us-form-input"
-                            />
-                        </div>
-                        <div className="form-group mt-3">
-                            <label htmlFor="comment">Comment:</label><br />
-                            <textarea
-                                name="comment"
-                                id="comment"
-                                value={formData.comment}
-                                onChange={handleChange}
-                                placeholder="Enter your comment"
-                                className="contact-us-form-input"
-                                style={{ minHeight: "90px" }}
-                            />
-                        </div>
-                        <div className="form-group mt-3">
-                            <label>OTP:</label><br />
-                            <input
-                                type="number"
-                                name="otp"
-                                min='1'
-                                value={formData.otp}
-                                onChange={handleChange}
-                                placeholder="Enter OTP received"
-                                className="contact-us-form-input"
-                            />
-                        </div>
-                        <div className="mt-3">
-                            <button type="submit" className="btn px-5 py-3" style={{ color: "white", background: "black" }} disabled={isLoading}>
-                                {isLoading ? <div className="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                : "Submit"
-                                }
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+                    <Footer />
                 </div>
-            </div>
-            <Footer />
+            }
+            
         </div>
     );
 };

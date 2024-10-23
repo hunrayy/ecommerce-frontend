@@ -7,7 +7,7 @@
     background-color: var(--bodyColor);
     margin-top: var(--marginAboveTop);
     gap: 20px;
-    /* min-height: calc(100vh - var(--marginAboveTop)); */
+    min-height: calc(100vh - var(--marginAboveTop));
 }
 
 

@@ -5,7 +5,7 @@ import Navbar from '../../components/navbar/Navbar'
 import './shippingPolicy.css'
 import Footer from '../../components/footer/Footer'
 const ShippingPolicy = () => {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     // Initial policy data
     const [policySections, setPolicySections] = useState([
         null,
@@ -49,12 +49,11 @@ const ShippingPolicy = () => {
             <Navbar />
             <div className="shipping-policy-container">
                 <div className="shipping-policy-wrapper">
-                    {isLoading &&<BasicLoader />}
                     {/* Title of the policy */}
                     <p>{policyTitle}</p>
 
                     {/* List of policy sections */}
-                    <div type="none" style={{ display: "flex", flexDirection: "column", gap: "20px"}}>
+                    <div>
                         {policySections.map((section, index) => (
                             <p key={index}>{section}</p>
                         ))}

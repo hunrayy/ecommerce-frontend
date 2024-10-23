@@ -92,7 +92,7 @@ const AdminResetPassword = () => {
             loading: false
             
         }))
-        setServerSuccess(<p>Password reset successful, you can now <Link style={{color: "purple", textDecoration: "none"}} to='/beautybykiara/waterfall/admin/login'>Login</Link></p>);
+        setServerSuccess(<p>Password reset successful, you can now <Link style={{color: "purple", textDecoration: "none"}} to='/beautybykiara/admin/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqb2huc21pdGhAZ21haWwuY29tIjoiam9obnNtaXRoQGdtYWlsLmNvbSIsImpvaG4iOiJqb2hu'>Login</Link></p>);
       }else{
         setServerError({
             status: true,

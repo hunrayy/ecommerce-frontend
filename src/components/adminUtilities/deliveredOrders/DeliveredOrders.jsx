@@ -100,8 +100,8 @@ const DeliveredOrders = () => {
                         <div className='col-md-4 border py-2'>
                             <h5>User Profile</h5>
                             <p>
-                                <b>First name:</b> {singleOrder.firstname}<br/>
-                                <b>Last name:</b> {singleOrder.lastname}<br/>
+                                <b>Firstname:</b> {singleOrder.firstname}<br/>
+                                <b>Lastname:</b> {singleOrder.lastname}<br/>
                                 <b>Email:</b> {singleOrder.email}<br/>
                                 <b>Phone Number:</b> {singleOrder.phoneNumber}<br/>
                             </p>

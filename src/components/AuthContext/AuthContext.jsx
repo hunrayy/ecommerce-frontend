@@ -41,7 +41,7 @@ export const AuthProvider = ({children}) => {
             // navigate to the user page
             console.log(user)
             if(user.user == "admin" && user.is_an_admin == 1){
-                navigate(`/admin/dashboard/${user.token}`, {
+                navigate(`/beautybykiara/admin/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqb2huc21pdGhAZ21haWwuY29tIjoiam9obnNtaXRoQGdtYWlsLmNvbSIsImpvaG4iOiJqb2hu`, {
                     replace: true
                 })
             }

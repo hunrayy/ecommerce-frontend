@@ -64,7 +64,7 @@ const Cart = () => {
   }, [cartProducts.products]);
   useEffect(() => {
     if (use_auth.user.is_user_logged && use_auth.user.user.is_an_admin && use_auth.user.user.user === "admin") {
-        navigate(`/admin/dashboard/${use_auth.user.user.token}`);
+        navigate(`/beautybykiara/admin/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqb2huc21pdGhAZ21haWwuY29tIjoiam9obnNtaXRoQGdtYWlsLmNvbSIsImpvaG4iOiJqb2hu`);
         setIsLoading(false)
     } else {
         setIsLoading(false); // Allow page to render for non-admin users
@@ -128,7 +128,7 @@ const Cart = () => {
         </div>
       </div>
         {/* {cartProducts?.products?.length == 0 && <EmptyCart />} */}
-        {cartProducts?.cartEmpty && <EmptyCart />}
+        {cartProducts?.cartEmpty || cartProducts.products?.length < 1 && <EmptyCart />}
 
       <section className="my-5" style={cartProducts?.products?.length == 0 ? {display: "none"} : null}>
         <div className="container">

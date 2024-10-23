@@ -8,9 +8,13 @@
 
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { toast } from 'react-toastify'
+import { CurrencyContext } from '../../all_context/CurrencyContext';
+
 const OutForDelivery = () => {
+    const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
+
 
     const [outForDeliveryOrders, setOutForDeliveryOrders] = useState([])
 
@@ -167,8 +171,8 @@ const OutForDelivery = () => {
                         <div className='col-md-4 border py-2'>
                             <h5>User Profile</h5>
                             <p>
-                                <b>First name:</b> {singleOrder.firstname}<br/>
-                                <b>Last name:</b> {singleOrder.lastname}<br/>
+                                <b>Firstname:</b> {singleOrder.firstname}<br/>
+                                <b>Lastname:</b> {singleOrder.lastname}<br/>
                                 <b>Email:</b> {singleOrder.email}<br/>
                                 <b>Phone Number:</b> {singleOrder.phoneNumber}<br/>
                             </p>
@@ -190,7 +194,7 @@ const OutForDelivery = () => {
                                 <b>Tracking ID:</b> {singleOrder.tracking_id}<br/>
                                 <b>Transaction ID:</b> {singleOrder.transaction_id}<br/>
                                 <b>Initiated At:</b> {formatDate(singleOrder.created_at)}<br/>
-                                <b>Shipping Fee:</b> {singleOrder.shippingFee}<br/>
+                                <b>Shipping Fee:</b> {singleOrder.currency} {parseInt(singleOrder.shippingFee).toLocaleString()}<br/>
                                 <b>Total:</b> {singleOrder.currency} {Number(singleOrder.totalPrice).toLocaleString()}<br/>
                             </p>
                         </div>
@@ -200,14 +204,14 @@ const OutForDelivery = () => {
                         {
                             
                             JSON.parse(singleOrder.products).map((product, index) => {
-                                return <div className="card" key={index}>
-                                    <img src={product.img} className="card-img-top" style={{maxHeight: "100px", objectFit: "contain"}} alt={`product image ${index + 1}`} />
+                                return <div className="card" key={index} style={{maxWidth: "190px"}}>
+                                    <img src={product.productImage} className="card-img-top" style={{maxHeight: "100px", objectFit: "contain"}} alt={`product image ${index + 1}`} />
                                     <div className="card-body">
                                         <div style={{textAlign: "center"}}>
-                                            <p style={{margin: "0"}}><b>{product.name}</b></p>
+                                            <p style={{margin: "0"}}><b>{product.productName}</b></p>
                                             <p style={{margin: "0"}}>Length - {product.lengthPicked}</p>
                                             <p style={{margin: "0"}}>Quantity * {product.quantity}</p>
-                                            <p style={{margin: "0"}}>Price: {singleOrder.currency} {Number(product.price).toLocaleString()}</p>
+                                            <p style={{margin: "0"}}>Price: {singleOrder.currency} {convertCurrency(product.productPriceInNaira, 'NGN', singleOrder.currency).toLocaleString()}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +231,7 @@ const OutForDelivery = () => {
         {/* out for delivery modal */}
         {
             deliveredModal && <div>
-                <div className="single-order-container-overlay" onClick={()=> {setDeliveredModal(null), setTrackingId(''), setVerificationText('')}}>
+                <div className="single-order-container-overlay" onClick={()=> {setDeliveredModal(null), setTrackingId(''), setVerificationText('')}} style={{ pointerEvents: isLoading ? 'none' : 'auto' }}>
                     <div className="out-for-delivery-modal-wrapper" onClick={(e)=>e.stopPropagation()}>
                         <div className='px-3'>
                             <h4 style={{color: "#333"}} className='mt-2'>Delivered</h4>

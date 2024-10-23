@@ -21,6 +21,7 @@ const PaymentSuccess = () => {
     
     const transactionId = searchParams.get('transaction_id'); // Get transaction_id from URL
     const tx_ref = searchParams.get('tx_ref'); // Get tx_ref from URL
+    const reference = searchParams.get('reference'); // Get tx_ref from URL
     const detailsToken = searchParams.get('details')
 
     const saveProductsToDb = async () => {
@@ -81,8 +82,12 @@ const PaymentSuccess = () => {
         console.log(authToken)
 
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/validate-payment?tx_ref=${tx_ref}`, {
-                    headers: {
+                // const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/validate-payment`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/paystack/validate-payment`, {
+                    params: {
+                        tx_ref: tx_ref,
+                        reference: reference
+                    },headers: {
                         Authorization: `Bearer ${authToken}`
                     }
                 });

@@ -163,8 +163,8 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
                         <div className='col-md-4 border py-2'>
                             <h5>User Profile</h5>
                             <p>
-                                <b>First name:</b> {singleOrder.firstname}<br/>
-                                <b>Last name:</b> {singleOrder.lastname}<br/>
+                                <b>Firstname:</b> {singleOrder.firstname}<br/>
+                                <b>Lastname:</b> {singleOrder.lastname}<br/>
                                 <b>Email:</b> {singleOrder.email}<br/>
                                 <b>Phone Number:</b> {singleOrder.phoneNumber}<br/>
                             </p>
@@ -224,7 +224,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
         {/* out for delivery modal */}
         {
             outForDeliveryModal && <div>
-                <div className="single-order-container-overlay" onClick={()=> {setOutForDeliveryModal(null), setTrackingId(''), setVerificationText('')}}>
+                <div className="single-order-container-overlay" onClick={()=> {setOutForDeliveryModal(null), setTrackingId(''), setVerificationText('')}} style={{ pointerEvents: isLoading ? 'none' : 'auto' }}>
                     <div className="out-for-delivery-modal-wrapper" onClick={(e)=>e.stopPropagation()}>
                         <div className='px-3'>
                             <h4 style={{color: "#333"}} className='mt-2'>Out For Delivery</h4>
@@ -254,7 +254,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
                                 {verificationTextError && <small className="text-danger">{verificationTextError}</small>}
                             </div>
                             <div className='d-flex justify-content-between mt-3'>
-                                <button className='btn border' onClick={()=> setOutForDeliveryModal(null)}>Cancel</button>
+                                <button className='btn border' onClick={()=> setOutForDeliveryModal(null)} disabled={isLoading}>Cancel</button>
                                 <button className='btn' style={{color: "white", backgroundColor: "black"}} disabled={isLoading}>
                                     <b>Continue</b>
                                 </button>

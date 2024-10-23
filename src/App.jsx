@@ -52,7 +52,7 @@ function App() {
             <Route path="/pages/contact" element={<ContactUs />} />
             <Route path="/policies/refund-policy" element={<RefundPolicy />} />
             <Route path="/policies/delivery-policy" element={<DeliveryPolicy />} />
-            <Route path="/admin/dashboard/:token" element={<AdminDashboard />} />
+            <Route path="/beautybykiara/admin/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqb2huc21pdGhAZ21haWwuY29tIjoiam9obnNtaXRoQGdtYWlsLmNvbSIsImpvaG4iOiJqb2hu" element={<AdminDashboard />} />
             <Route path="/beautybykiara/waterfall/admin/login" element={<AdminLogin />} />
             <Route path="/accounts/password/reset/admin/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdG5hbWUiOiJIZW5yeSIsImxhc3RuY" element={<AdminForgotPassword />} />
             <Route path="/admin/accounts/password/reset/reset-password/:token" element={<AdminResetPassword />} />

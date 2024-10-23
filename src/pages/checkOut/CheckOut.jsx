@@ -103,7 +103,7 @@ const CheckOut = () => {
       if (validateForm()) {
         setLoading(true)
 
-        axios.post(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/make-payment`, formData,
+        axios.post(`${import.meta.env.VITE_BACKEND_URL}/paystack/make-payment`, formData,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -123,10 +123,9 @@ const CheckOut = () => {
           //     toast.error("There was an issue connecting to the payment provider. Please try again.");
           //   }
 
-          // if (feedback.data.data.link) {
-          //   // Redirect the user to PayPal approval page
-          //   window.location.href = feedback.data.data.link;
-          // } 
+          if(feedback.data.status){
+            window.location.href = feedback.data.data.authorization_url;
+          }
 
 
         }).finally(()=> {
@@ -483,13 +482,15 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
 
                 <div className="d-flex justify-content-between">
                   <p className="mb-2 fw-bold">Total price:</p>
-                  <p className="mb-2 fw-bold"> {(() => {
+                  <div className="mb-2 fw-bold"> {(() => {
                       if(!formData.country){
-                        return "..."
+                        return <div className="spinner-grow" style={{width: "15px", height: "15px"}} role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
                       }else{
                         return `${currencySymbols[selectedCurrency]}`; // Combine currency symbol with formatted total
                       }
-                    })()} {checkoutTotal}</p>
+                    })()} {checkoutTotal}</div>
                   
                 </div>
 

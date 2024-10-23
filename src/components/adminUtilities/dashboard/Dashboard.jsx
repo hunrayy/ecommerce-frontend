@@ -4,15 +4,46 @@
 
 import "./dashboard.css"
 import { useAuth } from "../../AuthContext/AuthContext"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
+import Cookies from "js-cookie"
 const Dashboard = () => {
     const use_auth = useAuth()
+    const [products, setProducts] = useState(null)
+    const [pendingOrders, setPendingOrders] = useState(null)
+
+    const getAllProducts = async() =>{
+        const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`)
+        if(feedback.data.code == "success"){
+            setProducts(feedback.data.data.total)
+        }
+    }
+    const getPendingOrders = async() =>{
+        const token = Cookies.get("authToken")
+        const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-orders`, {
+            params: {
+                status: 'pending'
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        console.log(feedback)
+        if(feedback.data.code == "success"){
+            setPendingOrders(feedback.data.data.length)
+        }
+    }
 
     const testPusher = async() => {
         const feedback = await axios.post(`${import .meta.env.VITE_BACKEND_URL}/pusher-test-route`)
         console.log(feedback)
     }
+
+    useEffect(()=> {
+        getAllProducts()
+        getPendingOrders()
+
+    }, [])
    
     return <div>
         <div className="dashboard-container">
@@ -38,11 +69,11 @@ const Dashboard = () => {
                     <div className="welcome-back" style={{display: "flex", justifyContent: "space-between"}}>
                         <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>All products</b></p>
-                            <p style={{fontSize: "40px"}}>112</p>
+                            <p style={{fontSize: "40px"}}>{products}</p>
                         </div>
                         <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>Pending orders</b></p>
-                            <p style={{fontSize: "40px"}}>6</p>
+                            <p style={{fontSize: "40px"}}>{pendingOrders}</p>
                         </div>
                         <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>Users</b></p>

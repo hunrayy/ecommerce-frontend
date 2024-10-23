@@ -8,7 +8,7 @@ import Navbar from '../../components/navbar/Navbar'
 import Footer from '../../components/footer/Footer'
 
 const DeliveryPolicy = () => {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     
     // Initial policy data
     const [policySections, setPolicySections] = useState([null, null, null]);

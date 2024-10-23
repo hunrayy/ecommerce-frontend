@@ -7,7 +7,7 @@ import Footer from '../../components/footer/Footer'
 
 const RefundPolicy = () => {
     // State for modal visibility and content to edit
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     
     // Initial policy data
     const [policySections, setPolicySections] = useState([null, null, null]);
@@ -49,7 +49,8 @@ const RefundPolicy = () => {
             <Navbar />
             <div className="shipping-policy-container">
                 <div className="shipping-policy-wrapper">
-                    {isLoading && <BasicLoader />}
+                
+                    {/* {isLoading && <BasicLoader />} */}
                     
                     {/* Title of the policy */}
                     <p>{policyTitle}</p>
@@ -64,6 +65,7 @@ const RefundPolicy = () => {
                             </p>
                         ))}
                     </div>
+                    
                 </div>
             </div>
             <Footer />
