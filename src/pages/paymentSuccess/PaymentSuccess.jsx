@@ -24,37 +24,37 @@ const PaymentSuccess = () => {
     const reference = searchParams.get('reference'); // Get tx_ref from URL
     const detailsToken = searchParams.get('details')
 
-    const saveProductsToDb = async () => {
-        const authToken = Cookies.get("authToken");
-        try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/save-products-to-db-after-payment`, {
-                // cartProducts: cartProducts.products,
-                transactionId // Send transaction_id to the backend
-            }, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                    detailsToken: detailsToken
-                }
-            });
-            console.log(response)
+    // const saveProductsToDb = async () => {
+    //     const authToken = Cookies.get("authToken");
+    //     try {
+    //         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/save-products-to-db-after-payment`, {
+    //             // cartProducts: cartProducts.products,
+    //             transactionId // Send transaction_id to the backend
+    //         }, {
+    //             headers: {
+    //                 Authorization: `Bearer ${authToken}`,
+    //                 detailsToken: detailsToken
+    //             }
+    //         });
+    //         console.log(response)
 
-            if (response.data.code === "success") {
-                localStorage.removeItem('cart_items'); //clear cart items in local storage
-                setCartProducts((prev) => ({
-                    ...prev,
-                    products: []
-                }))
-                setPageLoading(false);
-                setPaymentConfirmed(true);
-            } else if (response.data.code === "error") {
-                setError(response.data.reason);
-                setPageLoading(false);
-            }
-        } catch (err) {
-            setError("An error occurred while saving products to the database.");
-            setPageLoading(false);
-        }
-    };
+    //         if (response.data.code === "success") {
+    //             localStorage.removeItem('cart_items'); //clear cart items in local storage
+    //             setCartProducts((prev) => ({
+    //                 ...prev,
+    //                 products: []
+    //             }))
+    //             setPageLoading(false);
+    //             setPaymentConfirmed(true);
+    //         } else if (response.data.code === "error") {
+    //             setError(response.data.reason);
+    //             setPageLoading(false);
+    //         }
+    //     } catch (err) {
+    //         setError("An error occurred while saving products to the database.");
+    //         setPageLoading(false);
+    //     }
+    // };
 
     // useEffect(() => {
     //     if (cartProducts && cartProducts.products) {
@@ -86,7 +86,8 @@ const PaymentSuccess = () => {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/paystack/validate-payment`, {
                     params: {
                         tx_ref: tx_ref,
-                        reference: reference
+                        reference: reference,
+                        detailsToken: detailsToken
                     },headers: {
                         Authorization: `Bearer ${authToken}`
                     }
@@ -94,8 +95,16 @@ const PaymentSuccess = () => {
                 console.log(response)
 
                 if (response.data.code == "success") {
-                    saveProductsToDb(); // Save product to the database
                     // setCartLoading(false)
+                    localStorage.removeItem('cart_items'); //clear cart items in local storage
+                    setCartProducts((prev) => ({
+                        ...prev,
+                        products: []
+                    }))
+                    setPageLoading(false);
+                    setPaymentConfirmed(true);
+
+
                 } else if (response.data.code === "already-made") {
                     setPaymentPreviouslyMade(true);
                 } else if(response.data.code == 'error'){

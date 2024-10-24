@@ -63,6 +63,7 @@ const Cart = () => {
     // initializeCartProducts()
   }, [cartProducts.products]);
   useEffect(() => {
+    console.log(cartProducts)
     if (use_auth.user.is_user_logged && use_auth.user.user.is_an_admin && use_auth.user.user.user === "admin") {
         navigate(`/beautybykiara/admin/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqb2huc21pdGhAZ21haWwuY29tIjoiam9obnNtaXRoQGdtYWlsLmNvbSIsImpvaG4iOiJqb2hu`);
         setIsLoading(false)
@@ -93,7 +94,8 @@ const Cart = () => {
 
   const currencySymbol = currencySymbols[selectedCurrency];
   if (isLoading) {
-    return null; // Optionally, you can return a loader here
+    
+    // return null; // Optionally, you can return a loader here
   }else{ return <div className="cart-page-container">
       <Navbar />
       {/* remove item from cart waring modal start */}
@@ -128,7 +130,7 @@ const Cart = () => {
         </div>
       </div>
         {/* {cartProducts?.products?.length == 0 && <EmptyCart />} */}
-        {cartProducts?.cartEmpty || cartProducts.products?.length < 1 && <EmptyCart />}
+        {cartProducts?.cartEmpty || cartProducts.products?.length < 1 ? <EmptyCart /> : null}
 
       <section className="my-5" style={cartProducts?.products?.length == 0 ? {display: "none"} : null}>
         <div className="container">

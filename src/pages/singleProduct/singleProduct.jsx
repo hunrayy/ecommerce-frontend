@@ -154,9 +154,9 @@ const SingleProduct = () => {
     }, [product.id]);  // Ensure this runs on product change
     
 
-  if(loading){
-    return null
-  }
+  // if(loading){
+  //   return null
+  // }
 
   return (
     <div>

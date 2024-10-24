@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Button, Card } from "react-bootstrap";
 import "./createProduct.css";
 import axios from "axios";
@@ -129,6 +129,7 @@ const CreateProduct = () => {
             setServerErrorMessage({ status: true, message: 'An error occurred. Please try again.' });
         }
     };
+
     
 
     return (

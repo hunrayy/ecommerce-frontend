@@ -115,9 +115,7 @@ const Products = ({ showPaginationButtons }) => {
     }, [currentPage, perPage])
 
     const navigateToProduct = (id) => {
-        navigate(`/product/${id}`, {
-            replace: true
-        })
+        navigate(`/product/${id}`)
     }
 
 

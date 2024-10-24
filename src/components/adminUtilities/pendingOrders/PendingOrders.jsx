@@ -115,6 +115,17 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
             // setOutForDeliveryModal(null); // Close modal after submission
         }
     };
+    if(pendingOrders.length < 1){
+        return         <div className="no-order-admin-container">
+        <div className="no-order-admin-content">
+          <h1>No Pending Orders</h1>
+          <p>There are currently no pending orders to review. Once a new order is placed, it will appear here.</p>
+          <div className="admin-icon">
+            <i className="fas fa-box-open"></i> {/* Font Awesome icon */}
+          </div>
+        </div>
+      </div>
+    }
 
     
     return <div>
@@ -186,6 +197,8 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
                                 <b>Tracking ID:</b> {singleOrder.tracking_id}<br/>
                                 <b>Transaction ID:</b> {singleOrder.transaction_id}<br/>
                                 <b>Initiated At:</b> {formatDate(singleOrder.created_at)}<br/>
+                                <b>Subtotal:</b>{singleOrder.currency} {parseFloat(singleOrder.subtotal).toLocaleString()}<br/>
+                                <b>Shipping fee:</b>{singleOrder.currency} {parseFloat(singleOrder.shippingFee).toLocaleString()}<br/>
                                 {/* <b>Shipping Fee:</b> {singleOrder.shippingFee}<br/> */}
                                 <b>Total:</b> {singleOrder.currency} {Number(singleOrder.totalPrice).toLocaleString()}<br/>
                             </p>
@@ -196,16 +209,26 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
                         {
                             
                             JSON.parse(singleOrder.products).map((product, index) => {
-                                return<div className="card" key={index} style={{maxWidth: "180px"}}>
-                                    <img src={product.productImage} className="card-img-top" style={{maxHeight: "100px", objectFit: "contain"}} alt={`product image ${index + 1}`} />
-                                    <div className="card-body">
-                                        <div style={{textAlign: "center"}}>
-                                            <p style={{margin: "0"}}><b>{product.productName}</b></p>
-                                            <p style={{margin: "0"}}>Length - {product.lengthPicked}</p>
-                                            <p style={{margin: "0"}}>Quantity * {product.quantity}</p>
-                                            <p style={{margin: "0"}}>Price: {singleOrder.currency} {convertCurrency(product.productPriceInNaira, 'NGN', singleOrder.currency).toLocaleString()}</p>
-                                        </div>
-                                    </div>
+                                // return<div className="card" key={index} style={{maxWidth: "180px"}}>
+                                //     <img src={product.productImage} className="card-img-top" style={{maxHeight: "100px", objectFit: "contain"}} alt={`product image ${index + 1}`} />
+                                //     <div className="card-body">
+                                //         <div style={{textAlign: "center"}}>
+                                //             <p style={{margin: "0"}}><b>{product.productName}</b></p>
+                                //             <p style={{margin: "0"}}>Length - {product.lengthPicked}</p>
+                                //             <p style={{margin: "0"}}>Quantity * {product.quantity}</p>
+                                //             {/* <p style={{margin: "0"}}>Price: {singleOrder.currency} {convertCurrency(product.productPriceInNaira, 'NGN', singleOrder.currency).toLocaleString()}</p> */}
+                                //             <p style={{margin: "0"}}>Price: {singleOrder.currency} {product.updatedPrice}</p>
+                                //         </div>
+                                //     </div>
+                                // </div>
+                                return <div style={{display: "flex", border: "1px solid #ddd", borderRadius: "10px", padding: "10px", marginBottom: "20px", backgroundColor: "#fafafa", maxWidth: "320px"}}>
+                                <img src={product.productImage} alt={`product image ${index + 1}`} style={{width: "100%", height: "auto", maxWidth: "80px", objectFit: "cover", borderRadius: "8px", marginRight: "20px"}} />
+                                <div style={{flexGrow: "1"}}>
+                                    <h3 style={{margin: "0", color: "#333", fontSize: "18px"}}>{product.productName}</h3>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Length: {product.lengthPicked}</p>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Quantity: {product.quantity}</p>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Price: {product.updatedPrice}</p>
+                                </div>
                                 </div>
                             })
                         }

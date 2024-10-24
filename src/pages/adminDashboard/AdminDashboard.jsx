@@ -71,6 +71,8 @@ const AdminDashboard = () => {
             }
         })
 
+        
+
     })
 
     return (
@@ -85,7 +87,7 @@ const AdminDashboard = () => {
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('dashboard')}>
                             <i className="fa-solid fa-desktop"></i> <span>Dashboard</span>
                         </div>
-                        <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('createProduct')}>
+                        <div className="admin-sidebar-icon-wrapper" onClick={() => {showPage('createProduct')}}>
                             <i className="fa-solid fa-plus"></i> <span>Create product</span>
                         </div>
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('viewProducts')}>

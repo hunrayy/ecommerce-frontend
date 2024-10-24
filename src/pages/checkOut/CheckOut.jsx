@@ -123,8 +123,11 @@ const CheckOut = () => {
           //     toast.error("There was an issue connecting to the payment provider. Please try again.");
           //   }
 
+
           if(feedback.data.status){
             window.location.href = feedback.data.data.authorization_url;
+          }else if(feedback.data.code == "error"){
+            toast.error(feedback.data.reason)
           }
 
 

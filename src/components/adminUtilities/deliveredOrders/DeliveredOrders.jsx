@@ -123,7 +123,9 @@ const DeliveredOrders = () => {
                                 <b>Tracking ID:</b> {singleOrder.tracking_id}<br/>
                                 <b>Transaction ID:</b> {singleOrder.transaction_id}<br/>
                                 <b>Initiated At:</b> {formatDate(singleOrder.created_at)}<br/>
-                                <b>Shipping Fee:</b> {singleOrder.shippingFee}<br/>
+                                <b>Updated At:</b> {formatDate(singleOrder.updated_at)}<br/>
+                                <b>Subtotal:</b>{singleOrder.currency} {parseFloat(singleOrder.subtotal).toLocaleString()}<br/>
+                                <b>Shipping fee:</b>{singleOrder.currency} {parseFloat(singleOrder.shippingFee).toLocaleString()}<br/>
                                 <b>Total:</b> {singleOrder.currency} {Number(singleOrder.totalPrice).toLocaleString()}<br/>
                             </p>
                         </div>
@@ -133,16 +135,14 @@ const DeliveredOrders = () => {
                         {
                             
                             JSON.parse(singleOrder.products).map((product, index) => {
-                                return <div className="card" key={index}>
-                                    <img src={product.img} className="card-img-top" style={{maxHeight: "100px", objectFit: "contain"}} alt={`product image ${index + 1}`} />
-                                    <div className="card-body">
-                                        <div style={{textAlign: "center"}}>
-                                            <p style={{margin: "0"}}><b>{product.name}</b></p>
-                                            <p style={{margin: "0"}}>Length - {product.lengthPicked}</p>
-                                            <p style={{margin: "0"}}>Quantity * {product.quantity}</p>
-                                            <p style={{margin: "0"}}>Price: {singleOrder.currency} {Number(product.price).toLocaleString()}</p>
-                                        </div>
-                                    </div>
+                                return <div style={{display: "flex", border: "1px solid #ddd", borderRadius: "10px", padding: "10px", marginBottom: "20px", backgroundColor: "#fafafa", maxWidth: "320px"}}>
+                                <img src={product.productImage} alt={`product image ${index + 1}`} style={{width: "100%", height: "auto", maxWidth: "80px", objectFit: "cover", borderRadius: "8px", marginRight: "20px"}} />
+                                <div style={{flexGrow: "1"}}>
+                                    <h3 style={{margin: "0", color: "#333", fontSize: "18px"}}>{product.productName}</h3>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Length: {product.lengthPicked}</p>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Quantity: {product.quantity}</p>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Price: {product.updatedPrice}</p>
+                                </div>
                                 </div>
                             })
                         }
