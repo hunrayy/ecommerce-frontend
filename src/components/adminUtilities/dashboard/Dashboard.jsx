@@ -57,7 +57,7 @@ const Dashboard = () => {
                         <div>Hi, i am Henry</div><br />
                         <div> A Full Stack Developer</div>
                     </h1> */}
-                    <button onClick={testPusher}>Test Pusher</button>
+                    {/* <button onClick={testPusher}>Test Pusher</button> */}
 
                     <h3>Site statistics</h3>
                     <div className="welcome-back" style={{fontSize: "18px"}}>
@@ -75,10 +75,10 @@ const Dashboard = () => {
                             <p className="text-muted"><b>Pending orders</b></p>
                             <p style={{fontSize: "40px"}}>{pendingOrders}</p>
                         </div>
-                        <div style={{display: "flex", flexDirection: "column"}}>
+                        {/* <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>Users</b></p>
                             <p style={{fontSize: "40px"}}>9</p>
-                        </div>
+                        </div> */}
                         
                     </div>
                 

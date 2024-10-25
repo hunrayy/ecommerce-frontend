@@ -123,9 +123,9 @@ const AdminDashboard = () => {
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('settings')}>
                             <i className="fa-solid fa-gear"></i> <span>Settings</span>
                         </div>
-                        <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('notifications')}>
+                        {/* <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('notifications')}>
                             <i className="fa-solid fa-bell"></i> <div style={{display: "flex"}}><span>Notifications</span> {badgeCount > 0 && <div style={{width: "15px", height: "15px", background: "red", borderRadius: "50%", textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center", color: "white", fontSize: "10px", fontWeight: "bold"}}>{badgeCount}</div>} </div>  
-                        </div>
+                        </div> */}
                         <div className="admin-sidebar-icon-wrapper text-danger" onClick={() => use_auth.logoutUser()}>
                             <i className="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
                         </div>
