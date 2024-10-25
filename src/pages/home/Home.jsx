@@ -17,7 +17,7 @@ const Home = () => {
     useEffect(()=> {
         // console.log(user)
         // Redirect logic before rendering the component
-        if (user && user.is_user_logged && user.user.is_an_admin && user.user.user === "admin") {
+        if (user && user.is_user_logged && user.user?.is_an_admin && user.user?.user === "admin") {
             navigate(`/beautybykiara/admin/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqb2huc21pdGhAZ21haWwuY29tIjoiam9obnNtaXRoQGdtYWlsLmNvbSIsImpvaG4iOiJqb2hu`);
              // Prevent any content rendering before redirect
         }

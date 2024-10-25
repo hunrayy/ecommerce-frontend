@@ -179,13 +179,13 @@ const Navbar = () => {
                   <div className="dropdown" ref={dropdownRef}>
                     <button onClick={() => setDropdown(prev => !prev)} style={{ fontWeight: "bold" }} className="account-details-dropdown dropdown-toggle me-1 nav-link d-flex align-items-center">
                       <i className="fas fa-user-alt m-1 me-md-2"></i>
-                      <p className="d-none d-md-block mb-0">{use_auth.user.is_user_logged ? `Hi, ${use_auth.user.user.firstname}` : "Account"}</p>
+                      <p className="d-none d-md-block mb-0">{use_auth.user?.is_user_logged ? `Hi, ${use_auth.user?.user?.firstname}` : "Account"}</p>
                     </button>
                     {dropdown && (
                       <div className="account-details-dropdown-list-black">
                         <ul className="account-details-dropdown-list" type="none">
                         {
-                            use_auth.user.is_user_logged && use_auth.user.user.firstname &&  <div style={{backgroundColor: "purple", color: "white", margin: "10px", borderRadius: "5px", padding: "10px"}} className="d-block d-md-none">Hi, {use_auth.user.user.firstname}</div>
+                            use_auth.user?.is_user_logged && use_auth.user?.user?.firstname &&  <div style={{backgroundColor: "purple", color: "white", margin: "10px", borderRadius: "5px", padding: "10px"}} className="d-block d-md-none">Hi, {use_auth.user.user.firstname}</div>
                               
                             
                           }
