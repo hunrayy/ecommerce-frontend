@@ -128,7 +128,7 @@ const PaymentSuccess = () => {
 
         // Start the validation process
         validatePayment();
-    }, [searchParams, navigate]);
+    }, []);
 
     useEffect(()=> {
         !use_auth?.user?.is_user_logged && !use_auth.loading && navigate("/", {replace: true})

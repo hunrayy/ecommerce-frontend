@@ -155,7 +155,7 @@ const Navbar = () => {
                       <Link to="/policies/delivery-policy" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Delivery policy</Link>
                     </div>
                     <div>
-                      <Link style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Tracking</Link>
+                      <Link to="/order/tracking" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Tracking</Link>
                     </div>
                     <div style={{display: "flex", gap: "15px"}}>
                       <a style={{ color: "white" }} href="https://www.instagram.com/beauty_bykiaraa/" target="_blank">
@@ -204,12 +204,12 @@ const Navbar = () => {
                           <li>
                             <Link to={use_auth.user.is_user_logged ? "/user-account" : "/login"} className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i className="fa-regular fa-user " style={{fontSize: "20px"}}></i>My Account</Link>
                           </li>
-                          <li>
+                          {/* <li>
                             <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i className="fa-regular fa-heart" style={{fontSize: "20px"}}></i>Wishlist</Link>
-                          </li>
-                          <li>
+                          </li> */}
+                          {/* <li>
                             <Link className="me-1 nav-link d-flex align-items-center" style={{gap: "12px"}}> <i className="fa-regular fa-message"style={{fontSize: "20px"}}></i> Live chat</Link>
-                          </li>
+                          </li> */}
                           {use_auth.user.is_user_logged && <span>
                             <hr />
                             <li style={{paddingTop: "0", display: "flex", justifyContent: "center"}}>

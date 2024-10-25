@@ -80,7 +80,7 @@ const CheckOut = () => {
       if (!formData.address) newErrors.address = "Address is required";
       if (!formData.city) newErrors.city = "City is required";
       if (!formData.phoneNumber) newErrors.phoneNumber = "Phone number is required";
-      else if (!/^\d+$/.test(formData.phoneNumber)) newErrors.phoneNumber = "Invalid phone number";
+      else if (!/^[^a-zA-Z]*$/.test(formData.phoneNumber)) newErrors.phoneNumber = "Invalid phone number";
 
         // Country validation
       if (!formData.country) newErrors.country = "Country is required";
@@ -385,7 +385,8 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
                   </div>
 
                   <div className="mb-5 form-floating">
-                    <input type="number" min="1" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} />
+                    {/* <input type="number" min="1" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} /> */}
+                    <input type="text" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} />
                     <label className="mx-4">Phone number</label>
                     {errors.phoneNumber && <small className="text-danger">{errors.phoneNumber}</small>}
                   </div>

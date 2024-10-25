@@ -24,7 +24,7 @@ const Products = ({ showPaginationButtons }) => {
     })
     const [totalProducts, setTotalProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [perPage, setPerPage] = useState(2);
+    const [perPage, setPerPage] = useState(12);
     // const [cartItems, setCartItems] = useState([]);
 
     const fetchProducts = async (page) => {
@@ -63,7 +63,7 @@ const Products = ({ showPaginationButtons }) => {
     // Handler for next page
     const handleNextPage = () => {
         if (currentPage < Math.ceil(totalProducts.total / perPage)) {
-            console.log()
+            window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top
             setCurrentPage((prevPage) => {
                 const newPage = prevPage + 1;
                 // console.log(newPage); // This will now log the correct new page
@@ -76,6 +76,7 @@ const Products = ({ showPaginationButtons }) => {
     const handlePreviousPage = () => {
 
         if (currentPage > 1) {
+            window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top
             setCurrentPage((prevPage) => {
                 const newPage = prevPage - 1;
                 return newPage;
@@ -84,6 +85,7 @@ const Products = ({ showPaginationButtons }) => {
     };
 
     const handlePaginate = (index) => {
+        window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top
         setCurrentPage((prevPage) => {
             return index;
         });

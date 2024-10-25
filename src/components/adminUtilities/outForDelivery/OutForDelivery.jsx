@@ -25,6 +25,7 @@ const OutForDelivery = () => {
     const [verificationText, setVerificationText] = useState('');
     const [verificationTextError, setVerificationTextError] = useState('');
     const [isLoading, setIsLoading] = useState(false)
+    const [noOutForDelivery, setNoOutForDelivery] = useState(false)
     
 
     const getOutForDeliveryOrders = async () => {
@@ -38,6 +39,9 @@ const OutForDelivery = () => {
             }
         })
         console.log(feedback)
+        if(feedback.data.data.length < 1){
+            setNoOutForDelivery(true)
+        }
         setOutForDeliveryOrders(feedback.data.data)
     }
     const handleViewMoreOutForDeliveryOrders = (order) => {
@@ -121,7 +125,7 @@ const OutForDelivery = () => {
             // setOutForDeliveryModal(null); // Close modal after submission
         }
     };
-    if(outForDeliveryOrders.length < 1){
+    if(noOutForDelivery){
         return         <div className="no-order-admin-container">
         <div className="no-order-admin-content">
           <h1>No Orders Out for Delivery</h1>
