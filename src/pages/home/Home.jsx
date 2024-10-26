@@ -222,7 +222,7 @@ const Home = () => {
         </div>
       </div>
     </div> */}
-            <Products showPaginationButtons={showPaginationButtons} />
+            {/* <Products showPaginationButtons={showPaginationButtons} /> */}
             <FooterVideo />
             <Footer />
         </div>

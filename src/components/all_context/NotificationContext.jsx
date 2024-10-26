@@ -74,28 +74,28 @@ const getallUnreadNotification = () => {
 //     };
 // }, []); // Ensure the effect only runs once
 
-useEffect(() => {
-  // getallUnreadNotification()
-  console.log("useEffect called - subscribing to Pusher event");
+// useEffect(() => {
+//   // getallUnreadNotification()
+//   console.log("useEffect called - subscribing to Pusher event");
 
-  const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
-    cluster: import.meta.env.VITE_PUSHER_CLUSTER,
-  });
+//   const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
+//     cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+//   });
 
-  const channel = pusher.subscribe('my-channel');
+//   const channel = pusher.subscribe('my-channel');
 
-  channel.bind('message-sent', (data) => {
-    console.log("event received:", data);
-    toast.info(`${data.message}`);
-    getallUnreadNotification()
-  });
+//   channel.bind('message-sent', (data) => {
+//     console.log("event received:", data);
+//     toast.info(`${data.message}`);
+//     getallUnreadNotification()
+//   });
 
-  return () => {
-    console.log("Cleaning up Pusher subscriptions");
-    channel.unbind_all();
-    channel.unsubscribe();
-  };
-}, []); // Ensure the effect only runs once
+//   return () => {
+//     console.log("Cleaning up Pusher subscriptions");
+//     channel.unbind_all();
+//     channel.unsubscribe();
+//   };
+// }, []);
   return (
     <NotificationContext.Provider value={{ notifications, badgeCount, setBadgeCount }}>
       {children}
