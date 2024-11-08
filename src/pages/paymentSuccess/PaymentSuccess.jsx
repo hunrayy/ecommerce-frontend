@@ -168,7 +168,7 @@ const PaymentSuccess = () => {
                             <i className="bi bi-check-circle-fill success-icon" style={{ fontSize: '100px', color: '#28a745' }}></i>
                         </div>
                         <h3 className="card-title mb-3">Payment Successful!</h3>
-                        <p className="card-text">Thank you for your purchase. Your payment has been successfully processed.</p>
+                        <p className="card-text">Thank you for your purchase. Your payment has been successfully processed, and your order receipt has been sent to your email.</p>
                         <div className="mt-4">
                             <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
                                 Back to Home

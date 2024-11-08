@@ -24,7 +24,7 @@ const AdminHeader = ({ shownav, setShownav }) => {
                     <Logo />
                 </div>
                 
-                <div className="admin-logo-container">
+                <div className="admin-logo-container d-none d-md-block">
                     <div className="admin-icon-container" style={{ fontFamily: "Courier New, Courier, monospace" }}> 
                         Today: {date} <i className="fa-regular fa-calendar"></i>
                     </div>

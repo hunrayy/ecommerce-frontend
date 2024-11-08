@@ -50,7 +50,7 @@
 
 .admin-dashboard-content{
     margin-left: 280px;
-    padding-top: 20px;
+    /* padding-top: 20px; */
 }
 
 .admin-sidebar-dropdown-container{
@@ -109,7 +109,7 @@
         background-color: rgba(0, 0, 0, 0.671);
         position: fixed;
         top: 0;
-        z-index: 1;
+        z-index: 3;
     }
     
     .admin-page-sidebar-container{

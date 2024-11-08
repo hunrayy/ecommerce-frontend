@@ -20,7 +20,7 @@ const Products = ({ showPaginationButtons }) => {
     const { cartProducts, addToCart} = useContext(CartContext);
     const [allProducts, setAllProducts] =  useState({
         products: [],
-        products_loading: false
+        products_loading: true
     })
     const [totalProducts, setTotalProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -30,10 +30,10 @@ const Products = ({ showPaginationButtons }) => {
     const fetchProducts = async (page) => {
         console.log(currentPage, perPage)
         try {
-            setAllProducts((prev) => ({
-                ...prev,
-                products_loading: true
-            }))
+            // setAllProducts((prev) => ({
+            //     ...prev,
+            //     products_loading: true
+            // }))
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
                 params: {
                     perPage: perPage,

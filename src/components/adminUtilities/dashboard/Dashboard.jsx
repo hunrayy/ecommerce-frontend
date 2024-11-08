@@ -9,13 +9,22 @@ import axios from "axios"
 import Cookies from "js-cookie"
 const Dashboard = () => {
     const use_auth = useAuth()
-    const [products, setProducts] = useState(null)
-    const [pendingOrders, setPendingOrders] = useState(null)
+    const [products, setProducts] = useState({
+        productsLength: null,
+        products_loading: true
+    })
+    const [pendingOrders, setPendingOrders] = useState({
+        pendingOrdersLength: null,
+        pendingOrders_loading: true
+    })
 
     const getAllProducts = async() =>{
         const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`)
         if(feedback.data.code == "success"){
-            setProducts(feedback.data.data.total)
+            setProducts({
+                productsLength: feedback.data.data.total,
+                products_loading: false
+            })
         }
     }
     const getPendingOrders = async() =>{
@@ -30,7 +39,10 @@ const Dashboard = () => {
         })
         console.log(feedback)
         if(feedback.data.code == "success"){
-            setPendingOrders(feedback.data.data.length)
+            setPendingOrders({
+                pendingOrdersLength: feedback.data.data.length,
+                pendingOrders_loading: false
+            })
         }
     }
 
@@ -69,11 +81,21 @@ const Dashboard = () => {
                     <div className="welcome-back" style={{display: "flex", justifyContent: "space-between"}}>
                         <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>All products</b></p>
-                            <p style={{fontSize: "40px"}}>{products}</p>
+                            {
+                                products.products_loading ? <div className="spinner-border" role="status" style={{width: "20px", height: "20px", borderWidth: "2px"}}>
+                                                                <span className="visually-hidden">Loading...</span>
+                                                            </div>
+                                : <p style={{fontSize: "40px"}}>{products.productsLength}</p>
+
+                            }
                         </div>
                         <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>Pending orders</b></p>
-                            <p style={{fontSize: "40px"}}>{pendingOrders}</p>
+                            {pendingOrders.pendingOrders_loading ? <div className="spinner-border" role="status" style={{width: "20px", height: "20px", borderWidth: "2px"}}>
+                                                                <span className="visually-hidden">Loading...</span>
+                                                            </div>
+                                : <p style={{fontSize: "40px"}}>{pendingOrders.pendingOrdersLength}</p>
+                             }
                         </div>
                         {/* <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>Users</b></p>

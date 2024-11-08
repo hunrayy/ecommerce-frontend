@@ -39,7 +39,7 @@
 
 @media (max-width: 767px) {
     .admin-header-container{
-        padding: 10px 25px;
+        padding:3px 25px;
     }
     .admin-icon-container{
         padding: 15px;

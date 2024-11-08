@@ -15,7 +15,7 @@ const AllProducts = () => {
     const token = Cookies.get("authToken");
     const [allProducts, setAllProducts] = useState({
         products: [],
-        products_loading: false,
+        products_loading: true,
     });
     const [totalProducts, setTotalProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState(null); // Track selected product for modal
@@ -27,7 +27,7 @@ const AllProducts = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [debounceTimeout, setDebounceTimeout] = useState(null);
     const [currentPage, setCurrentPage] = useState(1)
-    const [perPage, setPerPage] = useState(2);
+    const [perPage, setPerPage] = useState(12);
 
 
 
