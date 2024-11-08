@@ -82,20 +82,23 @@ const Register = () => {
     if (validateForm()) {
       // Proceed with form submission or API call
       setIsLoading(true)
+      setFormData((prev) => ({
+        ...prev,
+        formErrors: {},
+    }))
       
-      const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/register`, { firstname: formData.firstname, lastname: formData.lastname, email: formData.email, password: formData.password},
+      const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/createAccount`, { firstname: formData.firstname, lastname: formData.lastname, email: formData.email, password: formData.password},
         {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
       );
-      // console.log(feedback)
+      console.log(feedback)
      if(feedback){
         setFormData((prev) => ({
             ...prev,
             firstname: "",
-            email: "",
             password: "",
             confirmPassword: ""
         }))

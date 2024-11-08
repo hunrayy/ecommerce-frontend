@@ -54,7 +54,7 @@ const SingleProduct = () => {
     `28", 28", 28"`,
   ];
   useEffect(() => {
-    setLoading(true)
+    // setLoading(true)
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-single-product?productId=${productId}`).then((feedback) => {
       console.log(feedback)
       if(feedback.data.code == "success"){
@@ -80,7 +80,8 @@ const SingleProduct = () => {
         // }));
 
       }else{
-        navigate("/page-not-found", {replace: "true"})
+        setLoading(false)
+        navigate("/page-not-found")
       }
 
     })
@@ -179,17 +180,23 @@ const SingleProduct = () => {
             <div className="container placeholder-glow">
               <div className="row gx-">
                 <aside className="col-lg-6">
+                  {
+                    loading ? <div className="placeholder col-9" style={{width: "100%", height: "400px"}}>
+                      </div>
+                     : <div className="single-product-image-scroll-container">
+                    
+                     {productImages.map((image, index) => (
+                         <img
+                             key={index}
+                             src={image}
+                             alt={`Product Image ${index + 1}`}
+                             className="single-product-scrollable-image"
+                         />
+                     ))}
+                   </div>
+                  }
                   
-                    <div className="single-product-image-scroll-container">
-                      {productImages.map((image, index) => (
-                          <img
-                              key={index}
-                              src={image}
-                              alt={`Product Image ${index + 1}`}
-                              className="single-product-scrollable-image"
-                          />
-                      ))}
-                    </div>
+                    
                   
                  
                 </aside>

@@ -30,6 +30,10 @@ const Products = ({ showPaginationButtons }) => {
     const fetchProducts = async (page) => {
         console.log(currentPage, perPage)
         try {
+            setAllProducts((prev) => ({
+                ...prev,
+                products_loading: true
+            }))
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
                 params: {
                     perPage: perPage,
@@ -50,7 +54,11 @@ const Products = ({ showPaginationButtons }) => {
             // const { data } = response.data;
             // setTotalProducts(data.total); // Total number of products
         } catch (error) {
-            console.error('Error fetching products:', error);
+            // console.error('Error fetching products:', error);
+            setAllProducts((prev) => ({
+                ...prev,
+                products_loading: false
+            }))
         }finally{
             // Clear the loader timeout and stop the loader when the request completes
             setAllProducts(prev => ({
