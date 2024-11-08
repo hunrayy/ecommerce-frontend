@@ -60,9 +60,9 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
           <ToastContainer />
+          {/* test code  */}
         </CartProvider>
       </AuthProvider>
-      {/* test code  */}
     </>
   )
 }
