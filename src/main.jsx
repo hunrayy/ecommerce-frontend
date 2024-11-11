@@ -1,3 +1,10 @@
+if (import.meta.env.VITE_APP_ENV == 'production') {
+  console.log = () => {};     // Disables all console.log statements
+  console.error = () => {};   // Disables all console.error statements
+  console.group = () => {};   // Disables all console.group statements
+}
+
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'

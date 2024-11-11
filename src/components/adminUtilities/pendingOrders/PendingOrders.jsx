@@ -6,11 +6,13 @@ import './pendingOrders.css'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { useState, useEffect, useContext } from 'react'
+import BasicLoader from '../../loader/BasicLoader'
 import { toast } from 'react-toastify'
 import { CurrencyContext } from '../../all_context/CurrencyContext';
     const PendingOrders = () => {
     const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
     const [pendingOrders, setPendingOrders] = useState([])
+    const [pendingOrdersLoading, setPendingOrdersLoading] = useState(true)
     const [singleOrder, setSingleOrder] = useState(null)
     const [outForDeliveryModal, setOutForDeliveryModal] = useState(null)
     const [trackingId, setTrackingId] = useState('');
@@ -18,6 +20,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
     const [verificationText, setVerificationText] = useState('');
     const [verificationTextError, setVerificationTextError] = useState('');
     const [isLoading, setIsLoading] = useState(false)
+    
 
     
 
@@ -32,6 +35,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
             }
         })
         console.log(feedback)
+        setPendingOrdersLoading(false)
         setPendingOrders(feedback.data.data)
     }
     const handleViewMorePendingOrders = (order) => {
@@ -115,7 +119,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
             // setOutForDeliveryModal(null); // Close modal after submission
         }
     };
-    if(pendingOrders.length < 1){
+    if(!pendingOrdersLoading && pendingOrders.length < 1){
         return         <div className="no-order-admin-container">
         <div className="no-order-admin-content">
           <h1>No Pending Orders</h1>
@@ -125,6 +129,11 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
           </div>
         </div>
       </div>
+    }
+    if(pendingOrdersLoading){
+        return <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <BasicLoader />
+        </div>
     }
 
     
@@ -147,7 +156,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
 
                 return <tbody key={index}>
                     <tr>
-                    <th scope="row">{index + 1}</th>
+                    <th scope="row">{pendingOrders.length - index}</th>
                     <td>{pendingOrder.tracking_id}</td>
                     {/* <td>{pendingOrder.email}</td> */}
                     <td>{formatDate(pendingOrder.created_at)}</td>

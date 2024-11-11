@@ -43,6 +43,18 @@ const Cart = () => {
     show: false,
     eachItem: null
   })
+
+  const lengthsOfHair = [
+    `12", 12", 12"`,
+    `14", 14", 14"`,
+    `16", 16", 16"`,
+    `18", 18", 18"`,
+    `20", 20", 20"`,
+    `22", 22", 22"`,
+    `24", 24", 24"`,
+    `26", 26", 26"`,
+    `28", 28", 28"`,
+  ];
   
   // const initializeCartProducts = async() => {
   //   // console.log(await cartProducts)
@@ -144,6 +156,7 @@ const Cart = () => {
                     let convertedPrice = convertCurrency(each_item.productPriceInNaira, 'NGN', selectedCurrency);
                     convertedPrice = Number(convertedPrice);
                     const generateCacheBustString = () => `?cb=${new Date().getTime()}`; // Generates a unique cache-busting string
+                    const productPrices = ["10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000"]
                     return (
                       <div key={each_item.id}>
                       <div className="cart-products-wrapper mb-3">
@@ -172,8 +185,12 @@ const Cart = () => {
                               <button className="cart-increase-decrease-btn" onClick={() => increaseButton(each_item)}><i className="fa-solid fa-plus"></i></button>
                             </div>
                             <div className="">
-                              <span className="h6 pl-4 pr-2">{currencySymbol}</span>
-                              <span className="h6">{convertedPrice.toLocaleString()}</span>
+                              {/* <span className="h6 pl-4 pr-2">{currencySymbol}</span>
+                              <span className="h6">{convertedPrice.toLocaleString()}</span> */}
+                              {lengthsOfHair.map((length, index) =>
+                                each_item.lengthPicked === length &&
+                                convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()
+                              )}
                             </div>
                             <button className="btn btn-light border text-danger" onClick={() => setRemoveItemFromCartModal({show: true, eachItem: each_item})}> Remove <i className="fa-solid fa-trash"></i></button>
                         {/* <div style={{}}>

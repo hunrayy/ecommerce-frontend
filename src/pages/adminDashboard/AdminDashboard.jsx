@@ -9,6 +9,7 @@ import AdminSettingsPage from "../../components/adminUtilities/adminSettings/Adm
 import AdminShippingPolicy from "../../components/adminUtilities/adminShippingPolicy/AdminShippingPolicy";
 import AdminDeliveryPolicy from "../../components/adminUtilities/adminDeliveryPolicy/AdminDeliveryPolicy";
 import PendingOrders from "../../components/adminUtilities/pendingOrders/PendingOrders";
+import ViewUsers from "../../components/adminUtilities/viewUsers/ViewUsers";
 import OutForDelivery from "../../components/adminUtilities/outForDelivery/OutForDelivery";
 import DeliveredOrders from "../../components/adminUtilities/deliveredOrders/DeliveredOrders";
 import { useNotification } from "../../components/all_context/NotificationContext";
@@ -35,7 +36,8 @@ const AdminDashboard = () => {
         delivery_policy_page: false,
         pending_orders_page: false,
         out_for_delivery_page: false,
-        delivered_orders_page: false
+        delivered_orders_page: false,
+        view_users: false
     });
     const [pagesDropdown, setPagesDropdown] = useState(false)
     const [ordersDropdown, setOrdersDropdown] = useState(false)
@@ -52,7 +54,8 @@ const AdminDashboard = () => {
             delivery_policy_page: page === 'delivery_policy',
             pending_orders_page: page === 'pending_orders',
             out_for_delivery_page: page === 'out_for_delivery',
-            delivered_orders_page: page === 'delivered_orders'
+            delivered_orders_page: page === 'delivered_orders',
+            view_users_page: page === 'view_users'
         });
         setShownav(false);  // Close the sidebar when a page is selected
     };
@@ -104,6 +107,10 @@ const AdminDashboard = () => {
                             </div>
                         </div>
 
+                        <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('view_users')}>
+                            <i className="fa-solid fa-user"></i> <span>Users</span>
+                        </div> 
+
                        
 
 
@@ -145,6 +152,7 @@ const AdminDashboard = () => {
                     {pages.pending_orders_page && <PendingOrders />}
                     {pages.out_for_delivery_page && <OutForDelivery />}
                     {pages.delivered_orders_page && <DeliveredOrders />}
+                    {pages.view_users_page && <ViewUsers />}
 
                     
                     {/* Add other components as needed */}

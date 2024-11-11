@@ -184,7 +184,8 @@ const CartProvider = ({ children }) => {
     // }));
   };
 
-  const updateCartItemLength = (productId, newLength) => {
+  const updateCartItemLength = (productId, newLength, lengthPrice) => {
+    console.log(lengthPrice)
     const storedItems = JSON.parse(localStorage.getItem("cart_items")) || [];
     const storedItem = storedItems.find(item => item.id === productId);
 
@@ -193,7 +194,7 @@ const CartProvider = ({ children }) => {
     storedItem.lengthPicked = newLength;
 
     const updatedItems = cartProducts.products.map((item) =>
-      item.id === productId ? { ...item, lengthPicked: newLength } : item
+      item.id === productId ? { ...item, lengthPicked: newLength, productPriceInNaira: lengthPrice} : item
     );
 
     toast.success('Length of product updated in cart')
