@@ -154,7 +154,7 @@ const Products = ({ showPaginationButtons }) => {
                         // console.log(product)
                         // const inCart = cartItems?.some(item => item.id === product.id)
                         // const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
-                        const convertedPrice = Number(convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency)).toLocaleString();
+                        const convertedPrice = Number(convertCurrency(product.productPriceInNaira12Inches, 'NGN', selectedCurrency)).toLocaleString();
                         const currencySymbol = currencySymbols[selectedCurrency];
                         return (<div key={index} className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container"  onClick={()=>navigateToProduct(product.id)}>
                         <div className="my-2">

@@ -5,6 +5,7 @@ import Loader from "../../loader/Loader";
 import "./editProduct.css";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const EditProductForm = ({ product, onClose}) => {
     const navigate = useNavigate();
@@ -14,7 +15,15 @@ const EditProductForm = ({ product, onClose}) => {
         subImage2: null,
         subImage3: null,
         productName: "",
-        productPrice: "",
+        productPriceInNaira12Inches: "",
+        productPriceInNaira14Inches: "",
+        productPriceInNaira16Inches: "",
+        productPriceInNaira18Inches: "",
+        productPriceInNaira20Inches: "",
+        productPriceInNaira22Inches: "",
+        productPriceInNaira24Inches: "",
+        productPriceInNaira26Inches: "",
+        productPriceInNaira28Inches: "",
     });
     const [imagePreviews, setImagePreviews] = useState({
         productImage: null,
@@ -39,7 +48,16 @@ const EditProductForm = ({ product, onClose}) => {
                 subImage2: product.subImage2 || null,
                 subImage3: product.subImage3 || null,
                 productName: product.productName,
-                productPrice: product.productPriceInNaira,
+                productPriceInNaira12Inches: Number(product.productPriceInNaira12Inches).toLocaleString(),
+                productPriceInNaira14Inches: Number(product.productPriceInNaira14Inches).toLocaleString(),
+                productPriceInNaira16Inches: Number(product.productPriceInNaira16Inches).toLocaleString(),
+                productPriceInNaira18Inches: Number(product.productPriceInNaira18Inches).toLocaleString(),
+                productPriceInNaira20Inches: Number(product.productPriceInNaira20Inches).toLocaleString(),
+                productPriceInNaira22Inches: Number(product.productPriceInNaira22Inches).toLocaleString(),
+                productPriceInNaira24Inches: Number(product.productPriceInNaira24Inches).toLocaleString(),
+                productPriceInNaira26Inches: Number(product.productPriceInNaira26Inches).toLocaleString(),
+                productPriceInNaira28Inches: Number(product.productPriceInNaira28Inches).toLocaleString(),
+                
             });
             // Set image previews
             setImagePreviews({
@@ -86,7 +104,11 @@ const EditProductForm = ({ product, onClose}) => {
         return value.replace(/,/g, "");
     };
 
-    const isFormValid = formData.productName && formData.productPrice;
+    const isFormValid = formData.productName && formData.productPriceInNaira12Inches &&
+    formData.productPriceInNaira14Inches && formData.productPriceInNaira16Inches &&
+    formData.productPriceInNaira18Inches && formData.productPriceInNaira20Inches && 
+    formData.productPriceInNaira22Inches && formData.productPriceInNaira24Inches &&
+    formData.productPriceInNaira26Inches && formData.productPriceInNaira28Inches;
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -106,7 +128,17 @@ const EditProductForm = ({ product, onClose}) => {
         if (formData.subImage2) uploadData.append("subImage2", formData.subImage2);
         if (formData.subImage3) uploadData.append("subImage3", formData.subImage3);
         uploadData.append("productName", formData.productName);
-        uploadData.append("productPrice", formData.productPrice);
+        uploadData.append("productPriceInNaira12Inches", Number(formData.productPriceInNaira12Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira14Inches", Number(formData.productPriceInNaira14Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira16Inches", Number(formData.productPriceInNaira16Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira18Inches", Number(formData.productPriceInNaira18Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira20Inches", Number(formData.productPriceInNaira20Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira22Inches", Number(formData.productPriceInNaira22Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira24Inches", Number(formData.productPriceInNaira24Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira26Inches", Number(formData.productPriceInNaira26Inches.replace(/,/g, "")));
+        uploadData.append("productPriceInNaira28Inches", Number(formData.productPriceInNaira28Inches.replace(/,/g, "")));
+
+
         try {
             const token = Cookies.get("authToken");
             const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/update-product`,
@@ -121,8 +153,8 @@ const EditProductForm = ({ product, onClose}) => {
                     }
                 }
             );
+            console.log(feedback)
             if (feedback) {
-                console.log(feedback)
                 setIsLoading(false);
                 if (feedback.data.code === "success") {
                     setServerSuccessState(true);
@@ -136,7 +168,16 @@ const EditProductForm = ({ product, onClose}) => {
                         subImage2: null,
                         subImage3: null,
                         productName: "",
-                        productPrice: "",
+                        productPriceInNaira12Inches: "",
+                        productPriceInNaira14Inches: "",
+                        productPriceInNaira16Inches: "",
+                        productPriceInNaira18Inches: "",
+                        productPriceInNaira20Inches: "",
+                        productPriceInNaira22Inches: "",
+                        productPriceInNaira24Inches: "",
+                        productPriceInNaira26Inches: "",
+                        productPriceInNaira28Inches: "",
+
                     });
                     setImagePreviews({
                         productImage: null,
@@ -154,7 +195,7 @@ const EditProductForm = ({ product, onClose}) => {
                 }
             }
         } catch (error) {
-            console.error("Error updating product:", error);
+            toast.error(error.message)
             setIsLoading(false);
         }
     };
@@ -226,11 +267,44 @@ const EditProductForm = ({ product, onClose}) => {
                             <label htmlFor="productName" className="form-label">Product Name</label>
                             <input type="text" className="form-control" id="productName" value={formData.productName} onChange={(e) => setFormData({ ...formData, productName: e.target.value })} />
                         </div>
-                        <div className="mb-3">
+                        {/* <div className="mb-3">
                             <label htmlFor="productPrice" className="form-label">Product Price</label>
                             <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPrice)} onChange={(e) => setFormData({ ...formData, productPrice: removeCommas(e.target.value) })} />
+                        </div> */}
+                        {console.log(parseFloat(product.productPriceInNaira12Inches).toLocaleString())}
+                        <div className="mb-3 col-6">
+                            {console.log(formData)}
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(12 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira12Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira12Inches: removeCommas(e.target.value) })} />
                         </div>
-                        <button type="submit" className="btn" style={{background: "purple", color: "white"}}>Update</button>
+                        <div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(14 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira14Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira14Inches: removeCommas(e.target.value) })} />
+                        </div>
+                        <div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(16 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira16Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira16Inches: removeCommas(e.target.value) })} />
+                        </div><div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(18 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira18Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira18Inches: removeCommas(e.target.value) })} />
+                        </div><div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(20 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira20Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira20Inches: removeCommas(e.target.value) })} />
+                        </div><div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(22 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira22Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira22Inches: removeCommas(e.target.value) })} />
+                        </div><div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(24 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira24Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira24Inches: removeCommas(e.target.value) })} />
+                        </div><div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(26 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira26Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira26Inches: removeCommas(e.target.value) })} />
+                        </div><div className="mb-3 col-6">
+                            <label htmlFor="productPrice" className="form-label">Product Price In Naira(28 inches)</label>
+                            <input type="text" className="form-control" id="productPrice" value={formatNumberWithCommas(formData.productPriceInNaira28Inches)} onChange={(e) => setFormData({ ...formData, productPriceInNaira28Inches: removeCommas(e.target.value) })} />
+                        </div>
+                       
+                        <button type="submit" className="btn" style={{background: "purple", color: "white"}} disabled={!isFormValid}>Update</button>
                     </form>
                 </div>
             </div>

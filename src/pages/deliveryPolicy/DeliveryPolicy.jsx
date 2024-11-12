@@ -57,7 +57,10 @@ const DeliveryPolicy = () => {
             <Navbar />
             <div className="shipping-policy-container">
                 <div className="shipping-policy-wrapper">
-                    {isLoading && <BasicLoader />}
+                    {/* {isLoading && <BasicLoader />} */}
+                    {isLoading && <div style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "calc(90vh - var(--marginAboveTop))"}}>
+                        <BasicLoader />
+                    </div>}
                     
                     {/* Title of the policy */}
                     <p>{policyTitle}</p>

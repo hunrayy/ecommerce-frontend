@@ -16,16 +16,17 @@ const RefundPolicy = () => {
     useEffect(() => {
         let loaderTimeout;
         // Set the loader to be shown if data takes more than 200ms
-        loaderTimeout = setTimeout(() => {
-            setIsLoading(true);
-        }, 200);
+        // loaderTimeout = setTimeout(() => {
+        //     setIsLoading(true);
+        // }, 200);
 
         axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/get-page`, {
             params: { page: "refundPolicy" },
         }).then((feedback) => {
-            setIsLoading(false);
+            // setIsLoading(false);
             console.group(feedback)
             if (feedback.data.code === "success") {
+                setIsLoading(false)
                 setPolicyTitle(feedback.data.data.title);
                 setPolicySections([
                     feedback.data.data.firstSection,
@@ -37,6 +38,8 @@ const RefundPolicy = () => {
                     feedback.data.data.seventhSection,
                     feedback.data.data.eighthSection
                 ]);
+            }else{
+                toast.error(feedback.data.message)
             }
         }).finally(() => {
             clearTimeout(loaderTimeout);
@@ -51,6 +54,9 @@ const RefundPolicy = () => {
                 <div className="shipping-policy-wrapper">
                 
                     {/* {isLoading && <BasicLoader />} */}
+                    {isLoading && <div style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "calc(90vh - var(--marginAboveTop))"}}>
+                        <BasicLoader />
+                    </div>}
                     
                     {/* Title of the policy */}
                     <p>{policyTitle}</p>

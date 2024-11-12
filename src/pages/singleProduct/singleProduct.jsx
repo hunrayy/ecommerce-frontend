@@ -386,7 +386,7 @@ const SingleProduct = () => {
     subImage3: "",
     name: "",
     description: "",
-    price: 0,
+    // price: 0,
     pageNotFound: false
   });
   const [productPrices, setProductPrices] = useState([])
@@ -425,9 +425,13 @@ const SingleProduct = () => {
           subImage2: feedback.data.data.subImage2 !== "null" && feedback.data.data.subImage2,
           subImage3: feedback.data.data.subImage3 !== "null" && feedback.data.data.subImage3,
           name: feedback.data.data.productName,
-          price: feedback.data.data.productPriceInNaira,
+          // price: feedback.data.data.productPriceInNaira,
         });
-        setProductPrices(["10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000"])
+        setProductPrices([feedback.data.data.productPriceInNaira12Inches, feedback.data.data.productPriceInNaira14Inches, 
+          feedback.data.data.productPriceInNaira16Inches, feedback.data.data.productPriceInNaira18Inches, 
+          feedback.data.data.productPriceInNaira20Inches, feedback.data.data.productPriceInNaira22Inches, 
+          feedback.data.data.productPriceInNaira24Inches, feedback.data.data.productPriceInNaira26Inches, 
+          feedback.data.data.productPriceInNaira28Inches])
   
   
   
@@ -536,7 +540,7 @@ const SingleProduct = () => {
               <div className="row gx-">
                 <aside className="col-lg-6">
                   {
-                    loading ? <div className="placeholder col-9" style={{width: "100%", height: "400px"}}>
+                    loading ? <div className="placeholder col-9" style={{width: "100%", height: "500px"}}>
                       </div>
                      : <div className="single-product-image-scroll-container">
                     
@@ -594,7 +598,7 @@ const SingleProduct = () => {
                             <div key={index} className="">
                               <button
                                 className="length-button "
-                                style={lengthState.lengthPicked === length ? { backgroundColor: "black", color: "white" } : null}
+                                style={lengthState.lengthPicked === length ? { backgroundColor: "black", color: "white" } : null }
                                 onClick={() => {
                                   const index = lengthState.length.findIndex(item => item == length); // Find the index of the selected length
                                   const price = productPrices[index]; // Get the price for the selected length

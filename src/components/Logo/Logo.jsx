@@ -1,6 +1,6 @@
 
 
-
+import logo from '../../../public/beautybykiara_logo.png'
 import { useNavigate } from "react-router-dom"
 const Logo = () => {
     const navigate = useNavigate()
@@ -9,6 +9,7 @@ const Logo = () => {
             <span style={{color: "#3788db"}}>B</span>
             <span style={{color: "#3788db"}}>B</span>
             <span style={{color: "#573e8a"}}>K</span>
+            {/* <img src={logo} alt="logo" width='70px' /> */}
         </div>
 
     </div>

@@ -4,6 +4,7 @@ import BasicLoader from '../../components/loader/BasicLoader'
 import Navbar from '../../components/navbar/Navbar'
 import './shippingPolicy.css'
 import Footer from '../../components/footer/Footer'
+import { toast } from "react-toastify";
 const ShippingPolicy = () => {
     const [isLoading, setIsLoading] = useState(true)
     // Initial policy data
@@ -18,9 +19,9 @@ const ShippingPolicy = () => {
     useEffect(()=> {
         let loaderTimeout;
         // Set the loader to be shown if data takes more than 200ms
-        loaderTimeout = setTimeout(() => {
-            setIsLoading(true)
-        }, 200);
+        // loaderTimeout = setTimeout(() => {
+        //     setIsLoading(true)
+        // }, 200);
         axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/get-page`, {
             params: {
                 page: "shippingPolicy" 
@@ -36,6 +37,8 @@ const ShippingPolicy = () => {
                     feedback.data.data.thirdSection,
 
                 ])
+            }else{
+                toast.error(feedback.data.message)
             }
            
         }).finally(()=> {
@@ -49,6 +52,9 @@ const ShippingPolicy = () => {
             <Navbar />
             <div className="shipping-policy-container">
                 <div className="shipping-policy-wrapper">
+                    {isLoading && <div style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "calc(90vh - var(--marginAboveTop))"}}>
+                        <BasicLoader />
+                    </div>}
                     {/* Title of the policy */}
                     <p>{policyTitle}</p>
 

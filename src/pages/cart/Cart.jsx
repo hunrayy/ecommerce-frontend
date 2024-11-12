@@ -29,7 +29,7 @@ import { useState, useEffect, useContext, useMemo } from "react";
 import { CartContext } from "./CartContext";
 import { CurrencyContext } from "../../components/all_context/CurrencyContext";
 import CartTotal, { calculateTotal } from "./CartTotal";
-import EmptyCart from '../../components/emptyCart/EmptyCart';
+import EmptyCart from '../../components/emptyCart/EmptyCart'
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 const Cart = () => {
@@ -37,7 +37,7 @@ const Cart = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
-  const { cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
+  const { loading, cartProducts, addToCart, updateCartItemQuantity } = useContext(CartContext);
   const [allCartItems, setAllCartItems] = useState({ products: [] });
   const [removeItemFromCartModal, setRemoveItemFromCartModal] = useState({
     show: false,
@@ -142,7 +142,8 @@ const Cart = () => {
         </div>
       </div>
         {/* {cartProducts?.products?.length == 0 && <EmptyCart />} */}
-        {cartProducts?.cartEmpty || cartProducts.products?.length < 1 ? <EmptyCart /> : null}
+        {cartProducts?.cartEmpty && !loading || cartProducts.products?.length < 1 && !loading ? <EmptyCart /> : null}
+        {loading && <div style={{backgroundColor: "var(--bodyColor)", width: "100%", height: "calc(100vh - var(--marginAboveTop))"}}></div>}
 
       <section className="my-5" style={cartProducts?.products?.length == 0 ? {display: "none"} : null}>
         <div className="container">
@@ -156,7 +157,10 @@ const Cart = () => {
                     let convertedPrice = convertCurrency(each_item.productPriceInNaira, 'NGN', selectedCurrency);
                     convertedPrice = Number(convertedPrice);
                     const generateCacheBustString = () => `?cb=${new Date().getTime()}`; // Generates a unique cache-busting string
-                    const productPrices = ["10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000"]
+                    const productPrices = [each_item.productPriceInNaira12Inches, each_item.productPriceInNaira14Inches, 
+                      each_item.productPriceInNaira16Inches, each_item.productPriceInNaira18Inches, each_item.productPriceInNaira20Inches, 
+                      each_item.productPriceInNaira22Inches, each_item.productPriceInNaira24Inches, 
+                      each_item.productPriceInNaira26Inches, each_item.productPriceInNaira28Inches]
                     return (
                       <div key={each_item.id}>
                       <div className="cart-products-wrapper mb-3">
@@ -185,8 +189,6 @@ const Cart = () => {
                               <button className="cart-increase-decrease-btn" onClick={() => increaseButton(each_item)}><i className="fa-solid fa-plus"></i></button>
                             </div>
                             <div className="">
-                              {/* <span className="h6 pl-4 pr-2">{currencySymbol}</span>
-                              <span className="h6">{convertedPrice.toLocaleString()}</span> */}
                               {lengthsOfHair.map((length, index) =>
                                 each_item.lengthPicked === length &&
                                 convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()

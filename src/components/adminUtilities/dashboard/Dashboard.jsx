@@ -13,6 +13,10 @@ const Dashboard = () => {
         productsLength: null,
         products_loading: true
     })
+    const [allUsers, setAllUsers] = useState({
+        allUsersLength: null,
+        allUsersLoading: true
+    })
     const [pendingOrders, setPendingOrders] = useState({
         pendingOrdersLength: null,
         pendingOrders_loading: true
@@ -20,10 +24,26 @@ const Dashboard = () => {
 
     const getAllProducts = async() =>{
         const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`)
+        console.log(feedback)
         if(feedback.data.code == "success"){
             setProducts({
                 productsLength: feedback.data.data.total,
                 products_loading: false
+            })
+        }
+    }
+    const getUsers = async() => {
+        const token = Cookies.get('authToken')
+        const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/get-all-users`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        console.log(feedback)
+        if((feedback).data.code == "success"){
+            setAllUsers({
+                allUsersLength: feedback.data.data.length,
+                allUsersLoading: false
             })
         }
     }
@@ -54,6 +74,7 @@ const Dashboard = () => {
     useEffect(()=> {
         getAllProducts()
         getPendingOrders()
+        getUsers()
 
     }, [])
    
@@ -97,10 +118,10 @@ const Dashboard = () => {
                                 : <p style={{fontSize: "40px"}}>{pendingOrders.pendingOrdersLength}</p>
                              }
                         </div>
-                        {/* <div style={{display: "flex", flexDirection: "column"}}>
+                        <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>Users</b></p>
-                            <p style={{fontSize: "40px"}}>9</p>
-                        </div> */}
+                            <p style={{fontSize: "40px"}}>{allUsers.allUsersLength}</p>
+                        </div>
                         
                     </div>
                 
