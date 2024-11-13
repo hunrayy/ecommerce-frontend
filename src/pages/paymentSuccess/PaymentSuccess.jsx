@@ -82,8 +82,9 @@ const PaymentSuccess = () => {
         console.log(authToken)
 
             try {
-                // const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/validate-payment`, {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/paystack/validate-payment`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/validate-payment`, {
+                // const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/paystack/validate-payment`, {
+                
                     params: {
                         tx_ref: tx_ref,
                         reference: reference,
@@ -170,12 +171,12 @@ const PaymentSuccess = () => {
                         <h3 className="card-title mb-3">Payment Successful!</h3>
                         <p className="card-text">Thank you for your purchase. Your payment has been successfully processed, and your order receipt has been sent to your email.</p>
                         <div className="mt-4">
-                            <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/')}>
+                            <button className="btn btn-success btn-lg me-3" onClick={() => navigate('/', {replace: true})}>
                                 Back to Home
                             </button>
-                            <Link to="/user-account" className="btn btn-outline-success btn-lg me-3 mt-2 mt-lg-0">
+                            <button className="btn btn-outline-success btn-lg me-3 mt-2 mt-lg-0" onClick={()=> navigate('/user-account', {replace: true})}>
                                 View Order Details
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 </div>

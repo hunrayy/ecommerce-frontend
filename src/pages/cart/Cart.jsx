@@ -143,7 +143,7 @@ const Cart = () => {
       </div>
         {/* {cartProducts?.products?.length == 0 && <EmptyCart />} */}
         {cartProducts?.cartEmpty && !loading || cartProducts.products?.length < 1 && !loading ? <EmptyCart /> : null}
-        {loading && <div style={{backgroundColor: "var(--bodyColor)", width: "100%", height: "calc(100vh - var(--marginAboveTop))"}}></div>}
+        {loading && <div style={{width: "100%", height: "calc(100vh - var(--marginAboveTop))"}}></div>}
 
       <section className="my-5" style={cartProducts?.products?.length == 0 ? {display: "none"} : null}>
         <div className="container">
@@ -160,7 +160,8 @@ const Cart = () => {
                     const productPrices = [each_item.productPriceInNaira12Inches, each_item.productPriceInNaira14Inches, 
                       each_item.productPriceInNaira16Inches, each_item.productPriceInNaira18Inches, each_item.productPriceInNaira20Inches, 
                       each_item.productPriceInNaira22Inches, each_item.productPriceInNaira24Inches, 
-                      each_item.productPriceInNaira26Inches, each_item.productPriceInNaira28Inches]
+                      each_item.productPriceInNaira26Inches, each_item.productPriceInNaira28Inches
+                    ]
                     return (
                       <div key={each_item.id}>
                       <div className="cart-products-wrapper mb-3">

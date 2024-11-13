@@ -120,7 +120,12 @@ const Dashboard = () => {
                         </div>
                         <div style={{display: "flex", flexDirection: "column"}}>
                             <p className="text-muted"><b>Users</b></p>
-                            <p style={{fontSize: "40px"}}>{allUsers.allUsersLength}</p>
+                            {/* <p style={{fontSize: "40px"}}>{allUsers.allUsersLength}</p> */}
+                            {allUsers.allUsersLoading ? <div className="spinner-border" role="status" style={{width: "20px", height: "20px", borderWidth: "2px"}}>
+                                                                <span className="visually-hidden">Loading...</span>
+                                                            </div>
+                                : <p style={{fontSize: "40px"}}>{allUsers.allUsersLength}</p>
+                             }
                         </div>
                         
                     </div>

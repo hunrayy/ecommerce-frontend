@@ -16,6 +16,7 @@ const VerifyEmailCode = () => {
     success: false,
     registerToken: ""
   })
+  const [isLoading, setIsLoading] = useState(false)
 
 
   const navigate = useNavigate()
@@ -98,6 +99,7 @@ const VerifyEmailCode = () => {
       // document.getElementById("verificationForm").submit();
       // console.log(token) 
       const verificationCode = Cookies.get("_emt")
+      setIsLoading(true)
       const feedback = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/verify-email-verification-code`, {verificationCode: code}, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,12 +108,14 @@ const VerifyEmailCode = () => {
       })
       console.log(feedback)
       if(feedback.data.code == "success"){
+        setIsLoading(false)
         setServerSuccessFeedback((prev) => ({
           ...prev,
           success: true,
           registerToken: feedback.data.createAccountToken
         }))
       }else if(feedback.data.code == "error"){
+        setIsLoading(false)
         setServerErrorFeedback(feedback.data.message)
       }else if(feedback.data.code == "invalid-jwt"){
         //an error occured while sending verification code
@@ -149,7 +153,8 @@ const VerifyEmailCode = () => {
                   {[...Array(6)].map((_, index) => (
                     <input
                       key={index}
-                      type="text"
+                      type="number"
+                      min='1'
                       maxLength="1"
                       className={`code-input ${error ? "error-input" : ""}`}
                       ref={(el) => (inputsRef.current[index] = el)}
@@ -168,8 +173,12 @@ const VerifyEmailCode = () => {
                 <button
                   className="btn btn-lg"
                   style={{ backgroundColor: "purple", color: "white" }}
+                  disabled={isLoading}
                 >
-                  Submit
+                  {isLoading ? <div className="spinner-border" role="status">
+  <span className="visually-hidden">Loading...</span>
+</div> : "Submit"}
+               
                 </button>
               </div>
             </form>

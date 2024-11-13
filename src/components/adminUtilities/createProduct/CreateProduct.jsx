@@ -116,22 +116,22 @@ const CreateProduct = () => {
             );
             console.log(feedback)
             if (feedback) {
-                // setFormData({
-                //     productImage: null,
-                //     subImage1: null,
-                //     subImage2: null,
-                //     subImage3: null,
-                //     productName: "",
-                //     productPrice12Inches: "",
-                //     productPrice14Inches: "",
-                //     productPrice16Inches: "",
-                //     productPrice18Inches: "",
-                //     productPrice20Inches: "",
-                //     productPrice22Inches: "",
-                //     productPrice24Inches: "",
-                //     productPrice26Inches: "",
-                //     productPrice28Inches: "",
-                // });
+                setFormData({
+                    productImage: null,
+                    subImage1: null,
+                    subImage2: null,
+                    subImage3: null,
+                    productName: "",
+                    productPrice12Inches: "",
+                    productPrice14Inches: "",
+                    productPrice16Inches: "",
+                    productPrice18Inches: "",
+                    productPrice20Inches: "",
+                    productPrice22Inches: "",
+                    productPrice24Inches: "",
+                    productPrice26Inches: "",
+                    productPrice28Inches: "",
+                });
                 setIsLoading(false);
                 if (feedback.data.code === "success") {
                     setServerSuccessState(true);

@@ -1,6 +1,5 @@
 
 
-import logo from '../../../public/beautybykiara_logo.png'
 import { useNavigate } from "react-router-dom"
 const Logo = () => {
     const navigate = useNavigate()

@@ -103,7 +103,7 @@ const CheckOut = () => {
       if (validateForm()) {
         setLoading(true)
 
-        axios.post(`${import.meta.env.VITE_BACKEND_URL}/paystack/make-payment`, formData,
+        axios.post(`${import.meta.env.VITE_BACKEND_URL}/flutterwave/make-payment`, formData,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -111,24 +111,24 @@ const CheckOut = () => {
           }
         ).then((feedback) => {
           console.log(feedback)
-          // if(feedback.data.status == "success"){
-          //   window.location.href = feedback.data.data.link;
+          if(feedback.data.status == "success"){
+            window.location.href = feedback.data.data.link;
 
-          // }else if(feedback.data.error){
-          //     toast.error(feedback.data.error);
-          // }else if(feedback.data.code == "error"){
-          //   toast.error(feedback.data.reason)
-          // }else {
-          //     // Handle the error if the approval link is missing
-          //     toast.error("There was an issue connecting to the payment provider. Please try again.");
-          //   }
-
-
-          if(feedback.data.status){
-            window.location.href = feedback.data.data.authorization_url;
+          }else if(feedback.data.error){
+              toast.error(feedback.data.error);
           }else if(feedback.data.code == "error"){
             toast.error(feedback.data.reason)
-          }
+          }else {
+              // Handle the error if the approval link is missing
+              toast.error("There was an issue connecting to the payment provider. Please try again.");
+            }
+
+
+          // if(feedback.data.status){
+          //   window.location.href = feedback.data.data.authorization_url;
+          // }else if(feedback.data.code == "error"){
+          //   toast.error(feedback.data.reason)
+          // }
 
 
         }).finally(()=> {
@@ -137,6 +137,8 @@ const CheckOut = () => {
       } else {
         toast.error("Please correct the errors in the form.");
       }
+        // axios.post(`${import.meta.env.VITE_BACKEND_URL}/paystack/make-payment`, formData,
+
     };
 
 
@@ -233,7 +235,11 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
       expectedDateOfDelivery = new Date(currentDate.setDate(currentDate.getDate() + numberOfDaysForInternationalDelivery));
   }
 
-  return expectedDateOfDelivery.toLocaleDateString(); // Format the date as needed
+  return expectedDateOfDelivery.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
 }
 
   function calculateShippingFee(selectedCountry){
@@ -288,6 +294,17 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
     }
   }, [formData.country, cartProducts, convertCurrency, selectedCurrency, currencySymbols]);
 
+  const lengthsOfHair = [
+    `12", 12", 12"`,
+    `14", 14", 14"`,
+    `16", 16", 16"`,
+    `18", 18", 18"`,
+    `20", 20", 20"`,
+    `22", 22", 22"`,
+    `24", 24", 24"`,
+    `26", 26", 26"`,
+    `28", 28", 28"`,
+  ];
   return <div>
     <CheckoutHeader />
     {loading && <Loader />}
@@ -301,7 +318,7 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
                 <div className="row">
                   <h5 className="card-title mb-3">Contact</h5>
                   <div className="mb-3 form-floating">
-                    <input type="email" placeholder="Email" value={formData.email} disabled className="form-control form-control-lg" />
+                    <input type="email" placeholder="Email" value={formData.email} style={{fontSize: "14px"}} disabled className="form-control form-control-lg" />
                     <label className="mx-4">Email</label>
                   </div>
                   <h5 className="card-title mb-3">Delivery</h5>
@@ -435,6 +452,11 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
                   const currencySymbol = currencySymbols[selectedCurrency];
                   let convertedPrice = convertCurrency(product.productPriceInNaira, 'NGN', selectedCurrency);
                     convertedPrice = Number(convertedPrice);
+                    const productPrices = [product.productPriceInNaira12Inches, product.productPriceInNaira14Inches, 
+                      product.productPriceInNaira16Inches, product.productPriceInNaira18Inches, product.productPriceInNaira20Inches, 
+                      product.productPriceInNaira22Inches, product.productPriceInNaira24Inches, 
+                      product.productPriceInNaira26Inches, product.productPriceInNaira28Inches
+                    ]
                   return <div className="d-flex align-items-center mb-4" key={index}>
                     <div className="me-3 position-relative">
                       {product.quantity > 1 && <div className=" bg-dark position-absolute top-0 start-100 translate-middle  rounded-pill" style={{width: "15px", height: "15px", borderRadius: "50%", color: "white", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "10px"}}>
@@ -445,7 +467,14 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
                     <div>
                       {product.productName}
                       <div className=" text-muted">{product.lengthPicked}
-                        <div className=" text-muted">{currencySymbol}{convertedPrice.toLocaleString()}  {product.quantity > 1 && <span>&nbsp; * &nbsp; {product.quantity}</span>}
+                        {/* <div className=" text-muted">{currencySymbol}{convertedPrice.toLocaleString()}  {product.quantity > 1 && <span>&nbsp; * &nbsp; {product.quantity}</span>}
+                        
+                        </div> */}
+                        <div>
+                        {lengthsOfHair.map((length, index) =>
+                                product.lengthPicked === length &&
+                                <div>{convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()} {product.quantity > 1 && <span>&nbsp; * &nbsp; {product.quantity}</span>}</div>
+                              )}
                         </div>
                       </div>
                     </div>

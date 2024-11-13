@@ -14,6 +14,18 @@ const CartProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(true); // Add loading state
 
+  const lengthsOfHair = [
+    `12", 12", 12"`,
+    `14", 14", 14"`,
+    `16", 16", 16"`,
+    `18", 18", 18"`,
+    `20", 20", 20"`,
+    `22", 22", 22"`,
+    `24", 24", 24"`,
+    `26", 26", 26"`,
+    `28", 28", 28"`,
+  ];
+
   const calculateTotalPrice = (products) => {
     let total = 0;
     products?.forEach(product => {
@@ -52,14 +64,26 @@ const CartProvider = ({ children }) => {
         }
 
         const mergedProducts = feedback.data.data.map(productDetail => {
+          console.log(productDetail)
+          const lengthPricesInNaira = [productDetail.productPriceInNaira12Inches, productDetail.productPriceInNaira14Inches, productDetail.productPriceInNaira16Inches,
+            productDetail.productPriceInNaira18Inches, productDetail.productPriceInNaira20Inches, productDetail.productPriceInNaira22Inches,
+            productDetail.productPriceInNaira24Inches, productDetail.productPriceInNaira26Inches, productDetail.productPriceInNaira28Inches
+          ]
+          // console.log(lengthPricesInNaira)
+          
           const storedItem = storedItems.find(item => item.id === productDetail.id);
+          const selectedLengthIndex = lengthsOfHair.indexOf(storedItem?.lengthPicked);
+          // console.log(selectedLengthIndex)
+
+          const productPriceInNaira = lengthPricesInNaira[selectedLengthIndex]
           let convertedPrice = convertCurrency(productDetail.productPriceInNaira, 'NGN', selectedCurrency);
           convertedPrice = Number(convertedPrice);
           return {
             ...productDetail,
             updatedPrice: convertedPrice.toLocaleString(),
             quantity: storedItem?.quantity || 1,
-            lengthPicked: storedItem?.lengthPicked || ''
+            lengthPicked: storedItem?.lengthPicked || '',
+            productPriceInNaira: productPriceInNaira
           };
         });
 

@@ -71,6 +71,9 @@ const AdminForgotPassword = () => {
       return null;
     }else{
       return <div>
+        <div style={{ padding: "20px", fontSize: "20px", backgroundColor: "#f4f4f4" }} className="d-md-none">
+        <i className="fa-solid fa-arrow-left" onClick={() => navigate(-1)}></i>
+      </div>
               <div className="forgot-password-container">
         <div className="forgot-password-card">
           <h2 style={{color: "#333", marginBottom: "10px"}}>Forgot Password?</h2>

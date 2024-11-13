@@ -43,16 +43,16 @@ const ViewUsers = () => {
         getUsers()
     }, [])
 
-    // if(allUsersLoading){
-    //     return <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-    //         <BasicLoader />
-    //     </div>
+    if(allUsersLoading){
+        return <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <BasicLoader />
+        </div>
     
-    // }
-    // if(serverError.status){
-    //     return <div className="alert alert-danger">{serverError.message}</div>
+    }
+    if(serverError.status){
+        return <div className="alert alert-danger">{serverError.message}</div>
 
-    // }
+    }
     return <div>
         <div className="bread-crumb">
                     <div>Showing 1 - {allUsers.length} of {allUsers.length} users</div>
