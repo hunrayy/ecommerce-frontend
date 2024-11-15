@@ -22,7 +22,7 @@ const PaymentSuccess = () => {
     const transactionId = searchParams.get('transaction_id'); // Get transaction_id from URL
     const tx_ref = searchParams.get('tx_ref'); // Get tx_ref from URL
     const reference = searchParams.get('reference'); // Get tx_ref from URL
-    const detailsToken = searchParams.get('details')
+    // const detailsToken = searchParams.get('details')
 
     // const saveProductsToDb = async () => {
     //     const authToken = Cookies.get("authToken");
@@ -88,7 +88,7 @@ const PaymentSuccess = () => {
                     params: {
                         tx_ref: tx_ref,
                         reference: reference,
-                        detailsToken: detailsToken
+                        // detailsToken: detailsToken
                     },headers: {
                         Authorization: `Bearer ${authToken}`
                     }
@@ -109,9 +109,10 @@ const PaymentSuccess = () => {
                 } else if (response.data.code === "already-made") {
                     setPaymentPreviouslyMade(true);
                 } else if(response.data.code == 'error'){
-                    setError(`Payment verification failed: ${response.data.message}`);
+                    setError(`${response.data.message}`);
+                
                 }else {
-                    setError(`Payment verification failed: ${response.data.message}`);
+                    setError(`${response.data.message}`);
                 }
             } catch (err) {
                 console.log(err.message)
@@ -149,14 +150,28 @@ const PaymentSuccess = () => {
 
     if (error) {
         return (
-            <div className="container">
-                <div className="alert alert-danger text-center mt-5">
-                    <p style={{textWrap: "wrap"}}>
-                    {error}
-
-                    </p>
-                </div>
+            <div className="container d-flex justify-content-center align-items-center vh-100">
+    <div className="card text-center shadow-lg p-4" style={{ borderRadius: '15px', maxWidth: '500px' }}>
+        <div className="card-body">
+            <div className="mb-4">
+                <i className="bi bi-x-circle-fill error-icon" style={{ fontSize: '100px', color: '#dc3545' }}></i>
             </div>
+            <h3 className="card-title mb-3">Payment Verification Failed</h3>
+            {/* {error}. */}
+            {/* <p className="card-text">Unfortunately, no transaction was found for the provided ID. Please check the transaction ID and try again.</p> */}
+            <p className="card-text">Unfortunately, an error seemed to have occured while verifying payment. <br /> <b>Error: </b>{error}.</p>
+            <div className="mt-4">
+                <button className="btn btn-danger btn-lg me-3" onClick={() => navigate('/', {replace: true})}>
+                    Back to Home
+                </button>
+                {/* <button className="btn btn-outline-danger btn-lg me-3 mt-2 mt-lg-0" onClick={() => navigate('/contact-support', {replace: true})}>
+                    Contact Support
+                </button> */}
+            </div>
+        </div>
+    </div>
+</div>
+
         );
     }
 

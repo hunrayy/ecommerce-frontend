@@ -39,7 +39,7 @@ function App() {
             <Route path="/product/:productId" element={<SingleProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products/checkout" element={<CheckOut />} />
-            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/payment-status" element={<PaymentSuccess />} />
             <Route path="/identification/" element={<Identification />} />
             <Route path="/email-verification/:token" element={<VerifyEmailCode />} />
             <Route path="/login" element={<Login />} />
