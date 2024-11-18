@@ -126,11 +126,11 @@ const Products = ({ showPaginationButtons }) => {
 
 
         <section>
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                    {showPaginationButtons && <div style={{display: "flex", justifyContent: "space-between"}}>
                         <p><Link to='/' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>Home</Link> &gt; <Link to='/collections/all' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>all products</Link></p>
-                        <div>Page {currentPage} of {Math.ceil(totalProducts.total / perPage)}</div>
+                        <p>View all | {allProducts.products.length} products</p>
 
-                    </div>
+                    </div>}
             <div className="container my-5 product-page-container">
                
                 {allProducts.products_loading && <HomePageLoader />}

@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import firstPicture from "../../assets/firstPicture.png";
 import secondPicture from "../../assets/secondPicture.png";
 import thirdPicture from "../../assets/thirdPicture.png";
+import hair_video from "../../assets/hair_video.mp4";
+import hair_image from "../../assets/hair_image.webp";
 import "./banner.css";
 
 const Banner = () => {
@@ -26,8 +28,10 @@ const Banner = () => {
     <div>
 {/* video-local w-100 h-100 of-cover center-middle p-absolute mih */}
 <div className='new-banner-container'>
-  <video className='new-banner-video' playsInline="playsinline" autoPlay="autoplay" loop="loop" preload="none" muted="muted" poster="//www.benaturalgirl.ng/cdn/shop/files/preview_images/f24d2a40ac394c588696b66ed00b9864.thumbnail.0000000000_small.jpg?v=1722418285" src="//www.benaturalgirl.ng/cdn/shop/videos/c/vp/f24d2a40ac394c588696b66ed00b9864/f24d2a40ac394c588696b66ed00b9864.HD-1080p-4.8Mbps-32555254.mp4?v=0">
-  <source data-src="//www.benaturalgirl.ng/cdn/shop/videos/c/vp/f24d2a40ac394c588696b66ed00b9864/f24d2a40ac394c588696b66ed00b9864.HD-1080p-4.8Mbps-32555254.mp4?v=0" type="video/mp4" />
+  
+
+  <video className='new-banner-video' playsInline="playsinline" autoPlay="autoplay" loop="loop" preload="none" muted="muted" poster={hair_image} src={hair_video}>
+  <source data-src={hair_video} type="video/mp4" />
   </video>
   <Carousel
                 prevLabel={null}
@@ -123,6 +127,19 @@ const Banner = () => {
 };
 
 export default Banner;
+
+
+
+
+
+
+
+
+
+
+{/* <video className='new-banner-video' playsInline="playsinline" autoPlay="autoplay" loop="loop" preload="none" muted="muted" poster="//www.benaturalgirl.ng/cdn/shop/files/preview_images/f24d2a40ac394c588696b66ed00b9864.thumbnail.0000000000_small.jpg?v=1722418285" src={hair_video}>
+  <source data-src={hair_video} type="video/mp4" />
+  </video> */}
 
 
 

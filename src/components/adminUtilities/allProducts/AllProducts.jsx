@@ -284,7 +284,7 @@ const AllProducts = () => {
                         })}
                         {/* pagination button */}
                         {
-                            allProducts.products.length > 0 && allProducts.products.length > currentPage && <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+                            allProducts.products.length > 0 && allProducts.products.length > perPage && <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
                                 <p><span>Page {currentPage} of {Math.ceil(totalProducts.total / perPage)}</span></p>
                                 <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                                     <button className='btn btn-dark' onClick={handlePreviousPage} disabled={currentPage < 2}>&laquo;</button>

@@ -111,17 +111,19 @@ const CheckOut = () => {
           }
         ).then((feedback) => {
           console.log(feedback)
-          if(feedback.data.status == "success"){
-            window.location.href = feedback.data.data.link;
+          // if(feedback.data.status == "success"){
+          //   window.location.href = feedback.data.data.link;
 
-          }else if(feedback.data.error){
-              toast.error(feedback.data.error);
-          }else if(feedback.data.code == "error"){
-            toast.error(feedback.data.reason)
-          }else {
-              // Handle the error if the approval link is missing
-              toast.error("There was an issue connecting to the payment provider. Please try again.");
-            }
+          // }else if(feedback.data.error){
+          //     toast.error(feedback.data.error);
+          // }else if(feedback.data.code == "error"){
+          //   toast.error(feedback.data.reason)
+          // }else {
+          //     // Handle the error if the approval link is missing
+          //     toast.error("There was an issue connecting to the payment provider. Please try again.");
+          //   }
+
+
 
 
           // if(feedback.data.status){
