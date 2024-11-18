@@ -6,6 +6,7 @@ import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { CurrencyContext } from '../../components/all_context/CurrencyContext'
 // import PaginationButton from '../../components/paginationButton/PaginationButton'
+import { Link } from 'react-router-dom'
 import Products from '../../components/products/Products'
 const AllProducts = () => {
     const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
@@ -87,7 +88,10 @@ const AllProducts = () => {
                     <h1 className=''><b>All Products</b></h1>
                 </header>
                 <div>
-                    <p style={{fontSize: "18px" }} className='float-right'>View all | {totalProducts.total} Products</p>
+                    {/* <p style={{fontSize: "18px" }} className='float-right'>View all | {totalProducts.total} Products</p> */}
+                    {/* <div>
+                        <p><Link to='/' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>Home</Link> &gt; <Link to='/collections/all' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>all products</Link></p>
+                    </div> */}
 
                 </div>
                 <div className="row">

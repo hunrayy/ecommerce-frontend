@@ -101,25 +101,6 @@ const Products = ({ showPaginationButtons }) => {
 
     useEffect(()=> {
         fetchProducts()
-        // setAllProducts({
-        //     products: [],
-        //     products_loading: true
-        // })
-
-        // let loaderTimeout;
-    
-        // Set a timeout to show the loader after 500ms
-        // loaderTimeout = setTimeout(() => {
-        //     setAllProducts(prevState => ({
-        //         ...prevState,
-        //         products_loading: true // Only show loader if data is taking long
-        //     }));
-        // }, 300); // You can adjust this time (500ms) to control the delay for showing the loader
-
-
-        // get cart items
-        // const getCartItems = JSON.parse(localStorage.getItem("cart_items"))
-        // setCartItems(getCartItems);
 
 
     }, [currentPage, perPage])
@@ -145,6 +126,11 @@ const Products = ({ showPaginationButtons }) => {
 
 
         <section>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                        <p><Link to='/' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>Home</Link> &gt; <Link to='/collections/all' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>all products</Link></p>
+                        <div>Page {currentPage} of {Math.ceil(totalProducts.total / perPage)}</div>
+
+                    </div>
             <div className="container my-5 product-page-container">
                
                 {allProducts.products_loading && <HomePageLoader />}
@@ -182,7 +168,7 @@ const Products = ({ showPaginationButtons }) => {
                         </div>
                     </div> */}
                     {
-                        showPaginationButtons && allProducts.products.length > 0 && <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+                        showPaginationButtons && allProducts.products.length > 0 && allProducts.products.length > perPage &&  <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
                             <p><span>Page {currentPage} of {Math.ceil(totalProducts.total / perPage)}</span></p>
                             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                                 <button className='btn btn-dark' onClick={handlePreviousPage} disabled={currentPage < 2}>&laquo;</button>
