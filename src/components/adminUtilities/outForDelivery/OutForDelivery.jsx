@@ -224,10 +224,10 @@ const OutForDelivery = () => {
                         <div className='col-md-4 border py-2'>
                             <h5>User Profile</h5>
                             <p>
-                                <b>Firstname:</b> {singleOrder.firstname}<br/>
-                                <b>Lastname:</b> {singleOrder.lastname}<br/>
+                                <b>First name:</b> {singleOrder.firstname}<br/>
+                                <b>Last name:</b> {singleOrder.lastname}<br/>
                                 <b>Email:</b> {singleOrder.email}<br/>
-                                <b>Phone Number:</b> {singleOrder.phoneNumber}<br/>
+                                <b>Phone number:</b> {singleOrder.phoneNumber}<br/>
                             </p>
                         </div>
                         <div className='col-md-4 border py-2'>
@@ -265,7 +265,7 @@ const OutForDelivery = () => {
                                     <h3 style={{margin: "0", color: "#333", fontSize: "18px"}}>{product.productName}</h3>
                                     <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Length: {product.lengthPicked}</p>
                                     <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Quantity: {product.quantity}</p>
-                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Price: {product.updatedPrice}</p>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Price: {singleOrder.currency}{product.updatedPrice}</p>
                                 </div>
                                 </div>
                             })

@@ -78,10 +78,12 @@ const Footer = () => {
                 </li></ul>
 
   <div className="footer-bottom">
-    <p>&copy; {year} beautybykiara. All Rights Reserved. | Developed by <a href="https://www.linkedin.com/in/henry-okiyi-0246b6299/" target="_blank">Henry Okiyi</a></p>
+    <p>&copy; {year} beautybykiara. All Rights Reserved.</p>
+    <p style={{fontSize: "12px"}}>
+      Developed by <a href="https://www.linkedin.com/in/henry-okiyi-0246b6299/" target="_blank">Henry Okiyi</a>
+    </p>
   </div>
 </footer>
-
       
       {/* <footer className="text-center text-lg-start text-muted" style={{backgroundColor: "black"}}>
 

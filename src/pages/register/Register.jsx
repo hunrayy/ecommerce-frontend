@@ -179,7 +179,7 @@ const Register = () => {
                   style={{fontSize: "16px"}}
                   className={`form-control form-control-lg ${formData.formErrors.firstname ? 'is-invalid' : ''}`}
                 />
-                <label>Firstname</label>
+                <label>First name</label>
                 {formData.formErrors.firstname && (
                   <div style={{display: "flex", justifyContent: "left", padding: "5px 10px 0 0"}} className="invalid-feedback">
                     {formData.formErrors.firstname}

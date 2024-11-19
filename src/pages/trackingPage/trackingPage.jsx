@@ -102,9 +102,9 @@ const TrackingPage = () => {
                                 <b>Postal Code:</b> {trackedOrder.postalCode ? trackedOrder.postalCode : "nil"}<br/>
                                 <b>Expected Date Of Delivery:</b> {trackedOrder.expectedDateOfDelivery}<br/>
                                 <b>Status: </b> 
-                                                {trackedOrder.status == "pending" && <span className='badge bg-warning'>Pending</span>}
-                                                {trackedOrder.status == "outForDelivery" && <span className='badge bg-primary'>Pending</span>}
-                                                {trackedOrder.status == "delivered" && <span className='badge bg-success'>Delivered</span>}
+                                                {trackedOrder.status.toLowerCase() == "pending" && <span className='badge bg-warning'>Pending</span>}
+                                                {trackedOrder.status.toLowerCase() == "outForDelivery" && <span className='badge bg-primary'>Out for delivery</span>}
+                                                {trackedOrder.status.toLowerCase() == "delivered" && <span className='badge bg-success'>Delivered</span>}
 
                                             <br/>
                             </p>

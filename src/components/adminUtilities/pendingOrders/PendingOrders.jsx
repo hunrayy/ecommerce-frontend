@@ -183,10 +183,10 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
                         <div className='col-md-4 border py-2'>
                             <h5>User Profile</h5>
                             <p>
-                                <b>Firstname:</b> {singleOrder.firstname}<br/>
-                                <b>Lastname:</b> {singleOrder.lastname}<br/>
+                                <b>First name:</b> {singleOrder.firstname}<br/>
+                                <b>Last name:</b> {singleOrder.lastname}<br/>
                                 <b>Email:</b> {singleOrder.email}<br/>
-                                <b>Phone Number:</b> {singleOrder.phoneNumber}<br/>
+                                <b>Phone number:</b> {singleOrder.phoneNumber}<br/>
                             </p>
                         </div>
                         <div className='col-md-4 border py-2'>
@@ -236,7 +236,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
                                     <h3 style={{margin: "0", color: "#333", fontSize: "18px"}}>{product.productName}</h3>
                                     <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Length: {product.lengthPicked}</p>
                                     <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Quantity: {product.quantity}</p>
-                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Price: {product.updatedPrice}</p>
+                                    <p style={{margin: "5px 0", color: "#777", fontSize: "14px"}}>Price: {singleOrder.currency}{product.updatedPrice}</p>
                                 </div>
                                 </div>
                             })
@@ -271,7 +271,7 @@ import { CurrencyContext } from '../../all_context/CurrencyContext';
                                 Please ensure that all the necessary preparations for shipment are complete before proceeding. 
                             </p>
                             <p>
-                                This action cannot be undone, and the order will officially enter the delivery phase. 
+                                This action cannot be undone, and the order will officially enter the "out-for-delivery" phase. 
                             </p>
                         </div>
                         <form style={{background: "#f4f4f4"}} className='p-3' onSubmit={handleSubmit} method='post'>
