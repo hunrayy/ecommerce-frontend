@@ -379,6 +379,7 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
                       name="state"
                       value={formData.state}
                       onChange={handleInputChange}
+                      style={{fontSize: "14px"}}
                     >
                       <option value="">Select State/Region</option>
                       {states.map((state, index) => (
@@ -405,7 +406,7 @@ function calculateExpectedDateOfDelivery(selectedCountry) {
 
                   <div className="mb-5 form-floating">
                     {/* <input type="number" min="1" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} /> */}
-                    <input type="text" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} />
+                    <input type="text" placeholder="Phone number" className={`form-control form-control-lg ${errors.phoneNumber && 'is-invalid'}`} name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} style={{fontSize: "14px"}} />
                     <label className="mx-4">Phone number</label>
                     {errors.phoneNumber && <small className="text-danger">{errors.phoneNumber}</small>}
                   </div>
