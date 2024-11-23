@@ -448,7 +448,7 @@ const SingleProduct = () => {
 
     })
   // }, [cartProducts.products]);
-}, []);
+}, [productId]);
 
 
   const handleAddToCart = () => {
@@ -561,7 +561,11 @@ const SingleProduct = () => {
                 </aside>
                 <main className="col-lg-6">
                   <div className="ps-lg-3">
-                    <h4 className="title" style={{ fontSize: "30px", color: "black" }}>{product.name}</h4>
+                    {
+                      loading ? <h4 className="placeholder w-100" style={{height: "30px"}}></h4> :
+                      <h4 className="title" style={{ fontSize: "30px", color: "black" }}>{product.name}</h4>
+                    }
+                    
                     
 
                     
@@ -581,14 +585,20 @@ const SingleProduct = () => {
                         {/* <span><b>{convertedPrice.toLocaleString()}</b></span> */}
 
                     <div className="mb-3 d-flex">
-                      <div className="h5" style={{display: "flex"}}>
-                        <span>{currencySymbol}</span>
-                        {lengthState.length.map((length, index) =>
-                          lengthState.lengthPicked === length &&
-                          convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()
-                        )}
-                      </div>
-                      <span className="text-muted">&nbsp;/&nbsp;per item</span>
+                      {
+                        loading ? <div className="placeholder" style={{width: "150px"}}></div> :
+                        <div style={{display: "flex"}}>
+                          <div className="h5" style={{display: "flex"}}>
+                            <span>{currencySymbol}</span>
+                            {lengthState.length.map((length, index) =>
+                              lengthState.lengthPicked === length &&
+                              convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()
+                            )}
+                          </div>
+                          <span className="text-muted">&nbsp;/&nbsp;per item</span>
+
+                        </div>
+                      }
                     </div>
                     {!loading && <div className="text-muted">LENGTH: {lengthState.lengthPicked}</div> }
                     <div className="row mt-2">

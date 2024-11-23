@@ -269,7 +269,7 @@ const Navbar = () => {
                       searchState.searchData.map((product, index) => {
                           // console.log(product)
                           // return <div key={index} className="admin-search-result-container" onClick={()=> {setSearchState((prev) => ({...prev, isSearching: false, searchLoading: false, wordNotFound: null})), setSelectedProduct(product)}}>
-                          return <div key={index} className="admin-search-result-container" onClick={()=> {navigate(`/product/${product.id}`)}}>
+                          return <div key={index} className="admin-search-result-container" onClick={()=> {setSearchState({isSearching: false, searchLoading: false, searchData: null, wordNotFound: null}), navigate(`/product/${product.id}`)}}>
                               <img src={product.productImage} alt="" width="50px"  />
                               <p><b>{product.productName}</b></p>
                           </div>
