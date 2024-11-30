@@ -562,23 +562,26 @@ const SingleProduct = () => {
                 <main className="col-lg-6">
                   <div className="ps-lg-3">
                     {
-                      loading ? <h4 className="placeholder w-100" style={{height: "30px"}}></h4> :
+                      loading ? <h4 className="placeholder w-100 mt-3" style={{height: "30px"}}></h4> :
                       <h4 className="title" style={{ fontSize: "30px", color: "black" }}>{product.name}</h4>
                     }
                     
                     
-
-                    
-                      <div className="d-flex flex-row my-3">
-                        <div className="text-warning mb-1 me-2">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
+                      
+                      {
+                        loading ? <div className="placeholder mt-3 w-50" style={{height: "30px"}}></div> :
+                        <div className="d-flex flex-row my-3">
+                          <div className="text-warning mb-1 me-2">
+                            <i className="fa fa-star"></i>
+                            <i className="fa fa-star"></i>
+                            <i className="fa fa-star"></i>
+                            <i className="fa fa-star"></i>
+                            <i className="fa fa-star"></i>
+                          </div>
+                          <span className="text-success ms-2 ml-3">In stock</span>
                         </div>
-                        <span className="text-success ms-2 ml-3">In stock</span>
-                      </div>
+                      }
+                    
                     
 
 
@@ -586,7 +589,7 @@ const SingleProduct = () => {
 
                     <div className="mb-3 d-flex">
                       {
-                        loading ? <div className="placeholder" style={{width: "150px"}}></div> :
+                        loading ? <div className="placeholder mt-3" style={{width: "150px", height: "30px"}}></div> :
                         <div style={{display: "flex"}}>
                           <div className="h5" style={{display: "flex"}}>
                             <span>{currencySymbol}</span>
@@ -623,8 +626,9 @@ const SingleProduct = () => {
                       
                     </div>
                     <hr />
-                   
-                      {product.img && <div className="d-grid">
+                    {
+                      loading ? <div className="placeholder w-100" style={{height: "50px"}}></div> : 
+                      (product.img && <div className="d-grid">
                         <button
                           className="btn hover-button"
                           // style={inCart || isRecentlyAdded ? { backgroundColor: "black"} : { border: "1px solid black", color: "black" }}
@@ -634,7 +638,10 @@ const SingleProduct = () => {
                         >
                           {inCart ? "Added to cart" : <span>Add to cart <i className="fas fa-shopping-cart m-1 me-md-2"></i></span>}
                         </button>
-                      </div>}
+                      </div>)
+                    }
+                    
+                   
                     
                   </div>
                 </main>

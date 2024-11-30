@@ -169,7 +169,7 @@ const Cart = () => {
                           <div className="d-flex">
                             <img src={each_item.productImage} className="border rounded me-3" style={{ width: "100px", height: "130px", cursor: "pointer" }} onClick={()=> navigate(`/product/${each_item.id}`, {replace: true})} />
                             <div>
-                              <a href="#" className="nav-link">{each_item.productName}</a>
+                              <p className="nav-link">{each_item.productName}</p>
                               <p className="text-muted ">{each_item.description}</p>
                               {/* <p> */}
                                 <small><b>Length:</b> &nbsp;

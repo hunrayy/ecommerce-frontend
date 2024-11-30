@@ -27,17 +27,21 @@ export const CurrencyProvider = ({ children }) => {
   const fetchExchangeRates = async () => {
     try {
       const response = await axios.get('https://api.exchangerate-api.com/v4/latest/NGN');
+      console.log(response)
 
       setRates(response.data.rates);
       setIsRatesFetched(true); // Set rates as fetched
     } catch (error) {
-      console.error('Error fetching exchange rates:', error);
+      console.log('Error fetching exchange rates:', error);
     }
   };
 
   const fetchCurrencyData = async () => {
     try {
       const response = await axios.get('https://restcountries.com/v3.1/all');
+
+
+      console.log(response)
       const currencyData = {};
       // const codes = {}; // New object to hold currency codes
 
@@ -68,9 +72,24 @@ export const CurrencyProvider = ({ children }) => {
       setCurrencyNames(names);
       // setCurrencyCodes(codes); // Set the currency codes in state
     } catch (error) {
+
       console.error('Error fetching currency data:', error);
     }
   };
+
+  // const fetchCurrencyData = async () => {
+  //   try {
+  //     const response = await fetch('http://api.worldbank.org/v2/country?format=json');
+  //     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  //     const data = await response.json();
+  //     console.log(data);
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Error fetching currency data:', error);
+  //   }
+  // };
+  
+  
 
   const convertCurrency = (amount, fromCurrency = 'NGN', toCurrency = selectedCurrency) => {
     if (!isRatesFetched || !rates[fromCurrency] || !rates[toCurrency]) {
