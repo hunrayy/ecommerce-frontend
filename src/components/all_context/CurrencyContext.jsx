@@ -36,12 +36,14 @@ export const CurrencyProvider = ({ children }) => {
     }
   };
 
-  const fetchCurrencyData = async () => {
+
+  const fetchCurrencyData = async (retryCount = 3) => {
     try {
       const response = await axios.get('https://restcountries.com/v3.1/all');
+      // const response = await axios.get('http://api.worldbank.org/v2/country?format=json')
 
-
-      console.log(response)
+      console.log(response.data)
+      
       const currencyData = {};
       // const codes = {}; // New object to hold currency codes
 
@@ -72,8 +74,15 @@ export const CurrencyProvider = ({ children }) => {
       setCurrencyNames(names);
       // setCurrencyCodes(codes); // Set the currency codes in state
     } catch (error) {
-
-      console.error('Error fetching currency data:', error);
+      // console.log('Error fetching currency data:', error);
+      if (retryCount > 0) {
+        console.warn(`Retrying... Attempts left: ${retryCount - 1}`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Delay before retrying
+        return fetchCurrencyData(retryCount - 1); // Retry with decremented count
+      } else {
+        console.error('Error fetching currency data:', error);
+        alert('Failed to fetch currency data. Please check your internet connection and try again.');
+      }
     }
   };
 
