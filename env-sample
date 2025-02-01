@@ -1,1 +1,2 @@
 VITE_BACKEND_URL=
+VITE_APP_ENV=development #change to 'production' when in production environment

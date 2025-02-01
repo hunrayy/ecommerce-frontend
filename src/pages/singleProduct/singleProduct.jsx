@@ -399,25 +399,42 @@ const SingleProduct = () => {
     lengthPicked: ""
   });
 
-  const lengthsOfHair = [
-    `12", 12", 12"`,
-    `14", 14", 14"`,
-    `16", 16", 16"`,
-    `18", 18", 18"`,
-    `20", 20", 20"`,
-    `22", 22", 22"`,
-    `24", 24", 24"`,
-    `26", 26", 26"`,
-    `28", 28", 28"`,
-  ];
+  // const lengthsOfHair = [
+  //   `12", 12", 12"`,
+  //   `14", 14", 14"`,
+  //   `16", 16", 16"`,
+  //   `18", 18", 18"`,
+  //   `20", 20", 20"`,
+  //   `22", 22", 22"`,
+  //   `24", 24", 24"`,
+  //   `26", 26", 26"`,
+  //   `28", 28", 28"`,
+  // ];
+
+  const [lengthsOfHair, setLengthsOfHair] = useState([])
   useEffect(() => {
     // setLoading(true)
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-single-product?productId=${productId}`).then((feedback) => {
       console.log(feedback)
       if(feedback.data.code == "success"){
-        setLoading(false)
+
         // Check if the data is a string and parse it if needed
         const productData = typeof feedback.data.data === "string" ? JSON.parse(feedback.data.data) : feedback.data.data;
+        setLengthsOfHair([
+          (parseFloat(productData.productPriceInNaira12Inches) > 0) ? `12", 12", 12"` : "",
+          (parseFloat(productData.productPriceInNaira14Inches) > 0) ? `14", 14", 14"` : "",
+          (parseFloat(productData.productPriceInNaira16Inches) > 0) ? `16", 16", 16"` : "",
+          (parseFloat(productData.productPriceInNaira18Inches) > 0) ? `18", 18", 18"` : "",
+          (parseFloat(productData.productPriceInNaira20Inches) > 0) ? `20", 20", 20"` : "",
+          (parseFloat(productData.productPriceInNaira22Inches) > 0) ? `22", 22", 22"` : "",
+          (parseFloat(productData.productPriceInNaira24Inches) > 0) ? `24", 24", 24"` : "",
+          (parseFloat(productData.productPriceInNaira26Inches) > 0) ? `26", 26", 26"` : "",
+          (parseFloat(productData.productPriceInNaira28Inches) > 0) ? `28", 28", 28"` : "",
+        ].filter(Boolean));
+
+      
+        
+        setLoading(false)
         setProduct({
           id: feedback.data.data.id,
           img: feedback.data.data.productImage,
@@ -427,12 +444,25 @@ const SingleProduct = () => {
           name: feedback.data.data.productName,
           // price: feedback.data.data.productPriceInNaira,
         });
-        setProductPrices([feedback.data.data.productPriceInNaira12Inches, feedback.data.data.productPriceInNaira14Inches, 
-          feedback.data.data.productPriceInNaira16Inches, feedback.data.data.productPriceInNaira18Inches, 
-          feedback.data.data.productPriceInNaira20Inches, feedback.data.data.productPriceInNaira22Inches, 
-          feedback.data.data.productPriceInNaira24Inches, feedback.data.data.productPriceInNaira26Inches, 
-          feedback.data.data.productPriceInNaira28Inches])
-  
+            //  Set lengthState with available lengths
+            setLengthState({
+              length: lengthsOfHair,
+              lengthPicked: lengthsOfHair[0]  // Default to first length
+            });
+        // setProductPrices([feedback.data.data.productPriceInNaira12Inches, feedback.data.data.productPriceInNaira14Inches, 
+        //   feedback.data.data.productPriceInNaira16Inches, feedback.data.data.productPriceInNaira18Inches, 
+        //   feedback.data.data.productPriceInNaira20Inches, feedback.data.data.productPriceInNaira22Inches, 
+        //   feedback.data.data.productPriceInNaira24Inches, feedback.data.data.productPriceInNaira26Inches, 
+        //   feedback.data.data.productPriceInNaira28Inches])
+        setProductPrices([parseFloat(productData.productPriceInNaira12Inches) > 0 && productData.productPriceInNaira12Inches, 
+          parseFloat(productData.productPriceInNaira14Inches) > 0 && productData.productPriceInNaira14Inches, 
+          parseFloat(productData.productPriceInNaira16Inches) > 0 && productData.productPriceInNaira16Inches,
+          parseFloat(productData.productPriceInNaira18Inches) > 0 && productData.productPriceInNaira18Inches, 
+          parseFloat(productData.productPriceInNaira20Inches) > 0 && productData.productPriceInNaira20Inches,
+          parseFloat(productData.productPriceInNaira22Inches) > 0 && productData.productPriceInNaira22Inches, 
+          parseFloat(productData.productPriceInNaira24Inches) > 0 && productData.productPriceInNaira24Inches,
+          parseFloat(productData.productPriceInNaira26Inches) > 0 && productData.productPriceInNaira26Inches, 
+          parseFloat(productData.productPriceInNaira28Inches) > 0 && productData.productPriceInNaira28Inches].filter(Boolean))
   
   
       
@@ -449,6 +479,8 @@ const SingleProduct = () => {
     })
   // }, [cartProducts.products]);
 }, [productId]);
+console.log(lengthsOfHair)
+
 
 
   const handleAddToCart = () => {
@@ -508,7 +540,7 @@ const SingleProduct = () => {
         // If no cart item or length picked, fallback to the default first item
         setLengthState({
           length: lengthsOfHair,
-          lengthPicked: lengthsOfHair[0],
+          lengthPicked: lengthsOfHair[0] // Default to first length
         });
       }
     }, [product.id]);  // Ensure this runs on product change
@@ -593,6 +625,7 @@ const SingleProduct = () => {
                         <div style={{display: "flex"}}>
                           <div className="h5" style={{display: "flex"}}>
                             <span>{currencySymbol}</span>
+                            {console.log(productPrices)}
                             {lengthState.length.map((length, index) =>
                               lengthState.lengthPicked === length &&
                               convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()
@@ -607,8 +640,9 @@ const SingleProduct = () => {
                     <div className="row mt-2">
                      
                         <div className="lengths-container">
-                          {!loading && lengthState.length?.map((length, index) => (
-                            <div key={index} className="">
+                          {!loading && lengthState.length?.map((length, index) => {
+                            console.log(lengthState)
+                            return <div key={index} className="">
                               <button
                                 className="length-button "
                                 style={lengthState.lengthPicked === length ? { backgroundColor: "black", color: "white" } : null }
@@ -621,7 +655,7 @@ const SingleProduct = () => {
                                 {length}
                               </button>
                             </div>
-                          ))}
+                          })}
                         </div>
                       
                     </div>

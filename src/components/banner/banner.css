@@ -89,10 +89,11 @@
   width: 100%;
   max-height: calc(100vh - var(--marginAboveTop));
   object-fit: cover;
+  min-width: 50%;
 }
 
 .new-banner-carousel-container{
-  /* max-width: 50%; */
+  /* max-width: 100%; */
   height: calc(100vh - var(--marginAboveTop));
   /* width: 50vw; */
   border-radius: 0;

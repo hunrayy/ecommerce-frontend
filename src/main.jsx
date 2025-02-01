@@ -1,8 +1,20 @@
-if (import.meta.env.VITE_APP_ENV == 'production') {
-  console.log = () => {};     // Disables all console.log statements
-  console.error = () => {};   // Disables all console.error statements
-  console.group = () => {};   // Disables all console.group statements
+// if (import.meta.env.VITE_APP_ENV == 'production') {
+//   console.log = () => {};     // Disables all console.log statements
+//   // console.error = () => {};   // Disables all console.error statements
+//   console.group = () => {};   // Disables all console.group statements
+//   // console.warn = () => {};    //diables all console.warn statements
+// }
+
+if (import.meta.env.VITE_APP_ENV === 'production') {
+  // Create a no-op function
+  const noop = () => {};
+
+  // Replace all console methods with the no-op function
+  Object.keys(console).forEach((method) => {
+    console[method] = noop;
+  });
 }
+
 
 
 import React from 'react'

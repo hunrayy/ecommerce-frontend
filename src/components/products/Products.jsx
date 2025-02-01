@@ -138,10 +138,19 @@ const Products = ({ showPaginationButtons }) => {
                     {console.log(allProducts)}
                     {allProducts.products?.map((product, index) =>{
                         // console.log(product)
-                        // const inCart = cartItems?.some(item => item.id === product.id)
-                        // const isRecentlyAdded = cartProducts.recentlyAddedProducts.includes(product.id);
-                        const convertedPrice = Number(convertCurrency(product.productPriceInNaira12Inches, 'NGN', selectedCurrency)).toLocaleString();
+                        const sizes = [];
+                        // Iterate through all keys of the 'product' object
+                        Object.keys(product).forEach(key => {
+                            // Check if the key starts with 'productPriceIn'
+                            if (key.startsWith("productPriceIn")) {
+                                sizes.push(key);
+                            }
+                        });
+                        
+                        const firstAvailablePrice = sizes.map(size => product[size]).find(price => price > 0) || 0;
+                        const convertedPrice = Number(convertCurrency(firstAvailablePrice, 'NGN', selectedCurrency)).toLocaleString();
                         const currencySymbol = currencySymbols[selectedCurrency];
+                        // console.log(firstAvailablePrice)
                         return (<div key={index} className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container"  onClick={()=>navigateToProduct(product.id)}>
                         <div className="my-2">
                    
