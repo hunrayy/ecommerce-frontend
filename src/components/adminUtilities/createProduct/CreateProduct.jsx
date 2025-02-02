@@ -6,6 +6,7 @@ import Loader from "../../loader/Loader";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Select from 'react-select';
 
 const CreateProduct = () => {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ const CreateProduct = () => {
         productPrice26Inches: "",
         productPrice28Inches: "",
     });
+
 
     const [isLoading, setIsLoading] = useState(false);
     const [serverSuccessState, setServerSuccessState] = useState(false);
@@ -95,6 +97,7 @@ const CreateProduct = () => {
         uploadData.append('subImage2', formData.subImage2 || null);
         uploadData.append('subImage3', formData.subImage3 || null);
         uploadData.append('productName', formData.productName);
+        uploadData.append('productCategory', selectedCategory.label);
 
         // Append each product size price
         Object.keys(formData).forEach((key) => {
@@ -105,6 +108,7 @@ const CreateProduct = () => {
 
         try {
             const feedback = await axios.post(
+                // console.log(uploadData)
                 `${import.meta.env.VITE_BACKEND_URL}/admin/create-product`, 
                 uploadData,
                 {
@@ -150,6 +154,18 @@ const CreateProduct = () => {
         }
     };
 
+    const [categories, setCategories] = useState([
+        { value: 'donorRawHair', label: 'Donor raw hair' },
+        { value: 'virginHairs', label: 'Virgin hairs' },
+        { value: 'hairInstallation', label: 'Hair installation' },
+        { value: 'lashExtensions', label: 'Lash extensions' },
+        { value: 'general', label: 'General' },
+    ]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const handleCategoryChange = (selectedOption) => {
+        setSelectedCategory(selectedOption);
+    };
+
     return (
         <div>
             {isLoading && <Loader />}
@@ -176,6 +192,16 @@ const CreateProduct = () => {
                         <div className="mb-3">
                             <label htmlFor="productName" className="form-label">Product Name</label>
                             <input type="text" className="form-control" id="productName" placeholder="Enter product name" value={formData.productName} onChange={handleInputChange} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="productName" className="form-label">Product Category (default is 'General' if not selected)</label>
+                            <Select
+                                value={selectedCategory || { value: 'general', label: 'General' }} // Default to 'General'
+                                onChange={handleCategoryChange}
+                                options={categories}
+                                getOptionLabel={(e) => e.label} // Shows the name
+                            />
+
                         </div>
                         <div className="row">
                             {Array.from({ length: 9 }).map((_, i) => {
@@ -221,7 +247,8 @@ const CreateProduct = () => {
                             ))}
                         </div>
                         <Card.Body>
-                            <Card.Title>{formData.productName}</Card.Title>
+                            <Card.Title><strong>Name: </strong>{formData.productName}</Card.Title>
+                            <Card.Title><strong>Category: </strong>{selectedCategory ? selectedCategory.label : 'General'}</Card.Title>
                             <Card.Text>
                                 {Object.keys(formData).map((key) => (
                                     key.startsWith("productPrice") && (
