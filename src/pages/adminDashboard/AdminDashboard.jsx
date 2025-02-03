@@ -18,6 +18,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import AdminRefundPolicy from "../../components/adminUtilities/adminRefundPolicy/AdminRefundPolicy";
+import Select from 'react-select'
 
 
 const AdminDashboard = () => {
@@ -40,9 +41,10 @@ const AdminDashboard = () => {
         view_users: false
     });
     const [pagesDropdown, setPagesDropdown] = useState(false)
+    const [productsDropdown, setProductsDropdown] = useState(false)
     const [ordersDropdown, setOrdersDropdown] = useState(false)
 
-    const showPage = (page) => {
+    const showPage = (page, productCategory) => {
         setPages({
             dashboard_page: page === 'dashboard',
             createProduct_page: page === 'createProduct',
@@ -57,6 +59,12 @@ const AdminDashboard = () => {
             delivered_orders_page: page === 'delivered_orders',
             view_users_page: page === 'view_users'
         });
+        if (productCategory) {
+            // Update the selected category when the page is changed
+            setSelectedCategory(productCategory);
+        }else{
+            setSelectedCategory(null);
+        }
         setShownav(false);  // Close the sidebar when a page is selected
     };
     const token = Cookies.get("authToken")
@@ -73,10 +81,49 @@ const AdminDashboard = () => {
                 return navigate("/", {replace: true})
             }
         })
-
-        
-
     })
+
+    useEffect(()=> {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/fetch-product-categories`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((feedback) => {
+            console.log(feedback)
+            if(feedback.data.code == 'error'){
+                setCategories({
+                    loading: false,
+                    options: []
+                })
+                toast.error(`An error occured while fetching product categories: ${feedback.data.message}`)
+            }else if(feedback.data.code == 'success'){
+                // console.log(feedback)
+                const categoryOptions = feedback.data.data.map(category => ({
+                    value: category.id,  // Use the id as the value
+                    label: category.name  // Use the name as the label
+                }));
+                setCategories({
+                    loading: false,
+                    options: categoryOptions
+                })
+            }else{
+                setCategories({
+                    loading: false,
+                    options: []
+                })
+                toast.error('An error occured while retrieving product categories')
+            }
+        })
+    }, [])
+
+    const [categories, setCategories] = useState({
+        loading: true,
+        options: []
+    });
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    // const handleCategoryChange = (selectedOption) => {
+    //     setSelectedCategory(selectedOption);
+    // };
 
     return (
         <div>
@@ -93,9 +140,28 @@ const AdminDashboard = () => {
                         <div className="admin-sidebar-icon-wrapper" onClick={() => {showPage('createProduct')}}>
                             <i className="fa-solid fa-plus"></i> <span>Create product</span>
                         </div>
-                        <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('viewProducts')}>
-                            <i className="fa-solid fa-eye"></i> <span>View products</span>
+                        <div>
+                            <div className="admin-sidebar-icon-wrapper" onClick={() => setProductsDropdown(!productsDropdown)}>
+                                <i className="fa-solid fa-eye"></i> <span>View products</span>{productsDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
+                            </div>
+                            <div className={`admin-sidebar-dropdown-wrapper ${productsDropdown ? 'open' : ''}`}>
+                                <div onClick={() => showPage('viewProducts')}>All products</div>
+                                {categories.options && categories.options.map((category, index) => {
+                                    return <div key={index} onClick={() => showPage('viewProducts', category.label)}>{category.label}</div>
+                                })}
+                            </div>
                         </div>   
+                        {/* <div>
+                            <Select
+                                placeholder="select category"
+                                value={!categories.loading && (selectedCategory  || { value: 'general', label: 'General' })} // Default to 'General'
+                                onChange={handleCategoryChange}
+                                options={categories.options}
+                                isLoading={categories.loading}
+                                getOptionLabel={(e) => e.label} // Shows the name
+                                noOptionsMessage={() => (categories.loading ? "Fetching product categories..." : "No categories available")} // Display custom message when no options
+                            />
+                        </div> */}
                         <div>
                             <div className="admin-sidebar-icon-wrapper" onClick={() => setPagesDropdown(!pagesDropdown)}>
                                 <i className="fa-solid fa-book"></i> <span>Pages</span> {pagesDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
@@ -143,7 +209,7 @@ const AdminDashboard = () => {
                 <div className="admin-dashboard-content">
                     {pages.dashboard_page && <Dashboard />}
                     {pages.createProduct_page && <CreateProduct />}
-                    {pages.viewProducts_page && <AllProducts />}
+                    {pages.viewProducts_page && <AllProducts productCategory={selectedCategory} />}
                     {pages.notifications_page && <AdminNotification />}
                     {pages.shipping_policy_page && <AdminShippingPolicy />}
                     {pages.refund_policy_page && <AdminRefundPolicy />}

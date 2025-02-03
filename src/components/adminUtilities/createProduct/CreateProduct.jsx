@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Button, Card } from "react-bootstrap";
 import "./createProduct.css";
 import axios from "axios";
@@ -153,14 +153,43 @@ const CreateProduct = () => {
             setServerErrorMessage({ status: true, message: 'An error occurred. Please try again.' });
         }
     };
+    useEffect(()=> {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/fetch-product-categories`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((feedback) => {
+            console.log(feedback)
+            if(feedback.data.code == 'error'){
+                setCategories({
+                    loading: false,
+                    options: []
+                })
+                toast.error(`An error occured while fetching product categories: ${feedback.data.message}`)
+            }else if(feedback.data.code == 'success'){
+                // console.log(feedback)
+                const categoryOptions = feedback.data.data.map(category => ({
+                    value: category.id,  // Use the id as the value
+                    label: category.name  // Use the name as the label
+                }));
+                setCategories({
+                    loading: false,
+                    options: categoryOptions
+                })
+            }else{
+                setCategories({
+                    loading: false,
+                    options: []
+                })
+                toast.error('An error occured while retrieving product categories')
+            }
+        })
+    }, [])
 
-    const [categories, setCategories] = useState([
-        { value: 'donorRawHair', label: 'Donor raw hair' },
-        { value: 'virginHairs', label: 'Virgin hairs' },
-        { value: 'hairInstallation', label: 'Hair installation' },
-        { value: 'lashExtensions', label: 'Lash extensions' },
-        { value: 'general', label: 'General' },
-    ]);
+    const [categories, setCategories] = useState({
+        loading: true,
+        options: []
+    });
     const [selectedCategory, setSelectedCategory] = useState(null);
     const handleCategoryChange = (selectedOption) => {
         setSelectedCategory(selectedOption);
@@ -196,10 +225,13 @@ const CreateProduct = () => {
                         <div className="mb-3">
                             <label htmlFor="productName" className="form-label">Product Category (default is 'General' if not selected)</label>
                             <Select
-                                value={selectedCategory || { value: 'general', label: 'General' }} // Default to 'General'
+                                placeholder="select category"
+                                value={!categories.loading && (selectedCategory  || { value: 'general', label: 'General' })} // Default to 'General'
                                 onChange={handleCategoryChange}
-                                options={categories}
+                                options={categories.options}
+                                isLoading={categories.loading}
                                 getOptionLabel={(e) => e.label} // Shows the name
+                                noOptionsMessage={() => (categories.loading ? "Fetching product categories..." : "No categories available")} // Display custom message when no options
                             />
 
                         </div>

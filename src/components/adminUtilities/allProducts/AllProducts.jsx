@@ -8,7 +8,8 @@ import BasicLoader from "../../loader/BasicLoader";
 import EditProductForm from "../editProductForm/EditProductForm";
 import Loader from "../../loader/Loader";
 
-const AllProducts = () => {
+const AllProducts = ({ productCategory }) => {
+    console.log(productCategory)
     const [page, setPage] = useState("allProducts");
     const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
 
@@ -107,27 +108,32 @@ const AllProducts = () => {
     }
 
     const fetchProducts = () => {
-        axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
-            params: {
-                perPage: perPage,
-                page: currentPage
-            },headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        .then((feedback) => {
-            console.log(feedback)
-            if (feedback.data.code === "success") {
-                setTotalProducts(feedback.data.data)
-                setCurrentPage(feedback.data.data.current_page)
-                setAllProducts((prev) => ({
-                    ...prev,
-                    products_loading: false,
-                    products: feedback.data.data.data
-                }))
-            }
-        })
+       try{
+            axios
+            .get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
+                params: {
+                    perPage: perPage,
+                    page: currentPage,
+                    ...(productCategory && { productCategory: productCategory })  // Conditionally adding the category if it exists
+                },headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+            .then((feedback) => {
+                console.log(feedback)
+                if (feedback.data.code === "success") {
+                    setTotalProducts(feedback.data.data)
+                    setCurrentPage(feedback.data.data.current_page)
+                    setAllProducts((prev) => ({
+                        ...prev,
+                        products_loading: false,
+                        products: feedback.data.data.data
+                    }))
+                }
+            })
+       }catch(error){
+        console.log(error)
+       }
         // .finally(() => {
         //     clearTimeout(loaderTimeout);
         //     setAllProducts((prev) => ({
@@ -138,6 +144,9 @@ const AllProducts = () => {
     }
 
     useEffect(() => {
+        if (!productCategory) {
+            productCategory = null; // or default category
+        }
         fetchProducts()
         // let loaderTimeout;
         // loaderTimeout = setTimeout(() => {
@@ -148,7 +157,7 @@ const AllProducts = () => {
         // }, 200);
         
         // return () => clearTimeout(loaderTimeout);
-    }, [currentPage, perPage]);
+    }, [currentPage, perPage, productCategory]);
 
         // Handle search input change with debounce
         const handleSearchChange = (e) => {
@@ -257,7 +266,7 @@ const AllProducts = () => {
 
                 <div className="container my-5 product-page-container">
                     <header className="mb-4">
-                        <h3>All products</h3>
+                        <h3>{productCategory ? productCategory : 'All products'}</h3>
                     </header>
                     <div>
                         <p style={{fontSize: "18px" }} className='float-right'>View all | {totalProducts.total} Products</p>
@@ -265,7 +274,7 @@ const AllProducts = () => {
                     <div className="row">
                         {allProducts.products_loading && <BasicLoader />}
                         {allProducts.products?.map((product) => {
-                            console.log(product)
+                            // console.log(product)
                             const sizes = [];
                             // Iterate through all keys of the 'product' object
                             Object.keys(product).forEach(key => {
@@ -289,11 +298,22 @@ const AllProducts = () => {
                                     onClick={() => setSelectedProduct(product)} // Set product for the modal
                                 >
                                     <div className="my-2">
-                                        <img
+                                        {/* <img
                                             src={firstImage}
                                             className="card-img-top rounded-2"
                                             style={{ aspectRatio: "3 / 4", width: "100%", height: "auto" }}
-                                        />
+                                        /> */}
+
+<img
+  src={firstImage}
+  className="card-img-top rounded-2"
+  loading="lazy"
+  style={{ aspectRatio: "3 / 4", width: "100%", height: "auto" }}
+  alt={product.productName}
+/>
+
+
+
                                      
                                         
                                         <div className="pl-2 pt-2">
