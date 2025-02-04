@@ -84,11 +84,7 @@ const AdminDashboard = () => {
     })
 
     useEffect(()=> {
-        axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/fetch-product-categories`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then((feedback) => {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetch-product-categories`).then((feedback) => {
             console.log(feedback)
             if(feedback.data.code == 'error'){
                 setCategories({
@@ -121,9 +117,6 @@ const AdminDashboard = () => {
         options: []
     });
     const [selectedCategory, setSelectedCategory] = useState(null);
-    // const handleCategoryChange = (selectedOption) => {
-    //     setSelectedCategory(selectedOption);
-    // };
 
     return (
         <div>

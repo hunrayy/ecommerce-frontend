@@ -14,7 +14,7 @@ import jsonProducts from "./products.json"
 
 
 
-const Products = ({ showPaginationButtons }) => {
+const Products = ({ productCategory, showPaginationButtons }) => {
     const navigate = useNavigate()
     const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
     const { cartProducts, addToCart} = useContext(CartContext);
@@ -28,7 +28,8 @@ const Products = ({ showPaginationButtons }) => {
     // const [cartItems, setCartItems] = useState([]);
 
     const fetchProducts = async (page) => {
-        console.log(currentPage, perPage)
+        // console.log(currentPage, perPage)
+        console.log(productCategory)
         try {
             // setAllProducts((prev) => ({
             //     ...prev,
@@ -37,7 +38,8 @@ const Products = ({ showPaginationButtons }) => {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
                 params: {
                     perPage: perPage,
-                    page: currentPage
+                    page: currentPage,
+                    ...(productCategory && { productCategory: productCategory })  // Conditionally adding the category if it exists
                 }
             });
             console.log(response)
@@ -101,9 +103,8 @@ const Products = ({ showPaginationButtons }) => {
 
     useEffect(()=> {
         fetchProducts()
-
-
-    }, [currentPage, perPage])
+        
+    }, [currentPage, perPage, productCategory])
 
     const navigateToProduct = (id) => {
         navigate(`/product/${id}`)

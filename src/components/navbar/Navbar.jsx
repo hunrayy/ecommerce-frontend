@@ -17,7 +17,7 @@ const Navbar = () => {
   const [searchState, setSearchState] = useState({isSearching: false, searchLoading: false, searchData: null, wordNotFound: null})
   const [searchQuery, setSearchQuery] = useState("");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
-
+  const [productCategoryDropdown, setProductCategoryDropdown] = useState(false)
 
   const dropdownRef = useRef(null); // Ref for the dropdown menu
   const use_auth = useAuth()
@@ -72,7 +72,7 @@ const Navbar = () => {
   // Debounced API call function
   const performSearch = async (query) => {
     setSearchState((prev) => ({ ...prev, wordNotFound: null }));
-    console.log("hello")
+  
     try {
         const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/search-products`, {
             params: { query }, // Pass search query as a parameter
@@ -96,6 +96,39 @@ const Navbar = () => {
     }
 };
 
+  const [categories, setCategories] = useState({
+    loading: true,
+    options: []
+  });
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  useEffect(()=> {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetch-product-categories`).then((feedback) => {
+        console.log(feedback)
+        if(feedback.data.code == 'error'){
+            setCategories({
+                loading: false,
+                options: []
+            })
+            toast.error(`An error occured while fetching product categories: ${feedback.data.message}`)
+        }else if(feedback.data.code == 'success'){
+            // console.log(feedback)
+            const categoryOptions = feedback.data.data.map(category => ({
+                value: category.id,  // Use the id as the value
+                label: category.name  // Use the name as the label
+            }));
+            setCategories({
+                loading: false,
+                options: categoryOptions
+            })
+        }else{
+            setCategories({
+                loading: false,
+                options: []
+            })
+            toast.error('An error occured while retrieving product categories')
+        }
+    })
+  }, [])
   // Effect to handle clicks outside the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -131,9 +164,20 @@ const Navbar = () => {
                     <div>
                       <Link to="/" style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Home</Link>
                     </div>
-                    <div>
+                    {/* <div>
                       <Link to='/collections/all' style={{ fontWeight: "bold", color: "white", textDecoration: "none" }}>Shop all</Link>
-                    </div>
+                    </div> */}
+                    <div style={{color: "white"}}>
+                        <div onClick={() => setProductCategoryDropdown(!productCategoryDropdown)} style={{cursor: "pointer", width: "fit-content"}}>
+                            <span>Shop all</span> {productCategoryDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
+                        </div>
+                        <div className={`admin-sidebar-dropdown-wrapper ${productCategoryDropdown ? 'open' : ''}`} style={{fontSize: "17px"}}>
+                          <div onClick={()=> {navigate('/collections/all/?category=All Products'), setShownav(false)}}className="mt-2">All products</div>
+                                  {categories.options && categories.options.map((category, index) => {
+                                      return <div key={index} onClick={() => {navigate(`/collections/all/?category=${category.label}`), setShownav(false)}}>{category.label}</div>
+                                  })}
+                          </div>
+                        </div>
                     <div>
                       <label htmlFor="currency" style={{ fontWeight: "bold", color: "white"}}>Currency: </label>
                       <Select

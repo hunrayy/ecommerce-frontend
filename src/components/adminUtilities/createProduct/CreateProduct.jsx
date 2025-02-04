@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Modal, Button, Card } from "react-bootstrap";
 import "./createProduct.css";
 import axios from "axios";
@@ -10,6 +10,9 @@ import Select from 'react-select';
 
 const CreateProduct = () => {
     const navigate = useNavigate();
+
+    const productImageRef = useRef(null);
+    const subImageRefs = useRef([]); //keeps track of sub image inputs
     const [formData, setFormData] = useState({
         productImage: null,
         subImage1: null,
@@ -26,6 +29,14 @@ const CreateProduct = () => {
         productPrice26Inches: "",
         productPrice28Inches: "",
     });
+    const [categories, setCategories] = useState({
+        loading: true,
+        options: []
+    });
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const handleCategoryChange = (selectedOption) => {
+        setSelectedCategory(selectedOption);
+    };
 
 
     const [isLoading, setIsLoading] = useState(false);
@@ -55,6 +66,7 @@ const CreateProduct = () => {
 
     // const isFormValid = formData.productImage && formData.productName && Object.values(formData).some(value => value !== "");
     const isFormValid = formData.productImage &&
+                    selectedCategory &&
                     formData.productName &&
                     formData.productPrice12Inches &&
                     formData.productPrice14Inches &&
@@ -120,6 +132,7 @@ const CreateProduct = () => {
             );
             console.log(feedback)
             if (feedback) {
+                setSelectedCategory(null)
                 setFormData({
                     productImage: null,
                     subImage1: null,
@@ -138,6 +151,11 @@ const CreateProduct = () => {
                 });
                 setIsLoading(false);
                 if (feedback.data.code === "success") {
+                    // Reset file input fields
+                    if (productImageRef.current) productImageRef.current.value = "";
+                    subImageRefs.current.forEach((ref) => {
+                        if (ref) ref.value = "";
+                    });
                     setServerSuccessState(true);
                     setTimeout(() => setServerSuccessState(false), 5000);
                 } else {
@@ -148,7 +166,7 @@ const CreateProduct = () => {
                 }
             }
         } catch (error) {
-            toast.error('An error occurred while creating the product');
+            toast.error(`An error occurred while creating product: ${error}`);
             setIsLoading(false);
             setServerErrorMessage({ status: true, message: 'An error occurred. Please try again.' });
         }
@@ -186,14 +204,7 @@ const CreateProduct = () => {
         })
     }, [])
 
-    const [categories, setCategories] = useState({
-        loading: true,
-        options: []
-    });
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const handleCategoryChange = (selectedOption) => {
-        setSelectedCategory(selectedOption);
-    };
+
 
     return (
         <div>
@@ -210,12 +221,12 @@ const CreateProduct = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="productImage" className="form-label">Main Product Image</label>
-                            <input type="file" className="form-control" id="productImage" onChange={handleInputChange} />
+                            <input type="file" className="form-control" id="productImage" onChange={handleInputChange} ref={productImageRef} />
                         </div>
                         {Array.from({ length: 3 }).map((_, index) => (
                             <div key={index} className="mb-3">
                                 <label htmlFor={`subImage${index + 1}`} className="form-label">Sub Image {index + 1} (optional)</label>
-                                <input type="file" className="form-control" id={`subImage${index + 1}`} onChange={handleInputChange} />
+                                <input type="file" className="form-control" id={`subImage${index + 1}`} onChange={handleInputChange} ref={(el) => (subImageRefs.current[index] = el)}  />
                             </div>
                         ))}
                         <div className="mb-3">
@@ -223,10 +234,10 @@ const CreateProduct = () => {
                             <input type="text" className="form-control" id="productName" placeholder="Enter product name" value={formData.productName} onChange={handleInputChange} />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="productName" className="form-label">Product Category (default is 'General' if not selected)</label>
+                            <label htmlFor="productName" className="form-label">Product Category</label>
                             <Select
                                 placeholder="select category"
-                                value={!categories.loading && (selectedCategory  || { value: 'general', label: 'General' })} // Default to 'General'
+                                value={!categories.loading && (selectedCategory)}
                                 onChange={handleCategoryChange}
                                 options={categories.options}
                                 isLoading={categories.loading}
@@ -280,7 +291,7 @@ const CreateProduct = () => {
                         </div>
                         <Card.Body>
                             <Card.Title><strong>Name: </strong>{formData.productName}</Card.Title>
-                            <Card.Title><strong>Category: </strong>{selectedCategory ? selectedCategory.label : 'General'}</Card.Title>
+                            <Card.Title><strong>Category: </strong>{selectedCategory ? selectedCategory.label : 'null'}</Card.Title>
                             <Card.Text>
                                 {Object.keys(formData).map((key) => (
                                     key.startsWith("productPrice") && (

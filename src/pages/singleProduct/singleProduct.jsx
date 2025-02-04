@@ -386,6 +386,7 @@ const SingleProduct = () => {
     subImage3: "",
     name: "",
     description: "",
+    category: "",
     // price: 0,
     pageNotFound: false
   });
@@ -442,6 +443,7 @@ const SingleProduct = () => {
           subImage2: feedback.data.data.subImage2 !== "null" && feedback.data.data.subImage2,
           subImage3: feedback.data.data.subImage3 !== "null" && feedback.data.data.subImage3,
           name: feedback.data.data.productName,
+          category: feedback.data.data.category
           // price: feedback.data.data.productPriceInNaira,
         });
             //  Set lengthState with available lengths
@@ -636,6 +638,7 @@ console.log(lengthsOfHair)
                         </div>
                       }
                     </div>
+                    {!loading && <div className="text-muted mb-1">Category: {product.category.name}</div>}
                     {!loading && <div className="text-muted">LENGTH: {lengthState.lengthPicked}</div> }
                     <div className="row mt-2">
                      

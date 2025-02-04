@@ -6,11 +6,14 @@ import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { CurrencyContext } from '../../components/all_context/CurrencyContext'
 // import PaginationButton from '../../components/paginationButton/PaginationButton'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Products from '../../components/products/Products'
 const AllProducts = () => {
     const { selectedCurrency, convertCurrency, currencySymbols } = useContext(CurrencyContext);
-    
+
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const productCategory = searchParams.get("category");
 
 
         // Define state for products and pagination
@@ -67,7 +70,7 @@ const AllProducts = () => {
 
     useEffect(()=> {
         fetchProducts()
-    }, [])
+    }, [productCategory])
 
         
     return <div>
@@ -85,7 +88,8 @@ const AllProducts = () => {
   </video> */}
             <div className="container">
                 <header className="" style={{padding: "30px 0"}}>
-                    <h1 className=''><b>All Products</b></h1>
+                    {/* <h1 className=''><b>All Products</b></h1> */}
+                    <h1 className=''><b>{productCategory}</b></h1>
                 </header>
                 <div>
                     {/* <p style={{fontSize: "18px" }} className='float-right'>View all | {totalProducts.total} Products</p> */}
@@ -116,7 +120,7 @@ const AllProducts = () => {
                         </div>
                         })
                     } */}
-                    <Products showPaginationButtons={showPaginationButtons} />
+                    <Products productCategory={productCategory} showPaginationButtons={showPaginationButtons} />
 
                     {/* <PaginationButton totalProducts={totalProducts} setTotalProducts={setTotalProducts} products={products} setProducts={setProducts} /> */}
 
