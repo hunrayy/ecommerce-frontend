@@ -172,7 +172,7 @@ const CreateProduct = () => {
         }
     };
     useEffect(()=> {
-        axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/fetch-product-categories`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetch-product-categories`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

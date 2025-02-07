@@ -12,6 +12,7 @@ import PendingOrders from "../../components/adminUtilities/pendingOrders/Pending
 import ViewUsers from "../../components/adminUtilities/viewUsers/ViewUsers";
 import OutForDelivery from "../../components/adminUtilities/outForDelivery/OutForDelivery";
 import DeliveredOrders from "../../components/adminUtilities/deliveredOrders/DeliveredOrders";
+import ProductCategories from "../../components/adminUtilities/productCategories/ProductCategories";
 import { useNotification } from "../../components/all_context/NotificationContext";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import axios from "axios";
@@ -38,7 +39,8 @@ const AdminDashboard = () => {
         pending_orders_page: false,
         out_for_delivery_page: false,
         delivered_orders_page: false,
-        view_users: false
+        view_users: false,
+        productCategory: false
     });
     const [pagesDropdown, setPagesDropdown] = useState(false)
     const [productsDropdown, setProductsDropdown] = useState(false)
@@ -57,7 +59,8 @@ const AdminDashboard = () => {
             pending_orders_page: page === 'pending_orders',
             out_for_delivery_page: page === 'out_for_delivery',
             delivered_orders_page: page === 'delivered_orders',
-            view_users_page: page === 'view_users'
+            view_users_page: page === 'view_users',
+            product_category_page: page === 'product_category',
         });
         if (productCategory) {
             // Update the selected category when the page is changed
@@ -184,6 +187,10 @@ const AdminDashboard = () => {
                             </div>
                         </div>
 
+                        <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('product_category')}>
+                            <i className="fa-solid fa-user"></i> <span>Product categories</span>
+                        </div> 
+
 
 
                         <div className="admin-sidebar-icon-wrapper" onClick={() => showPage('settings')}>
@@ -212,6 +219,8 @@ const AdminDashboard = () => {
                     {pages.out_for_delivery_page && <OutForDelivery />}
                     {pages.delivered_orders_page && <DeliveredOrders />}
                     {pages.view_users_page && <ViewUsers />}
+                    {pages.product_category_page && <ProductCategories />}
+
 
                     
                     {/* Add other components as needed */}

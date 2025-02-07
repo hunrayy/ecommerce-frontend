@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firstPicture from "../../assets/firstPicture.png";
@@ -9,6 +9,14 @@ import hair_image from "../../assets/hair_image.webp";
 import "./banner.css";
 
 const Banner = () => {
+  useEffect(() => {
+    const buttons = document.querySelectorAll('.carousel-control-prev, .carousel-control-next');
+    buttons.forEach(button => {
+      button.removeAttribute('href'); // Remove the default href="#"
+    });
+  }, []);
+  
+  
   const detailsObject = [
     {
       text: "Achieve silky smooth hair with our top-grade products. Easy to maintain and style for everyday glamour",
@@ -37,7 +45,8 @@ const Banner = () => {
                 prevLabel={null}
                 nextLabel={null}
                 style={{zIndex: "1"}}
-              >
+                as="button"
+                >
                 {detailsObject.map((item, index) => (
                   <Carousel.Item key={index}>
                     <div className="new-banner-carousel-container" >
@@ -57,7 +66,16 @@ const Banner = () => {
 
   </div>
  
-      {/* <section className="pt-3 banner-component-container">
+    
+  
+    </div>
+  );
+};
+
+export default Banner;
+
+
+  {/* <section className="pt-3 banner-component-container">
         <div className="container">
           <div className="row gx-3">
             <main className="col-lg-9">
@@ -121,12 +139,6 @@ const Banner = () => {
           </div>
         </div>
       </section> */}
-  
-    </div>
-  );
-};
-
-export default Banner;
 
 
 

@@ -1,0 +1,21 @@
+.product-catgeory-main{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    /* width: 100vw; */
+    /* background-color: red; */
+    /* height: 100vh; */
+    padding: 0 10%;
+}
+
+.each-product-category{
+    background-color: rgb(233, 233, 233);
+    border-radius: 10px;
+    /* padding: 20px 100px; */
+    margin-top: 10px;
+    padding: 20px 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
