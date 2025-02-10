@@ -45,7 +45,6 @@ const Banner = () => {
                 prevLabel={null}
                 nextLabel={null}
                 style={{zIndex: "1"}}
-                as="button"
                 >
                 {detailsObject.map((item, index) => (
                   <Carousel.Item key={index}>

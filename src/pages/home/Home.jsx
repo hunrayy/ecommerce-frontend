@@ -7,6 +7,7 @@ import FooterVideo from "../../components/footerVideo/FooterVideo";
 import { useState, useEffect, useContext } from "react";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Home = () => {
     const location = useLocation()
@@ -23,6 +24,40 @@ const Home = () => {
         }
        
     })
+
+    const [categories, setCategories] = useState({
+      loading: true,
+      options: []
+    });
+
+    useEffect(()=> {
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetch-product-categories`).then((feedback) => {
+          console.log(feedback)
+          if(feedback.data.code == 'error'){
+              setCategories({
+                  loading: false,
+                  options: []
+              })
+              toast.error(`An error occured while fetching product categories: ${feedback.data.message}`)
+          }else if(feedback.data.code == 'success'){
+              // console.log(feedback)
+              const categoryOptions = feedback.data.data.map(category => ({
+                  value: category.id,  // Use the id as the value
+                  label: category.name  // Use the name as the label
+              }));
+              setCategories({
+                  loading: false,
+                  options: categoryOptions
+              })
+          }else{
+              setCategories({
+                  loading: false,
+                  options: []
+              })
+              toast.error('An error occured while retrieving product categories')
+          }
+      })
+    }, [])
     
     return (
         <div className="home-page-container">   
@@ -34,9 +69,15 @@ const Home = () => {
             <Navbar />
             <Banner />
             <div className="container">
-                <header style={{marginTop: "50px"}}>
-                    <h3>New products</h3>
-                </header>
+            <header className="home-page-header-tag">
+    <p className="each-category-item" style={{color: "#f672a7"}}>New products</p>
+    
+                    {categories.options && categories.options.map((category, index) => {
+                                      return <p key={index} className="each-category-item" onClick={() => {navigate(`/collections/all/?category=${category.label}`), setShownav(false)}}>{category.label}</p>
+                                  })}
+                                  <p className="each-category-item"  onClick={() => {navigate(`/collections/all/?category=All Products`)}}>All products</p>
+</header>
+
 
             </div>
 

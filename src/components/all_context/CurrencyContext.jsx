@@ -3,8 +3,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const defaultCurrency = 'NGN';
-const exchangeRates = { NGN: 1 }; // Default exchange rate with NGN as base
+const defaultCurrency = import.meta.env.VITE_CURRENCY_CODE;
+const exchangeRates = { [import.meta.env.VITE_CURRENCY_CODE]: 1 }; // Default exchange rate with pounds (GBP) as base
 
 export const CurrencyContext = createContext();
 
@@ -26,7 +26,7 @@ export const CurrencyProvider = ({ children }) => {
 
   const fetchExchangeRates = async () => {
     try {
-      const response = await axios.get('https://api.exchangerate-api.com/v4/latest/NGN');
+      const response = await axios.get(`https://api.exchangerate-api.com/v4/latest/${import.meta.env.VITE_CURRENCY_CODE}`);
       console.log(response)
 
       setRates(response.data.rates);
@@ -100,7 +100,7 @@ export const CurrencyProvider = ({ children }) => {
   
   
 
-  const convertCurrency = (amount, fromCurrency = 'NGN', toCurrency = selectedCurrency) => {
+  const convertCurrency = (amount, fromCurrency = import.meta.env.VITE_CURRENCY_CODE, toCurrency = selectedCurrency) => {
     if (!isRatesFetched || !rates[fromCurrency] || !rates[toCurrency]) {
       console.error('Currency not supported or rates not fetched:', fromCurrency, toCurrency);
       return NaN;

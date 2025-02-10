@@ -252,7 +252,7 @@ const CreateProduct = () => {
                                 return (
                                     <div key={size} className="mb-3 col-6">
                                         <label htmlFor={`productPrice${size}Inches`} className="form-label">
-                                            Product Price In Naira ({size}" inches)
+                                            Product Price In {import.meta.env.VITE_BASE_CURRENCY} ({size}" inches)
                                         </label>
                                         <input
                                             type="text"

@@ -145,7 +145,7 @@ const AllProducts = ({ productCategory }) => {
 
     useEffect(() => {
         if (!productCategory) {
-            productCategory = null; // or default category
+            productCategory = 'all productsy'; // or default category
         }
         fetchProducts()
         // let loaderTimeout;
@@ -225,7 +225,7 @@ const AllProducts = ({ productCategory }) => {
             // Iterate through all keys of the 'product' object
             Object.keys(selectedProduct).forEach(key => {
                 // Check if the key starts with 'productPriceIn'
-                if (key.startsWith("productPriceIn")) {
+                if (key.startsWith("productPrice")) {
                     sizes.push(key);
                 }
             });
@@ -278,15 +278,17 @@ const AllProducts = ({ productCategory }) => {
                             const sizes = [];
                             // Iterate through all keys of the 'product' object
                             Object.keys(product).forEach(key => {
-                                // Check if the key starts with 'productPriceIn'
-                                if (key.startsWith("productPriceIn")) {
+                                // Check if the key starts with 'productPrice'
+                                if (key.startsWith("productPrice")) {
                                     sizes.push(key);
                                 }
                             });
                             
                             const firstAvailablePrice = sizes.map(size => product[size]).find(price => price > 0) || 0;
                             const productPrice = parseFloat(firstAvailablePrice);
-                            const convertedPrice = convertCurrency(productPrice, "NGN", selectedCurrency);
+                            console.log(import.meta.env.VITE_CURRENCY_CODE)
+                            const convertedPrice = convertCurrency(productPrice, import.meta.env.VITE_CURRENCY_CODE, selectedCurrency);
+                            console.log(convertedPrice)
                             const currencySymbol = currencySymbols[selectedCurrency];
                             const firstImage = product.productImage;
      
@@ -322,7 +324,7 @@ const AllProducts = ({ productCategory }) => {
                                                 <span>{convertedPrice.toLocaleString()}</span>
                                             </h5>
                                             <p className="mb-0">{product.productName}</p>
-                                            <p className="text-muted">{product.productDescription}</p>
+                                            {/* <p className="text-muted">{product.productDescription}</p> */}
                                         </div>
                                     </div>
                                 </div>
@@ -410,7 +412,8 @@ const AllProducts = ({ productCategory }) => {
                             <h5>
                                 Price: {currencySymbols[selectedCurrency]}
                                 {/* {convertCurrency(parseFloat(selectedProduct.productPriceInNaira12Inches), "NGN", selectedCurrency).toLocaleString()} */}
-                                {convertCurrency(parseFloat(firstAvailablePrice(selectedProduct)), "NGN", selectedCurrency).toLocaleString()}
+                                {convertCurrency(parseFloat(firstAvailablePrice(selectedProduct)), import.meta.env.VITE_CURRENCY_CODE, selectedCurrency).toLocaleString()}
+                                {console.log(firstAvailablePrice(selectedProduct))}
 
                             </h5>
                         </div>

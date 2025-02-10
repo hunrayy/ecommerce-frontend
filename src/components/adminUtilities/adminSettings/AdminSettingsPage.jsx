@@ -9,6 +9,7 @@ import localforage from 'localforage';
 const AdminSettingsPage = () => {
   // const use_auth = useAuth();
   const { user, setUser } = useAuth();
+  console.log(user)
 
   const adminDetails = user.user || {};
 
@@ -19,8 +20,8 @@ const AdminSettingsPage = () => {
     email: adminDetails.email || '',
     previousEmail: adminDetails.email || '',
     countryOfWarehouseLocation: adminDetails.countryOfWarehouseLocation || '',
-    internationalShippingFeeInNaira: adminDetails.internationalShippingFeeInNaira || '',
-    domesticShippingFeeInNaira: adminDetails.domesticShippingFeeInNaira || '',
+    internationalShippingFee: adminDetails.internationalShippingFee || '',
+    domesticShippingFee: adminDetails.domesticShippingFee || '',
     numberOfDaysForDomesticDelivery: adminDetails.numberOfDaysForDomesticDelivery || '',
     numberOfDaysForInternationalDelivery: adminDetails.numberOfDaysForInternationalDelivery || '',
     otp: '' // Add OTP to form data
@@ -44,8 +45,8 @@ const AdminSettingsPage = () => {
     if (!formData.firstname.trim()) newErrors.firstname = "First name is required";
     if (!formData.lastname.trim()) newErrors.lastname = "Last name is required";
     if (!formData.countryOfWarehouseLocation.trim()) newErrors.countryOfWarehouseLocation = "Country is required";
-    if (!formData.domesticShippingFeeInNaira) newErrors.domesticShippingFeeInNaira = "Domestic shipping fee is required";
-    if (!formData.internationalShippingFeeInNaira) newErrors.internationalShippingFeeInNaira = "International shipping fee is required";
+    if (!formData.domesticShippingFee) newErrors.domesticShippingFee = "Domestic shipping fee is required";
+    if (!formData.internationalShippingFee) newErrors.internationalShippingFee = "International shipping fee is required";
     if (!formData.numberOfDaysForDomesticDelivery) newErrors.numberOfDaysForDomesticDelivery = "Number of days for domestic delivery is required";
     if (!formData.numberOfDaysForInternationalDelivery) newErrors.numberOfDaysForInternationalDelivery = "Number of days for international delivery is required";
     if (!formData.otp) newErrors.otp = "OTP is required";
@@ -108,8 +109,8 @@ const AdminSettingsPage = () => {
           email: '',
           previousEmail: '',
           countryOfWarehouseLocation: '',
-          internationalShippingFeeInNaira: '',
-          domesticShippingFeeInNaira: '',
+          internationalShippingFee: '',
+          domesticShippingFee: '',
           numberOfDaysForDomesticDelivery: '',
           numberOfDaysForInternationalDelivery: '',
           otp: ''
@@ -249,31 +250,31 @@ const AdminSettingsPage = () => {
           </div>
 
           <div className="form-group mb-4 col-12 col-md-6">
-            <label>Flat rate shipping fee for domestic delivery (in naira):</label>
+            <label>Flat rate shipping fee for domestic delivery (in {import.meta.env.VITE_BASE_CURRENCY}):</label>
             <input
               type="number"
-              name="domesticShippingFeeInNaira"
-              value={formData.domesticShippingFeeInNaira}
-              className={`form-control form-control-lg ${errors.domesticShippingFeeInNaira ? 'is-invalid' : ''}`}
+              name="domesticShippingFee"
+              value={formData.domesticShippingFee}
+              className={`form-control form-control-lg ${errors.domesticShippingFee ? 'is-invalid' : ''}`}
               style={{fontSize: "17px"}}
               onChange={handleInputChange}
               required
             />
-            {errors.domesticShippingFeeInNaira && <div className="invalid-feedback">{errors.domesticShippingFeeInNaira}</div>}
+            {errors.domesticShippingFee && <div className="invalid-feedback">{errors.domesticShippingFee}</div>}
           </div>
 
           <div className="form-group mb-4 col-12 col-md-6">
-            <label>Flat rate shipping fee for international delivery (in naira):</label>
+            <label>Flat rate shipping fee for international delivery (in {import.meta.env.VITE_BASE_CURRENCY}):</label>
             <input
               type="number"
-              name="internationalShippingFeeInNaira"
-              value={formData.internationalShippingFeeInNaira}
-              className={`form-control form-control-lg ${errors.internationalShippingFeeInNaira ? 'is-invalid' : ''}`}
+              name="internationalShippingFee"
+              value={formData.internationalShippingFee}
+              className={`form-control form-control-lg ${errors.internationalShippingFee ? 'is-invalid' : ''}`}
               style={{fontSize: "17px"}}
               onChange={handleInputChange}
               required
             />
-            {errors.internationalShippingFeeInNaira && <div className="invalid-feedback">{errors.internationalShippingFeeInNaira}</div>}
+            {errors.internationalShippingFee && <div className="invalid-feedback">{errors.internationalShippingFee}</div>}
           </div>
 
           <div className="form-group col-12 col-md-6">
@@ -375,8 +376,8 @@ export default AdminSettingsPage;
 //     lastname: adminDetails.lastname,
 //     email: adminDetails.email,
 //     countryOfWarehouseLocation: adminDetails.countryOfWarehouseLocation,
-//     internationalShippingFeeInNaira: adminDetails.internationalShippingFeeInNaira,
-//     domesticShippingFeeInNaira: adminDetails.domesticShippingFeeInNaira 
+//     internationalShippingFee: adminDetails.internationalShippingFee,
+//     domesticShippingFee: adminDetails.domesticShippingFee 
 //   })
 //   const [OtpSent, setOtpSent] = useState(false)
 //   const sendOTP = () => {
@@ -417,12 +418,12 @@ export default AdminSettingsPage;
 
 //           <div className="form-group mb-4">
 //             <label>Flat rate shipping fee for domestic delivery (in naira):</label>
-//             <input type="number" value={formData.domesticShippingFeeInNaira} className='form-control form-control-lg' />
+//             <input type="number" value={formData.domesticShippingFee} className='form-control form-control-lg' />
 //           </div>
 
 //           <div className="form-group mb-4">
 //             <label>Flat rate shipping fee for international delivery (in naira)</label>
-//             <input type="number" value={formData.internationalShippingFeeInNaira} className='form-control form-control-lg' />
+//             <input type="number" value={formData.internationalShippingFee} className='form-control form-control-lg' />
 //           </div>
 
 //           <div className="form-group mb-4">

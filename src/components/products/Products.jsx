@@ -128,7 +128,7 @@ const Products = ({ productCategory, showPaginationButtons }) => {
 
         <section>
                     {showPaginationButtons && <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <p><Link to='/' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>Home</Link> &gt; <Link to='/collections/all' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>all products</Link></p>
+                        {/* <p><Link to='/' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>Home</Link> &gt; <Link to='/collections/all?category=All products' style={{fontWeight: "bold", color: "black", textDecoration: "none"}}>all products</Link></p> */}
                         <p>View all | {allProducts.products.length} products</p>
 
                     </div>}

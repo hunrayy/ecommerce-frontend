@@ -23,7 +23,11 @@ const Dashboard = () => {
     })
 
     const getAllProducts = async() =>{
-        const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`)
+        const feedback = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-all-products`, {
+            params: {
+                productCategory: 'all products'  // Conditionally adding the category if it exists
+            }
+        })
         console.log(feedback)
         if(feedback.data.code == "success"){
             setProducts({

@@ -141,7 +141,7 @@ const AdminDashboard = () => {
                                 <i className="fa-solid fa-eye"></i> <span>View products</span>{productsDropdown ? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
                             </div>
                             <div className={`admin-sidebar-dropdown-wrapper ${productsDropdown ? 'open' : ''}`}>
-                                <div onClick={() => showPage('viewProducts')}>All products</div>
+                                <div onClick={() => showPage('viewProducts', 'all products')}>All products</div>
                                 {categories.options && categories.options.map((category, index) => {
                                     return <div key={index} onClick={() => showPage('viewProducts', category.label)}>{category.label}</div>
                                 })}

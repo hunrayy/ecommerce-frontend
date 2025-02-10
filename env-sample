@@ -1,2 +1,4 @@
-VITE_BACKEND_URL=
 VITE_APP_ENV=development #change to 'production' when in production environment
+VITE_BACKEND_URL=
+VITE_BASE_CURRENCY=Pounds
+VITE_CURRENCY_CODE=GBP
