@@ -20,8 +20,8 @@ import { CurrencyContext } from '../../components/all_context/CurrencyContext';
 //     `28", 28", 28"`,
 //   ];
 
-//   const total = cartProducts?.products?.reduce((acc, item) => acc + item.productPriceInNaira12Inches * item.quantity, 0);
-//   return convertCurrency(total, 'NGN', selectedCurrency);
+//   const total = cartProducts?.products?.reduce((acc, item) => acc + item.productPrice12Inches * item.quantity, 0);
+//   return convertCurrency(total, import.meta.env.VITE_CURRENCY_CODE, selectedCurrency);
 // };
 
 
@@ -31,15 +31,15 @@ export const calculateTotal = (cartProducts, convertCurrency, selectedCurrency) 
   }
 
   const lengthPriceMap = {
-    '12", 12", 12"': 'productPriceInNaira12Inches',
-    '14", 14", 14"': 'productPriceInNaira14Inches',
-    '16", 16", 16"': 'productPriceInNaira16Inches',
-    '18", 18", 18"': 'productPriceInNaira18Inches',
-    '20", 20", 20"': 'productPriceInNaira20Inches',
-    '22", 22", 22"': 'productPriceInNaira22Inches',
-    '24", 24", 24"': 'productPriceInNaira24Inches',
-    '26", 26", 26"': 'productPriceInNaira26Inches',
-    '28", 28", 28"': 'productPriceInNaira28Inches',
+    '12", 12", 12"': 'productPrice12Inches',
+    '14", 14", 14"': 'productPrice14Inches',
+    '16", 16", 16"': 'productPrice16Inches',
+    '18", 18", 18"': 'productPrice18Inches',
+    '20", 20", 20"': 'productPrice20Inches',
+    '22", 22", 22"': 'productPrice22Inches',
+    '24", 24", 24"': 'productPrice24Inches',
+    '26", 26", 26"': 'productPrice26Inches',
+    '28", 28", 28"': 'productPrice28Inches',
   };
 
   const total = cartProducts.products.reduce((acc, item) => {
@@ -55,7 +55,7 @@ export const calculateTotal = (cartProducts, convertCurrency, selectedCurrency) 
   }, 0);
 
   console.log(`Total before conversion: ${total}`);
-  return convertCurrency(total, 'NGN', selectedCurrency);
+  return convertCurrency(total, import.meta.env.VITE_CURRENCY_CODE, selectedCurrency);
 };
 
 
@@ -115,7 +115,7 @@ export default CartTotal;
 //   }
 
 //   const total = cartProducts.products.reduce((acc, item) => acc + item.price * item.quantity, 0);
-//   const convertedTotal = convertCurrency(total, 'NGN', selectedCurrency);
+//   const convertedTotal = convertCurrency(total, import.meta.env.VITE_CURRENCY_CODE, selectedCurrency);
 //   const currencySymbol = currencySymbols[selectedCurrency];
 //   const formattedTotal = Number(convertedTotal).toLocaleString();
 //   // console.log(typeof(formattedTotal))

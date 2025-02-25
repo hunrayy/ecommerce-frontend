@@ -143,13 +143,14 @@ const Products = ({ productCategory, showPaginationButtons }) => {
                         // Iterate through all keys of the 'product' object
                         Object.keys(product).forEach(key => {
                             // Check if the key starts with 'productPriceIn'
-                            if (key.startsWith("productPriceIn")) {
+                            if (key.startsWith("productPrice")) {
                                 sizes.push(key);
                             }
                         });
                         
                         const firstAvailablePrice = sizes.map(size => product[size]).find(price => price > 0) || 0;
-                        const convertedPrice = Number(convertCurrency(firstAvailablePrice, 'NGN', selectedCurrency)).toLocaleString();
+                        console.log(firstAvailablePrice)
+                        const convertedPrice = Number(convertCurrency(firstAvailablePrice, import.meta.VITE_CURRENCY_CODE, selectedCurrency)).toLocaleString();
                         const currencySymbol = currencySymbols[selectedCurrency];
                         // console.log(firstAvailablePrice)
                         return (<div key={index} className="col-lg-3 col-md-6 col-sm-6 col-6 single-item-container"  onClick={()=>navigateToProduct(product.id)}>
@@ -158,10 +159,12 @@ const Products = ({ productCategory, showPaginationButtons }) => {
                             <img src={product.productImage} className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} />
             
                         <div className="pl-2 pt-2">
-                            <h5 style={{display: "flex", gap: "5px"}}>
+                            {/* <h5 style={{display: "flex", gap: "5px"}}>
                                 <span><b>{currencySymbol}</b></span>
                                 <span><b>{convertedPrice.toLocaleString()}</b></span>
-                            </h5>
+                            </h5> */}
+                        
+                            <p class="fw-semibold fs-5 text-black">{currencySymbol} {convertedPrice.toLocaleString()}</p>
                             <p className=" mb-0">{product.productName}</p>
                             {/* <p className="text-muted">{product.description}</p> */}
                         </div>

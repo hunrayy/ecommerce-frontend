@@ -68,7 +68,7 @@
 //           subImage2: feedback.data.data.subImage2 !== "null" && feedback.data.data.subImage2,
 //           subImage3: feedback.data.data.subImage3 !== "null" && feedback.data.data.subImage3,
 //           name: feedback.data.data.productName,
-//           price: feedback.data.data.productPriceInNaira,
+//           price: feedback.data.data.productPrice,
           
 //         });
   
@@ -422,15 +422,15 @@ const SingleProduct = () => {
         // Check if the data is a string and parse it if needed
         const productData = typeof feedback.data.data === "string" ? JSON.parse(feedback.data.data) : feedback.data.data;
         setLengthsOfHair([
-          (parseFloat(productData.productPriceInNaira12Inches) > 0) ? `12", 12", 12"` : "",
-          (parseFloat(productData.productPriceInNaira14Inches) > 0) ? `14", 14", 14"` : "",
-          (parseFloat(productData.productPriceInNaira16Inches) > 0) ? `16", 16", 16"` : "",
-          (parseFloat(productData.productPriceInNaira18Inches) > 0) ? `18", 18", 18"` : "",
-          (parseFloat(productData.productPriceInNaira20Inches) > 0) ? `20", 20", 20"` : "",
-          (parseFloat(productData.productPriceInNaira22Inches) > 0) ? `22", 22", 22"` : "",
-          (parseFloat(productData.productPriceInNaira24Inches) > 0) ? `24", 24", 24"` : "",
-          (parseFloat(productData.productPriceInNaira26Inches) > 0) ? `26", 26", 26"` : "",
-          (parseFloat(productData.productPriceInNaira28Inches) > 0) ? `28", 28", 28"` : "",
+          (parseFloat(productData.productPrice12Inches) > 0) ? `12", 12", 12"` : "",
+          (parseFloat(productData.productPrice14Inches) > 0) ? `14", 14", 14"` : "",
+          (parseFloat(productData.productPrice16Inches) > 0) ? `16", 16", 16"` : "",
+          (parseFloat(productData.productPrice18Inches) > 0) ? `18", 18", 18"` : "",
+          (parseFloat(productData.productPrice20Inches) > 0) ? `20", 20", 20"` : "",
+          (parseFloat(productData.productPrice22Inches) > 0) ? `22", 22", 22"` : "",
+          (parseFloat(productData.productPrice24Inches) > 0) ? `24", 24", 24"` : "",
+          (parseFloat(productData.productPrice26Inches) > 0) ? `26", 26", 26"` : "",
+          (parseFloat(productData.productPrice28Inches) > 0) ? `28", 28", 28"` : "",
         ].filter(Boolean));
 
       
@@ -444,27 +444,27 @@ const SingleProduct = () => {
           subImage3: feedback.data.data.subImage3 !== "null" && feedback.data.data.subImage3,
           name: feedback.data.data.productName,
           category: feedback.data.data.category
-          // price: feedback.data.data.productPriceInNaira,
+          // price: feedback.data.data.productPrice,
         });
             //  Set lengthState with available lengths
             setLengthState({
               length: lengthsOfHair,
               lengthPicked: lengthsOfHair[0]  // Default to first length
             });
-        // setProductPrices([feedback.data.data.productPriceInNaira12Inches, feedback.data.data.productPriceInNaira14Inches, 
-        //   feedback.data.data.productPriceInNaira16Inches, feedback.data.data.productPriceInNaira18Inches, 
-        //   feedback.data.data.productPriceInNaira20Inches, feedback.data.data.productPriceInNaira22Inches, 
-        //   feedback.data.data.productPriceInNaira24Inches, feedback.data.data.productPriceInNaira26Inches, 
-        //   feedback.data.data.productPriceInNaira28Inches])
-        setProductPrices([parseFloat(productData.productPriceInNaira12Inches) > 0 && productData.productPriceInNaira12Inches, 
-          parseFloat(productData.productPriceInNaira14Inches) > 0 && productData.productPriceInNaira14Inches, 
-          parseFloat(productData.productPriceInNaira16Inches) > 0 && productData.productPriceInNaira16Inches,
-          parseFloat(productData.productPriceInNaira18Inches) > 0 && productData.productPriceInNaira18Inches, 
-          parseFloat(productData.productPriceInNaira20Inches) > 0 && productData.productPriceInNaira20Inches,
-          parseFloat(productData.productPriceInNaira22Inches) > 0 && productData.productPriceInNaira22Inches, 
-          parseFloat(productData.productPriceInNaira24Inches) > 0 && productData.productPriceInNaira24Inches,
-          parseFloat(productData.productPriceInNaira26Inches) > 0 && productData.productPriceInNaira26Inches, 
-          parseFloat(productData.productPriceInNaira28Inches) > 0 && productData.productPriceInNaira28Inches].filter(Boolean))
+        // setProductPrices([feedback.data.data.productPrice12Inches, feedback.data.data.productPrice14Inches, 
+        //   feedback.data.data.productPrice16Inches, feedback.data.data.productPrice18Inches, 
+        //   feedback.data.data.productPrice20Inches, feedback.data.data.productPrice22Inches, 
+        //   feedback.data.data.productPrice24Inches, feedback.data.data.productPrice26Inches, 
+        //   feedback.data.data.productPrice28Inches])
+        setProductPrices([parseFloat(productData.productPrice12Inches) > 0 && productData.productPrice12Inches, 
+          parseFloat(productData.productPrice14Inches) > 0 && productData.productPrice14Inches, 
+          parseFloat(productData.productPrice16Inches) > 0 && productData.productPrice16Inches,
+          parseFloat(productData.productPrice18Inches) > 0 && productData.productPrice18Inches, 
+          parseFloat(productData.productPrice20Inches) > 0 && productData.productPrice20Inches,
+          parseFloat(productData.productPrice22Inches) > 0 && productData.productPrice22Inches, 
+          parseFloat(productData.productPrice24Inches) > 0 && productData.productPrice24Inches,
+          parseFloat(productData.productPrice26Inches) > 0 && productData.productPrice26Inches, 
+          parseFloat(productData.productPrice28Inches) > 0 && productData.productPrice28Inches].filter(Boolean))
   
   
       
@@ -513,7 +513,7 @@ console.log(lengthsOfHair)
       ...(product.subImage3 ? [product.subImage3] : [])
     ];
 
-    const convertedPrice = convertCurrency(product.price, 'NGN', selectedCurrency);
+    const convertedPrice = convertCurrency(product.price, import.meta.env.VITE_CURRENCY_CODE, selectedCurrency);
     
     useEffect(() => {
       const cartItems = JSON.parse(localStorage.getItem('cart_items')) || [];
@@ -627,10 +627,10 @@ console.log(lengthsOfHair)
                         <div style={{display: "flex"}}>
                           <div className="h5" style={{display: "flex"}}>
                             <span>{currencySymbol}</span>
-                            {console.log(productPrices)}
+                            {console.log(lengthState)}
                             {lengthState.length.map((length, index) =>
                               lengthState.lengthPicked === length &&
-                              convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()
+                              convertCurrency(productPrices[index], import.meta.env.VITE_CURRENCY_CODE, selectedCurrency).toLocaleString()
                             )}
                           </div>
                           <span className="text-muted">&nbsp;/&nbsp;per item</span>
@@ -638,7 +638,7 @@ console.log(lengthsOfHair)
                         </div>
                       }
                     </div>
-                    {!loading && <div className="text-muted mb-1">Category: {product.category.name}</div>}
+                    {!loading && <div className="text-muted mb-1">Category: {product?.category?.name}</div>}
                     {!loading && <div className="text-muted">LENGTH: {lengthState.lengthPicked}</div> }
                     <div className="row mt-2">
                      

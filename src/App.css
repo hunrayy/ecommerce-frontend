@@ -2,8 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    --bodyColor: rgba(128, 0, 128, 0.144);
+    /* --bodyColor: rgba(128, 0, 128, 0.144); */
+    --bodyColor: #f9eef1;
     --marginAboveTop: 80px;
+    --lightColorSkeletonPlaceholder: #c7bec1;
     /* font-family: apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; */
     font-family: outfit;
 }

@@ -154,13 +154,13 @@ const Cart = () => {
                   <h4 className="card-title mb-4">Your shopping cart</h4>
                   {cartProducts.products?.slice().reverse().map((each_item) => {
                     console.log(each_item)
-                    let convertedPrice = convertCurrency(each_item.productPriceInNaira, 'NGN', selectedCurrency);
+                    let convertedPrice = convertCurrency(each_item.productPrice, import.meta.VITE_CURRENCY_CODE, selectedCurrency);
                     convertedPrice = Number(convertedPrice);
                     const generateCacheBustString = () => `?cb=${new Date().getTime()}`; // Generates a unique cache-busting string
-                    const productPrices = [each_item.productPriceInNaira12Inches, each_item.productPriceInNaira14Inches, 
-                      each_item.productPriceInNaira16Inches, each_item.productPriceInNaira18Inches, each_item.productPriceInNaira20Inches, 
-                      each_item.productPriceInNaira22Inches, each_item.productPriceInNaira24Inches, 
-                      each_item.productPriceInNaira26Inches, each_item.productPriceInNaira28Inches
+                    const productPrices = [each_item.productPrice12Inches, each_item.productPrice14Inches, 
+                      each_item.productPrice16Inches, each_item.productPrice18Inches, each_item.productPrice20Inches, 
+                      each_item.productPrice22Inches, each_item.productPrice24Inches, 
+                      each_item.productPrice26Inches, each_item.productPrice28Inches
                     ]
                     return (
                       <div key={each_item.id}>
@@ -189,11 +189,12 @@ const Cart = () => {
                               <span>{each_item.quantity}</span>
                               <button className="cart-increase-decrease-btn" onClick={() => increaseButton(each_item)}><i className="fa-solid fa-plus"></i></button>
                             </div>
-                            <div className="">
+                            <div className="">{currencySymbol}
                               {lengthsOfHair.map((length, index) =>
                                 each_item.lengthPicked === length &&
-                                convertCurrency(productPrices[index], 'NGN', selectedCurrency).toLocaleString()
+                                convertCurrency(productPrices[index], import.meta.VITE_CURRENCY_CODE, selectedCurrency).toLocaleString()
                               )}
+                              
                             </div>
                             <button className="btn btn-light border text-danger" onClick={() => setRemoveItemFromCartModal({show: true, eachItem: each_item})}> Remove <i className="fa-solid fa-trash"></i></button>
                         {/* <div style={{}}>
@@ -427,7 +428,7 @@ export default Cart;
 //                   <h4 className="card-title mb-4">Your shopping cart</h4>
 //                   {cartProducts.products?.slice().reverse().map((each_item) => {
 //                     console.log(each_item)
-//                     let convertedPrice = convertCurrency(each_item.productPriceInNaira, 'NGN', selectedCurrency);
+//                     let convertedPrice = convertCurrency(each_item.productPrice, import.meta.VITE_CURRENCY_CODE, selectedCurrency);
 //                     convertedPrice = Number(convertedPrice);
 //                     const generateCacheBustString = () => `?cb=${new Date().getTime()}`; // Generates a unique cache-busting string
 //                     return (
@@ -689,7 +690,7 @@ export default Cart;
 //                                 <div className="m-4">
 //                                     <h4 className="card-title mb-4">Your shopping cart</h4>
 //                                     {allCartItems.products.slice().reverse()?.map((each_item) => {
-//                                         let convertedPrice = convertCurrency(each_item.price, 'NGN', selectedCurrency);
+//                                         let convertedPrice = convertCurrency(each_item.price, import.meta.VITE_CURRENCY_CODE, selectedCurrency);
 //                                         convertedPrice = Number(convertedPrice)
 //                                         return <div key={each_item.id}>
 //                                             <div className="row gy-3 mb-4" style={{display: "flex", justifyContent: "space-between"}}>

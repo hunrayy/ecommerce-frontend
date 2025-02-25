@@ -37,16 +37,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
@@ -55,16 +55,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
@@ -73,16 +73,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
@@ -91,16 +91,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
@@ -109,16 +109,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
@@ -127,16 +127,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
@@ -145,16 +145,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
@@ -163,16 +163,16 @@ const HomePageLoader = () => {
                     <div className="my-2">
                
                         {/* <img src="httpssj//ssj" className="card-img-top rounded-2" style={{aspectRatio: "3 / 4", width: "100%", height: "auto"}} /> */}
-                        <div className="placeholder col-9" style={{width: "100%", height: "250px"}}>
+                        <div className="placeholder col-9" style={{width: "100%", height: "250px", background: "var(--lightColorSkeletonPlaceholder)"}}>
                         </div>
                         
         
                     <div className="pl-2 pt-2 card-text placeholder-glow">
                         <h5 style={{display: "flex", gap: "5px"}}>
-                            <span className="placeholder col-9"><b></b></span>
+                            <span className="placeholder col-9" style={{background: "var(--lightColorSkeletonPlaceholder)"}}><b></b></span>
                             {/* <span className="placeholder col"><b></b></span> */}
                         </h5>
-                        <p className=" mb-0 placeholder col-12"></p>
+                        <p className=" mb-0 placeholder col-12" style={{background: "var(--lightColorSkeletonPlaceholder)"}}></p>
                         {/* <p className="text-muted">{product.description}</p> */}
                     </div>
                     </div>
