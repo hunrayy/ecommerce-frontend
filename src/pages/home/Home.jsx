@@ -43,7 +43,8 @@ const Home = () => {
               // console.log(feedback)
               const categoryOptions = feedback.data.data.map(category => ({
                   value: category.id,  // Use the id as the value
-                  label: category.name  // Use the name as the label
+                  label: category.name,  // Use the name as the label
+                  image: category.image
               }));
               setCategories({
                   loading: false,
@@ -73,7 +74,12 @@ const Home = () => {
     <p className="each-category-item" style={{color: "#f672a7"}}>New products</p>
     
                     {categories.options && categories.options.map((category, index) => {
-                                      return <p key={index} className="each-category-item" onClick={() => {navigate(`/collections/all/?category=${category.label}`), setShownav(false)}}>{category.label}</p>
+                      console.log(categories)
+                                      // return <p key={index} className="each-category-item" onClick={() => {navigate(`/collections/all/?category=${category.label}`), setShownav(false)}}>{category.label}</p>
+                                      return <div key={index}>
+                                        <p>{category.label}</p>
+                                        <img width="200px" src={category.image} alt="" />
+                                      </div>
                                   })}
                                   <p className="each-category-item"  onClick={() => {navigate(`/collections/all/?category=All Products`)}}>All products</p>
 </header>
