@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@react-oauth/google": "^0.12.1",
+    "@tanstack/react-query": "^5.71.1",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",

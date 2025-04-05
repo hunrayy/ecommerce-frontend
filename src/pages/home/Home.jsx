@@ -4,6 +4,7 @@ import Banner from "../../components/banner/Banner";
 import Products from "../../components/products/Products";
 import Footer from "../../components/footer/Footer";
 import FooterVideo from "../../components/footerVideo/FooterVideo";
+import ProductCategory from "../../components/productCategory/ProductCategory";
 import { useState, useEffect, useContext } from "react";
 import { useAuth } from "../../components/AuthContext/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -25,40 +26,7 @@ const Home = () => {
        
     })
 
-    const [categories, setCategories] = useState({
-      loading: true,
-      options: []
-    });
-
-    useEffect(()=> {
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetch-product-categories`).then((feedback) => {
-          console.log(feedback)
-          if(feedback.data.code == 'error'){
-              setCategories({
-                  loading: false,
-                  options: []
-              })
-              toast.error(`An error occured while fetching product categories: ${feedback.data.message}`)
-          }else if(feedback.data.code == 'success'){
-              // console.log(feedback)
-              const categoryOptions = feedback.data.data.map(category => ({
-                  value: category.id,  // Use the id as the value
-                  label: category.name,  // Use the name as the label
-                  image: category.image
-              }));
-              setCategories({
-                  loading: false,
-                  options: categoryOptions
-              })
-          }else{
-              setCategories({
-                  loading: false,
-                  options: []
-              })
-              toast.error('An error occured while retrieving product categories')
-          }
-      })
-    }, [])
+    
     
     return (
         <div className="home-page-container">   
@@ -70,205 +38,29 @@ const Home = () => {
             <Navbar />
             <Banner />
             <div className="container">
-            <header className="home-page-header-tag">
-    <p className="each-category-item" style={{color: "#f672a7"}}>New products</p>
-    
-                    {categories.options && categories.options.map((category, index) => {
-                      console.log(categories)
-                                      // return <p key={index} className="each-category-item" onClick={() => {navigate(`/collections/all/?category=${category.label}`), setShownav(false)}}>{category.label}</p>
-                                      return <div key={index}>
-                                        <p>{category.label}</p>
-                                        <img width="200px" src={category.image} alt="" />
-                                      </div>
-                                  })}
-                                  <p className="each-category-item"  onClick={() => {navigate(`/collections/all/?category=All Products`)}}>All products</p>
-</header>
+            <ProductCategory />
 
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+           
 
             </div>
 
-
-
-
-            {/* <div
-      style={{
-        fontFamily: "Arial, sans-serif",
-        backgroundColor: "#f4f4f4",
-        margin: "0",
-        padding: "20px"
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "#fff",
-          maxWidth: "600px",
-          margin: "0 auto",
-          padding: "20px",
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <h1 style={{ margin: "0", color: "#333" }}>Your Order Receipt</h1>
-          <p style={{ margin: "5px 0", color: "#777" }}>
-            Thank you for shopping with us!
-          </p>
-        </div>
-
-        <div>
-          <p>Dear Henry,</p>
-          <p>
-            Thank you for your payment! We're pleased to inform you that your
-            transaction has been successfully processed.
-          </p>
-        </div>
-        <hr />
-
-        <div style={{ display: "flex", fontSize: "5px" }}>
-          <div style={{ marginRight: "20px", flex: "1" }}>
-            <h5 style={{ color: "purple" }}>Order Details</h5>
-            <p style={{margin: "5px 0"}}>
-              <strong>Tracking ID:</strong> 3511199327
-            </p>
-            <p style={{margin: "5px 0"}}>
-              <strong>Transaction ID:</strong> 729535806
-            </p>
-            <p style={{margin: "5px 0"}}>
-              <strong>Phone number:</strong> 123456
-            </p>
-            <p>
-              <strong>Date:</strong> October 21, 2024
-            </p>
-          </div>
-          <div style={{flex: "1"}}>
-            <h5 style={{ color: "purple" }}>Shipping Details</h5>
-            <p style={{margin: "5px 0"}}>
-              <strong>Country:</strong> United States
-            </p>
-            <p style={{margin: "5px 0"}}>
-              <strong>State:</strong> Georgia
-            </p>
-            <p style={{margin: "5px 0"}}>
-              <strong>City:</strong> Columbia
-            </p>
-            <p style={{margin: "5px 0"}}>
-              <strong>Address:</strong> 92 bungana drive
-            </p>
-            <p style={{margin: "5px 0"}}>
-              <strong>Postal code:</strong> 123456
-            </p>
-            <p>
-              <strong>Expected date of delivery:</strong> 04/11/2024
-            </p>
-          </div>
-        </div>
-        <hr />
-        <h6 style={{ fontWeight: "bold" }}>Summary</h6>
-
-        <div
-          style={{
-            display: "flex",
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            padding: "10px",
-            marginBottom: "20px",
-            alignItems: "center",
-            backgroundColor: "#fafafa"
-          }}
-        >
-          <img
-            src="https://res.cloudinary.com/dih28iada/image/upload/v1729189345/beautybykiara/wvrxhfnhbglutfaaz7r7.jpg"
-            alt="Product Image"
-            style={{
-              width: "100%",
-              height: "auto",
-              maxWidth: "80px",
-              objectFit: "cover",
-              borderRadius: "8px",
-              marginRight: "20px"
-            }}
-          />
-          <div style={{ flexGrow: 1 }}>
-            <h3 style={{ margin: "0", color: "#333", fontSize: "18px" }}>
-              Product Name 1
-            </h3>
-            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
-              Quantity: 2
-            </p>
-            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
-              Price: $50.00
-            </p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p style={{ margin: "5px 0", color: "#555", fontSize: "14px" }}>
-              Total: $100.00
-            </p>
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            padding: "10px",
-            marginBottom: "20px",
-            alignItems: "center",
-            backgroundColor: "#fafafa"
-          }}
-        >
-          <img
-            src="https://res.cloudinary.com/dih28iada/image/upload/v1729167481/beautybykiara/x26ajoag65kvuqdals4j.jpg"
-            alt="Product Image"
-            style={{
-                width: "100%",
-                height: "auto",
-                maxWidth: "80px",
-                objectFit: "contain",
-                borderRadius: "8px",
-                marginRight: "20px"
-            }}
-          />
-          <div style={{ flexGrow: 1 }}>
-            <h3 style={{ margin: "0", color: "#333", fontSize: "18px" }}>
-              Product Name 2
-            </h3>
-            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
-              Quantity: 1
-            </p>
-            <p style={{ margin: "5px 0", color: "#777", fontSize: "14px" }}>
-              Price: $75.00
-            </p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p style={{ margin: "5px 0", color: "#555", fontSize: "14px" }}>
-              Total: $75.00
-            </p>
-          </div>
-        </div>
-
-        <div style={{ textAlign: "right" }}>
-          <h5 style={{ margin: "0", color: "#333" }}>Total: $185.00</h5>
-        </div>
-
-        <div
-          style={{
-            background: "purple",
-            padding: "10px",
-            textAlign: "center",
-            color: "white",
-            marginTop: "20px"
-          }}
-        >
-          <p>
-          If you have any question or need assistance, feel free to contact our support team. 
-          </p>
-          <p>
-          Thank you for choosing us! We look forward to serving you again. 
-          </p>
-        </div>
-      </div>
-    </div> */}
             <Products productCategory='All Products' showPaginationButtons={showPaginationButtons} />
             <FooterVideo />
             <Footer />

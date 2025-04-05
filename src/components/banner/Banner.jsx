@@ -38,8 +38,11 @@ const Banner = () => {
 <div className='new-banner-container'>
   
 
-  <video className='new-banner-video' playsInline="playsinline" autoPlay="autoplay" loop="loop" preload="none" muted="muted" poster={hair_image} src={hair_video}>
+  {/* <video className='new-banner-video' playsInline="playsinline" autoPlay="autoplay" loop="loop" preload="none" muted="muted" poster={hair_image} src={hair_video}>
   <source data-src={hair_video} type="video/mp4" />
+  </video> */}
+   <video className='new-banner-video' playsInline="playsinline" autoPlay="autoplay" loop="loop" preload="none" muted="muted" poster={hair_image} src="https://cdn.shopify.com/videos/c/o/v/cb150da802b8435e95e4a424536675a7.mp4">
+  <source data-src="https://cdn.shopify.com/videos/c/o/v/cb150da802b8435e95e4a424536675a7.mp4" type="video/mp4" />
   </video>
   <Carousel
                 prevLabel={null}
